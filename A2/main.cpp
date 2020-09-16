@@ -1,8 +1,16 @@
 #include <iostream>
 
+void mainMenu();
+
 int main(void)
 {
 
+    mainMenu();
+
+}
+
+void mainMenu()
+{
     std::cout << "Welcome to Azul!" << std::endl;
     std::cout << "-------------------" << std::endl;
     std::cout << "" << std::endl;
@@ -13,7 +21,7 @@ int main(void)
     std::cout << "4. Quit" << std::endl;
     int option;
     std::cout << std::endl;
-    std::cout << ">";
+    std::cout << "> ";
     std::cin >> option;
 
     while (option > 4 || option < 1)
@@ -22,6 +30,7 @@ int main(void)
         std::cout << ">";
         std::cin >> option;
     }
+
     if (option == 1)
     {
         std::cout << "Starting a New Game" << std::endl;
@@ -54,8 +63,8 @@ int main(void)
         std::cout << "Student ID: " << std::endl;
         std::cout << "Email: " << std::endl;
         std::cout << "Name: Jason Tran" << std::endl;
-        std::cout << "Student ID: " << std::endl;
-        std::cout << "Email: " << std::endl;
+        std::cout << "Student ID: s3840285" << std::endl;
+        std::cout << "Email: s3840285@student.rmit.edu.au" << std::endl;
     }
     else if (option == 4)
     {
