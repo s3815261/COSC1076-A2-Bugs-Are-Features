@@ -1,5 +1,7 @@
 #include <vector>
 #include <iostream>
+#define MAX_BOARD_ROWS 5
+#define MAX_BOARD_COLS 12
 //Forward declaration
 class Tile;
 
@@ -36,7 +38,7 @@ class playerBoard{
     void moveTile(Tile* tile, int row, int col);
 
 private:
-    std::vector<std::vector<int>> board;
+    char board[MAX_BOARD_ROWS][MAX_BOARD_COLS];
  
 
 };

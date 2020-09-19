@@ -1,3 +1,5 @@
+#include <iostream>
+#include <vector>
 #define FACTORY_MAX_ARRAY_SIZE 5
 
 class Tile;
@@ -12,20 +14,25 @@ public:
 
     Factory(Factory& other);
 
+    //return the size of the factory vector
     int size();
 
-    //add a tile to the end of the factory
-    void addTile(Tile* tile);
+    //get the ith element from the factory
+    Tile* get(int index);
 
-    //clear the factory tiles ----> done at the end of a round???
-    void clear();
+    //add a tile to the end of the factory
+    void add(Tile* tile);
+
+    //add a tile a a certain index
+    void add(Tile* tile, int index);
+
+    //removing an element from the vector
+    void remove(int index);
 
 
 
 private:
-    Tile* tiles[FACTORY_MAX_ARRAY_SIZE];
-    int length;
-
+    std::vector<Tile*> factory;
 
 
 };
