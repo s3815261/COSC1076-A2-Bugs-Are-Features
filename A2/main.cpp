@@ -84,8 +84,8 @@ void credits()
     std::cout << "Student ID: s3781876" << std::endl;
     std::cout << "Email: s3781876@student.rmit.edu.au" << std::endl;
     std::cout << "Name: Owen Griffiths" << std::endl;
-    std::cout << "Student ID: " << std::endl;
-    std::cout << "Email: " << std::endl;
+    std::cout << "Student ID: s3815261 " << std::endl;
+    std::cout << "Email: s3815261@student.rmit.edu.au " << std::endl;
     std::cout << "Name: Jason Tran" << std::endl;
     std::cout << "Student ID: s3840285" << std::endl;
     std::cout << "Email: s3840285@student.rmit.edu.au" << std::endl;
