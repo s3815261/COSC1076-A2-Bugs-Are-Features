@@ -31,7 +31,12 @@ int Factory::size()
 //Gets the tile from a specific index of the factory
 Tile* Factory::get(int index)
 {
-    return factory[index];
+    Tile* tile = nullptr;
+    if (index >= 0 && index < size()) 
+    {
+        tile = factory[index];
+    }
+    return tile;
 }
 
 //Adds tile at a specific index of the factory

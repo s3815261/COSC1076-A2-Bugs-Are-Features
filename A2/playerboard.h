@@ -40,7 +40,6 @@ class playerBoard{
 private:
     char board[MAX_BOARD_ROWS][MAX_BOARD_COLS];
  
-
 };
 
 #endif // PLAYERBOARD_H
