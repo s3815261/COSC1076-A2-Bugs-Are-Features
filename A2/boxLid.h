@@ -1,18 +1,18 @@
-#ifndef __TILEBAG__
-#define __TILEBAG__
+#ifndef __BOXLID__
+#define __BOXLID__
 
 #include "node.h"
 
-class tileBag
+class boxLid
 {
 public:
-    tileBag();
-    ~tileBag();
+    boxLid();
+    ~boxLid();
     int size();
     void clear();
-    char getFront();
+    Node getFront();
     void addBack(char tile);
-    void printtileBag();
+    void printboxLid();
 
 private:
     Node* head;
