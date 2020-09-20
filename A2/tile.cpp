@@ -1,9 +1,10 @@
 #include "tile.h"
 #include <iostream>
  //Intilizes the tile and what type it is.
-   Tile::Tile(Type type)
+   Tile::Tile(Type type, char tile)
    {
        this->type = type;
+       this->tile = tile;
 
    }
    
@@ -25,8 +26,8 @@
        return type;
    }
 
-   void Tile::getType(char* tile)
-   {
+  char Tile::getTile()
+  {
+      return tile;
 
-       
-   }
+  }

@@ -14,7 +14,7 @@ enum Type {
 class Tile {
 public:
    //Intilizes the tile and what type it is.
-   Tile(Type type);
+   Tile(Type type, char tile);
    
    //Copies the tile
    Tile(Tile& other);
@@ -25,11 +25,12 @@ public:
    //Gets the type of tile
    Type getType();
 
-   void getType(char* tile);
+   char getTile();
 
 private:
   //Stores what type the tile is
    Type type;
+   char tile;
 };
 
 

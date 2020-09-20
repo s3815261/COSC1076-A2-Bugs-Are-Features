@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include "tile.h"
 #define FACTORY_MAX_ARRAY_SIZE 5
 
 class Tile;
