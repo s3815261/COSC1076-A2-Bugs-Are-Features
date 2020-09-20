@@ -11,7 +11,7 @@ public:
 
     int size();
     void clear();
-    Node getFront();
+    Node popFront();
     void addBack(char tile);
     void printboxLid();
 
