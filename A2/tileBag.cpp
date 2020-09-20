@@ -69,10 +69,17 @@ void tileBag::clear()
     head = nullptr;
 }
 
-char tileBag::getFront()
+Node tileBag::popFront()
 {
-    Node *original_first_node = head;
-    Node *new_node = original_first_node->next;
-    return original_first_node->tile;
-    head = new_node;
+    Node *original_first_node = nullptr;
+    Node *new_node = nullptr;
+    if (head != nullptr) 
+    {
+        original_first_node = head; 
+        new_node = original_first_node->next;
+        head = new_node; 
+        --length; 
+        original_first_node->next = nullptr; 
+    }
+    return *original_first_node;
 }

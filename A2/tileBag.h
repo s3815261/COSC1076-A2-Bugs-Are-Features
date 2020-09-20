@@ -10,7 +10,7 @@ public:
     ~tileBag();
     int size();
     void clear();
-    char getFront();
+    Node popFront();
     void addBack(char tile);
     void printtileBag();
 
