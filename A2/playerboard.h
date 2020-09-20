@@ -1,7 +1,7 @@
 #include <vector>
 #include <iostream>
-#define MAX_BOARD_ROWS 5
 #define MAX_BOARD_COLS 12
+#define MAX_BOARD_ROWS 5
 //Forward declaration
 class Tile;
 
@@ -25,17 +25,14 @@ class playerBoard{
     //Deletes the board
     ~playerBoard();
 
-    //Returns 2d size of the board
-    int size();
-
     //Adding a tile to the board
     void addTile(Tile* tile, int row, int col);
 
     //Removing a tile from the board
-    void removeTile(Tile* tile, int row, int col);
+    void removeTile(int row, int col);
 
     //Moving the tile on the board
-    void moveTile(Tile* tile, int row, int col);
+    void moveTile(Tile* tile, int prevRow, int prevCol, int newRow, int newCol);
 
 private:
     char board[MAX_BOARD_ROWS][MAX_BOARD_COLS];
