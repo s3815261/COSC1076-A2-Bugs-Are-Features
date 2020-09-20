@@ -27,18 +27,28 @@ void mainMenu()
         {
             displayPrimaryMenu(false);
         }
-        option = 0; 
+        option = -1; 
 
         std::cout << "> ";
         std::cin >> option;
+    
+        bool validInput = true;
+        if (option > 4 || option < 1)
+        {
+            validInput = false;
+        }
 
-        if ((option > 4 || option < 1) && std::cin) 
+        while ((option > 4 || option < 1) && std::cin)
         {
             std::cout << "Invalid Input" << std::endl;
             std::cout << "> ";
             std::cin >> option;
-        } 
-        else
+            if (option >= 1 && option <= 4)
+            {
+                validInput = true;
+            }
+        }
+        if (validInput)
         {
             if (option == 1)
             {
