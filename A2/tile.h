@@ -34,4 +34,4 @@ private:
 };
 
 
-#endif
+#endif // TILE_H

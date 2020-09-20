@@ -8,10 +8,12 @@ tileBag::tileBag()
     head = nullptr;
     length = 0;
 }
+
 tileBag::~tileBag()
 {
     clear();
 }
+
 int tileBag::size()
 {
     return length;
@@ -47,6 +49,7 @@ void tileBag::printtileBag()
         current_node = current_node->next;
     }
 }
+
 void tileBag::clear()
 {
     if (head != nullptr)

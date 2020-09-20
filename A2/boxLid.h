@@ -8,6 +8,7 @@ class boxLid
 public:
     boxLid();
     ~boxLid();
+
     int size();
     void clear();
     Node getFront();
@@ -17,6 +18,7 @@ public:
 private:
     Node* head;
     int length;
+
 };
 
-#endif
+#endif // __BOXLID__

@@ -19,4 +19,4 @@ private:
     int length;
 };
 
-#endif
+#endif // __TILEBAG__

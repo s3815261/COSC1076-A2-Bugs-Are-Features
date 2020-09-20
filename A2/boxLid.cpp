@@ -8,10 +8,12 @@ boxLid::boxLid()
     head = nullptr;
     length = 0;
 }
+
 boxLid::~boxLid()
 {
     clear();
 }
+
 int boxLid::size()
 {
     return length;
@@ -47,6 +49,7 @@ void boxLid::printboxLid()
         current_node = current_node->next;
     }
 }
+
 void boxLid::clear()
 {
     if (head != nullptr)

@@ -15,4 +15,4 @@ public:
     Node *next;
 };
 
-#endif
+#endif // __NODE__

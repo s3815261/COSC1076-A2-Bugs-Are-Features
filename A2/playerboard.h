@@ -1,3 +1,6 @@
+#ifndef PLAYERBOARD_H
+#define PLAYERBOARD_H
+
 #include <vector>
 #include <iostream>
 #define MAX_BOARD_COLS 12
@@ -39,3 +42,5 @@ private:
  
 
 };
+
+#endif // PLAYERBOARD_H

@@ -7,12 +7,11 @@
 playerBoard::playerBoard()
 {
     //Inital player board
-    char board[MAX_BOARD_ROWS][MAX_BOARD_COLS] ={  {'.', '|', '.', '.', '.', '.', '.', '\0'},
+    char board[MAX_BOARD_ROWS][MAX_BOARD_COLS] ={   {'.', '|', '.', '.', '.', '.', '.', '\0'},
                                                     {'.', '.', '|', '.', '.', '.', '.', '.','\0'},
                                                     {'.', '.', '.', '|', '.', '.', '.', '.', '.','\0'},
                                                     {'.', '.', '.', '.', '|', '.', '.', '.', '.', '.','\0'},
                                                     {'.', '.', '.', '.', '.', '|', '.', '.', '.', '.', '.','\0'}
-
                                                 };
 
 }
@@ -29,8 +28,6 @@ playerBoard::playerBoard(playerBoard& other)
 playerBoard::~playerBoard()
 {
     delete board;
-
-
 }
 
 //Rules for adding the tile from factory to gameboard....
@@ -73,9 +70,6 @@ void playerBoard::moveTile(Tile* tile, int prevRow, int prevCol, int newRow, int
     {
         board[newRow][newCol] = tileLetter;
         removeTile(prevRow, prevCol);
-
-
-
     }
 }
 

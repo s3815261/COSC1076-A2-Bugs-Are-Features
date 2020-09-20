@@ -12,9 +12,9 @@
 //Creates a deep copy of the factory
 Factory::Factory(Factory& other):
     factory(other.factory)
-    {
+{
 
-    }
+}
 
 //deletes the factory
 Factory::~Factory()
@@ -37,13 +37,10 @@ Tile* Factory::get(int index)
 //Adds tile at a specific index of the factory
 void Factory::add(Tile* tile, int index)
 {
-    //Can't get this method to work with the insert....
     if(factory.size() > 0 && index >= 0 && index < factory.size())
     {
-        //factory.insert(index,tile);
+        factory.insert(factory.begin() + index, tile);
     }
-   
-
 
 }
 
