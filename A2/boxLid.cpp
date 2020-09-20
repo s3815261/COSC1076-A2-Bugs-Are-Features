@@ -69,10 +69,17 @@ void boxLid::clear()
     head = nullptr;
 }
 
-Node boxLid::getFront()
+Node boxLid::popFront()
 {
-    Node *original_first_node = head;
-    Node *new_node = original_first_node->next;
+    Node *original_first_node = nullptr;
+    Node *new_node = nullptr;
+    if (head != nullptr) 
+    {
+        original_first_node = head; 
+        new_node = original_first_node->next;
+        head = new_node; 
+        --length; 
+        original_first_node->next = nullptr; 
+    }
     return *original_first_node;
-    head = new_node;
 }
