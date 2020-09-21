@@ -35,7 +35,7 @@ playerBoard::playerBoard(playerBoard& other)
 //deletes the playerboard
 playerBoard::~playerBoard()
 {
-    delete board;
+    
 }
 
 //Rules for adding the tile from factory to gameboard....

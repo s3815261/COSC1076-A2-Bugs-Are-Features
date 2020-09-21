@@ -42,7 +42,7 @@ Tile* Factory::get(int index)
 //Adds tile at a specific index of the factory
 void Factory::add(Tile* tile, int index)
 {
-    if(factory.size() > 0 && index >= 0 && index < factory.size())
+    if(size() > 0 && index >= 0 && index < size())
     {
         factory.insert(factory.begin() + index, tile);
     }
@@ -59,11 +59,11 @@ void Factory::add(Tile* tile)
 //removes a specifc tile from the factory at a certain index
 void Factory::remove(int index)
 {
-    if(factory.size() > 0 && index >= 0 && index < factory.size())
+    if(size() > 0 && index >= 0 && index < size())
     {
-        for(int i = index; i != factory.size(); ++i)
+        for(int i = index; i != size(); ++i)
         {
-            if(i < factory.size() - 2)
+            if(i < size() - 2)
             {
                 factory[i] = factory[i+1];
             }
@@ -72,3 +72,4 @@ void Factory::remove(int index)
         factory.pop_back();
     }
 }
+

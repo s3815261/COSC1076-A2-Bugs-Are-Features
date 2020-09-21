@@ -19,23 +19,24 @@ class Tile;
 
 class playerBoard{
 
-    //2D array implementation
-    playerBoard();
+    public:
+        //2D array implementation
+        playerBoard();
 
-    //Deep copy of the board
-    playerBoard(playerBoard& other);
+        //Deep copy of the board
+        playerBoard(playerBoard& other);
 
-    //Deletes the board
-    ~playerBoard();
+        //Deletes the board
+        ~playerBoard();
 
-    //Adding a tile to the board
-    void addTile(Tile* tile, int row, int col);
+        //Adding a tile to the board
+        void addTile(Tile* tile, int row, int col);
 
-    //Removing a tile from the board
-    void removeTile(int row, int col);
+        //Removing a tile from the board
+        void removeTile(int row, int col);
 
-    //Moving the tile on the board
-    void moveTile(Tile* tile, int prevRow, int prevCol, int newRow, int newCol);
+        //Moving the tile on the board
+        void moveTile(Tile* tile, int prevRow, int prevCol, int newRow, int newCol);
 
 private:
     char board[MAX_BOARD_ROWS][MAX_BOARD_COLS];

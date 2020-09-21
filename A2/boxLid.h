@@ -21,4 +21,4 @@ private:
 
 };
 
-#endif // __BOXLID__
+#endif
