@@ -4,13 +4,16 @@
 #include <iostream>
 #include "playerboard.h"
 
-class player {
-    public:
+class player
+{
+public:
     player();
-    
-    private:
-        std::string name;
-        int score;
-        playerBoard pB;
+    ~player();
+    std::string getName();
+
+private:
+    std::string name;
+    int score;
+    playerBoard pB;
 };
 #endif

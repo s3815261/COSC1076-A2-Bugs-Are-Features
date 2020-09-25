@@ -6,13 +6,15 @@
 
 class azulGame{
     public:
-        azulGame(){};
-        ~azulGame(){};
+        azulGame();
+        ~azulGame();
+        std::string getP1();
+        std::string getP2();
+        tileBag getTB();
+    private:
         tileBag tb;
         player p1;
         player p2;
-    private:
-        
 };
 
 #endif

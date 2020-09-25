@@ -1,37 +1,47 @@
 #include <iostream>
+#include <fstream>
+#include "azulGame.h"
+#include "player.h"
+#include "tileBag.h"
 
-void mainMenu();
+void mainMenu(azulGame &ag);
 void displayPrimaryMenu(bool primaryMenu);
 void newGame();
-void loadGame();
+void loadGame(azulGame &ag);
 void credits();
 void eofQuit(bool eof);
 
 int main(void)
 {
-    mainMenu();
+    azulGame ag;
+    mainMenu(ag);
 
     return EXIT_SUCCESS;
 }
 
-void mainMenu()
+// #define NEWGAME 1
+// #define LOADGAME 2
+// #define CREDITS 3
+// #define EXIT 4
+
+void mainMenu(azulGame &ag)
 {
     std::cout << "Welcome to Azul!" << std::endl;
     std::cout << "-------------------" << std::endl;
     displayPrimaryMenu(true);
     int option = 0;
 
-    while (option != 4 && !std::cin.eof()) 
+    while (option != 4 && !std::cin.eof())
     {
-        if (option != 0) 
+        if (option != 0)
         {
             displayPrimaryMenu(false);
         }
-        option = -1; 
+        option = -1;
 
         std::cout << "> ";
         std::cin >> option;
-    
+
         bool validInput = true;
         if (option > 4 || option < 1)
         {
@@ -56,7 +66,7 @@ void mainMenu()
             }
             else if (option == 2)
             {
-                loadGame();
+                loadGame(ag);
             }
             else if (option == 3)
             {
@@ -74,7 +84,7 @@ void mainMenu()
     }
 }
 
-void displayPrimaryMenu(bool primaryMenu) 
+void displayPrimaryMenu(bool primaryMenu)
 {
     if (primaryMenu)
     {
@@ -106,27 +116,60 @@ void newGame()
     std::cout << "Starting a New Game" << std::endl;
     std::cout << std::endl;
     std::cout << "Enter a name for player 1" << std::endl;
-    std::string player1;
+    std::string p1;
     std::cout << "> ";
     // No ignore input error due to reading an integer first which gives a "\n" symbol at the end before reading a char or string
-    std::cin >> player1;
+    std::cin >> p1;
     std::cout << std::endl;
     std::cout << "Enter a name for player 2" << std::endl;
-    std::string player2;
+    std::string p2;
     std::cout << "> ";
-    std::cin >> player2;
+    std::cin >> p2;
     std::cout << std::endl;
     std::cout << "Let's Play!" << std::endl;
 }
 
-void loadGame()
+void loadGame(azulGame &ag)
 {
     std::cout << std::endl;
     std::cout << "Enter the filename from which to load a game" << std::endl;
     std::cout << "> ";
     std::string filename;
-    // No ignore input error due to reading an integer first which gives a "\n" symbol at the end before reading a char or string
     std::cin >> filename;
+
+    std::ifstream input_file(filename);
+    // check if the file has been successfully opened
+    if (input_file)
+    {
+        int line_count = 0;
+        while (!input_file.eof())
+        {
+            std::string line;
+            getline(input_file, line);
+            //for each character, tileBag.addBack(char)
+            if (line_count == 0)
+            {
+                int line_size = line.size();
+                for (int i = 0; i < line_size; ++i)
+                {
+                    ag.getTB().addBack(line[i]);
+                }
+            }
+            else if (line_count == 1)
+            {
+                line = ag.getP1();
+            }
+            else if (line_count == 2)
+            {
+                line = ag.getP2();
+            }
+            else if (line_count > 2)
+            {
+                //make turns
+            }
+            ++line_count;
+        }
+    }
 }
 
 void credits()
@@ -155,3 +198,4 @@ void eofQuit(bool eof)
     }
     std::cout << "Goodbye" << std::endl;
 }
+
