@@ -2,7 +2,6 @@
 #define __AZULGAME__
 
 #include "tileBag.h"
-#include "boxLid.h"
 #include "player.h"
 
 class azulGame{
@@ -10,7 +9,6 @@ class azulGame{
         azulGame(){};
         ~azulGame(){};
         tileBag tb;
-        boxLid bl;
         player p1;
         player p2;
     private:
