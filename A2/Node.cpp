@@ -1,4 +1,4 @@
-#include "node.h"
+#include "Node.h"
 
 Node::Node(char tile, Node* next) 
 {

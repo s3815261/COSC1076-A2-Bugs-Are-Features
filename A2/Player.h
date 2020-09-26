@@ -2,18 +2,21 @@
 #define __PLAYER__
 
 #include <iostream>
-#include "playerboard.h"
+#include "PlayerBoard.h"
 
-class player
+class Player
 {
 public:
-    player();
-    ~player();
+    Player();
+    Player(std::string name);
+    Player(std::string name, int score);
+    ~Player();
     std::string getName();
 
 private:
     std::string name;
     int score;
-    playerBoard pB;
+    PlayerBoard pB;
+
 };
-#endif
+#endif // __PLAYER__

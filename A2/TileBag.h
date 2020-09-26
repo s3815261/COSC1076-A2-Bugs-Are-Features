@@ -1,13 +1,13 @@
 #ifndef __TILEBAG__
 #define __TILEBAG__
 
-#include "node.h"
+#include "Node.h"
 
-class tileBag
+class TileBag
 {
 public:
-    tileBag();
-    ~tileBag();
+    TileBag();
+    ~TileBag();
     int size();
     void clear();
     Node popFront();

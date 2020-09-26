@@ -1,13 +1,27 @@
-#include "player.h"
+#include "Player.h"
 
-player::player() {
-   
+Player::Player() :
+    score(0)
+{
 }
 
-player::~player() {
-
+Player::Player(std::string name) :
+    name(name),
+    score(0)
+{    
 }
 
-std::string player::getName() {
+Player::Player(std::string name, int score) :
+    name(name),
+    score(score)
+{
+}
+
+Player::~Player() 
+{
+}
+
+std::string Player::getName() 
+{
     return name;
 }
