@@ -3,23 +3,23 @@
 #include <iostream>
 #include <limits>
 
-tileBag::tileBag()
+TileBag::TileBag()
 {
     head = nullptr;
     length = 0;
 }
 
-tileBag::~tileBag()
+TileBag::~TileBag()
 {
     clear();
 }
 
-int tileBag::size()
+int TileBag::size()
 {
     return length;
 }
 
-void tileBag::addBack(char tile)
+void TileBag::addBack(char tile)
 {
     Node *toAdd = new Node(tile, nullptr);
 
@@ -40,7 +40,7 @@ void tileBag::addBack(char tile)
     ++length;
 }
 
-void tileBag::printtileBag()
+void TileBag::printtileBag()
 {
     Node *current_node = head;
     while (current_node != nullptr)
@@ -50,7 +50,7 @@ void tileBag::printtileBag()
     }
 }
 
-void tileBag::clear()
+void TileBag::clear()
 {
     if (head != nullptr)
     {
@@ -69,7 +69,7 @@ void tileBag::clear()
     head = nullptr;
 }
 
-Node tileBag::popFront()
+Node TileBag::popFront()
 {
     Node *original_first_node = nullptr;
     Node *new_node = nullptr;

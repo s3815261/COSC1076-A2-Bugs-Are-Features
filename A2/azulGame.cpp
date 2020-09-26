@@ -1,22 +1,24 @@
 #include "azulGame.h"
 
-azulGame::azulGame()
+AzulGame::AzulGame()
 {
 }
 
-azulGame::~azulGame()
+AzulGame::~AzulGame()
 {
 }
 
-std::string azulGame::getP1()
+std::string AzulGame::getP1()
 {
     return p1.getName();
 }
-std::string azulGame::getP2()
+
+std::string AzulGame::getP2()
 {
     return p2.getName();
 }
-tileBag azulGame::getTB()
+
+TileBag AzulGame::getTB()
 {
     return tb;
 }

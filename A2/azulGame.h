@@ -4,17 +4,19 @@
 #include "tileBag.h"
 #include "player.h"
 
-class azulGame{
+class AzulGame 
+{
     public:
-        azulGame();
-        ~azulGame();
+        AzulGame();
+        ~AzulGame();
         std::string getP1();
         std::string getP2();
-        tileBag getTB();
+        TileBag getTB();
+
     private:
-        tileBag tb;
-        player p1;
-        player p2;
+        TileBag tb;
+        Player p1;
+        Player p2;
 };
 
 #endif

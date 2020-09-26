@@ -2,22 +2,21 @@
 #include <iostream>
 
 //Intilizes the tile and what type it is.
-Tile::Tile(Type type, char tile)
+Tile::Tile(Type type, char tile) :
+    type(type),
+    tile(tile)
 {
-    this->type = type;
-    this->tile = tile;
 }
 
 //Copies the tile
-Tile::Tile(Tile& other)
+Tile::Tile(Tile& other) :
+    type(other.type)
 {
-    this->type = other.type;
 }
 
 //Deletes the tile
 Tile::~Tile()
 {
-
 }
 
 //Gets the type of tile
@@ -29,5 +28,4 @@ Type Tile::getType()
 char Tile::getTile()
 {
     return tile;
-
 }

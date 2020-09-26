@@ -4,16 +4,16 @@
 #include "player.h"
 #include "tileBag.h"
 
-void mainMenu(azulGame &ag);
+void mainMenu(AzulGame &ag);
 void displayPrimaryMenu(bool primaryMenu);
 void newGame();
-void loadGame(azulGame &ag);
+void loadGame(AzulGame &ag);
 void credits();
 void eofQuit(bool eof);
 
 int main(void)
 {
-    azulGame ag;
+    AzulGame ag;
     mainMenu(ag);
 
     return EXIT_SUCCESS;
@@ -24,7 +24,7 @@ int main(void)
 // #define CREDITS 3
 // #define EXIT 4
 
-void mainMenu(azulGame &ag)
+void mainMenu(AzulGame &ag)
 {
     std::cout << "Welcome to Azul!" << std::endl;
     std::cout << "-------------------" << std::endl;
@@ -129,7 +129,7 @@ void newGame()
     std::cout << "Let's Play!" << std::endl;
 }
 
-void loadGame(azulGame &ag)
+void loadGame(AzulGame &ag)
 {
     std::cout << std::endl;
     std::cout << "Enter the filename from which to load a game" << std::endl;

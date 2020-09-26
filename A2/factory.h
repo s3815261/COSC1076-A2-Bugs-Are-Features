@@ -9,7 +9,8 @@
 
 class Tile;
 
-class Factory{
+class Factory
+{
 
 public:
     Factory();
@@ -32,7 +33,6 @@ public:
 
     //removing an element from the vector
     void remove(int index);
-
 
 
 private:

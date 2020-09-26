@@ -3,11 +3,11 @@
 
 #include "node.h"
 
-class tileBag
+class TileBag
 {
 public:
-    tileBag();
-    ~tileBag();
+    TileBag();
+    ~TileBag();
     int size();
     void clear();
     Node popFront();
