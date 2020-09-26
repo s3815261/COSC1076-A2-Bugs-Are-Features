@@ -1,9 +1,9 @@
-#include "playerboard.h"
-#include "tile.h"
+#include "PlayerBoard.h"
+#include "Tile.h"
 #include <iostream>
 
 
-playerBoard::playerBoard()
+PlayerBoard::PlayerBoard()
 {
     //Inital player board
     char initialBoard[MAX_BOARD_ROWS][MAX_BOARD_COLS] =
@@ -25,21 +25,17 @@ playerBoard::playerBoard()
 }
 
 //deep copy of the player board
-playerBoard::playerBoard(playerBoard& other)
+PlayerBoard::PlayerBoard(PlayerBoard& other)
 {
-
-
-
 }
 
 //deletes the playerboard
-playerBoard::~playerBoard()
+PlayerBoard::~PlayerBoard()
 {
-    
 }
 
 //Rules for adding the tile from factory to gameboard....
-void playerBoard::addTile(Tile* tile, int row, int col)
+void PlayerBoard::addTile(Tile* tile, int row, int col)
 {
     //validation to check input is within bounds
     if(row < MAX_BOARD_ROWS && row >= 0 && col < MAX_BOARD_ROWS && col >= 0)
@@ -57,7 +53,7 @@ void playerBoard::addTile(Tile* tile, int row, int col)
 }
 
 //Removing a tile from the board
-void playerBoard::removeTile(int row, int col)
+void PlayerBoard::removeTile(int row, int col)
 {
     //checking that it is within bounds
     if(row < MAX_BOARD_ROWS && row >=0  && col < MAX_BOARD_ROWS && col >= 0)
@@ -70,7 +66,7 @@ void playerBoard::removeTile(int row, int col)
 }
 
 //Moving the tile on the board
-void playerBoard::moveTile(Tile* tile, int prevRow, int prevCol, int newRow, int newCol)
+void PlayerBoard::moveTile(Tile* tile, int prevRow, int prevCol, int newRow, int newCol)
 {   
     char tileLetter = tile->getTile();
     //Checking if the row and col is within bounds

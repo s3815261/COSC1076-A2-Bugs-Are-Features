@@ -1,7 +1,7 @@
 #ifndef __NODE__
 #define __NODE__
 
-#include "tile.h"
+#include "Tile.h"
 
 class Node
 {
