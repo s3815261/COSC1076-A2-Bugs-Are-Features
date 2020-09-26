@@ -3,14 +3,13 @@
 
 #include <iostream>
 #include <vector>
-#include "Tile.h"
+#include "tile.h"
 
 #define FACTORY_MAX_ARRAY_SIZE 5
 
 class Tile;
 
-class Factory
-{
+class Factory{
 
 public:
     Factory();
@@ -33,6 +32,7 @@ public:
 
     //removing an element from the vector
     void remove(int index);
+
 
 
 private:

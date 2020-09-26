@@ -17,18 +17,17 @@ class Tile;
  * 
  */
 
-class PlayerBoard 
-{
+class playerBoard{
 
     public:
         //2D array implementation
-        PlayerBoard();
+        playerBoard();
 
         //Deep copy of the board
-        PlayerBoard(PlayerBoard& other);
+        playerBoard(playerBoard& other);
 
         //Deletes the board
-        ~PlayerBoard();
+        ~playerBoard();
 
         //Adding a tile to the board
         void addTile(Tile* tile, int row, int col);

@@ -1,22 +1,20 @@
 #ifndef __AZULGAME__
 #define __AZULGAME__
 
-#include "TileBag.h"
-#include "Player.h"
+#include "tileBag.h"
+#include "player.h"
 
-class AzulGame 
-{
+class azulGame{
     public:
-        AzulGame();
-        ~AzulGame();
+        azulGame();
+        ~azulGame();
         std::string getP1();
         std::string getP2();
-        TileBag getTB();
-
+        tileBag getTB();
     private:
-        TileBag tb;
-        Player p1;
-        Player p2;
+        tileBag tb;
+        player p1;
+        player p2;
 };
 
 #endif

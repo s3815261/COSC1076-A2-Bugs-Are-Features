@@ -1,25 +1,25 @@
-#include "TileBag.h"
-#include "Node.h"
+#include "tileBag.h"
+#include "node.h"
 #include <iostream>
 #include <limits>
 
-TileBag::TileBag()
+tileBag::tileBag()
 {
     head = nullptr;
     length = 0;
 }
 
-TileBag::~TileBag()
+tileBag::~tileBag()
 {
     clear();
 }
 
-int TileBag::size()
+int tileBag::size()
 {
     return length;
 }
 
-void TileBag::addBack(char tile)
+void tileBag::addBack(char tile)
 {
     Node *toAdd = new Node(tile, nullptr);
 
@@ -40,7 +40,7 @@ void TileBag::addBack(char tile)
     ++length;
 }
 
-void TileBag::printtileBag()
+void tileBag::printtileBag()
 {
     Node *current_node = head;
     while (current_node != nullptr)
@@ -50,7 +50,7 @@ void TileBag::printtileBag()
     }
 }
 
-void TileBag::clear()
+void tileBag::clear()
 {
     if (head != nullptr)
     {
@@ -69,7 +69,7 @@ void TileBag::clear()
     head = nullptr;
 }
 
-Node TileBag::popFront()
+Node tileBag::popFront()
 {
     Node *original_first_node = nullptr;
     Node *new_node = nullptr;
