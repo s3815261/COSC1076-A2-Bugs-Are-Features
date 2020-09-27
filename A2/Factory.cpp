@@ -5,15 +5,12 @@
  //initializes the factory
  Factory::Factory()
  {
-
-
  }
 
 //Creates a deep copy of the factory
 Factory::Factory(Factory& other):
     factory(other.factory)
 {
-
 }
 
 //deletes the factory

@@ -3,10 +3,10 @@
 #include <iostream>
 #include <limits>
 
-TileBag::TileBag()
+TileBag::TileBag() :
+    length(0)
 {
     head = nullptr;
-    length = 0;
 }
 
 TileBag::~TileBag()

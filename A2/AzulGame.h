@@ -1,27 +1,29 @@
 #ifndef __AZULGAME__
 #define __AZULGAME__
 
-#include "tileBag.h"
-#include "player.h"
-#include "vector"
+#include <vector>
+
+#include "TileBag.h"
+#include "Player.h"
+#include "Util.h"
 
 class AzulGame 
 {
     public:
         AzulGame();
         ~AzulGame();
-        std::string getP1Name();
-        std::string getP2Name();
-        tileBag* getTB();
-        void setP1Name(std::string);
-        void setP2Name(std::string);
-        void printNames();
+        std::string getPlayer1Name();
+        std::string getPlayer2Name();
+        TileBag* getTileBag();
+        void setPlayer1Name(std::string player1Name);
+        void setPlayer2Name(std::string player2Name);
+        void printPlayerNames();
         void addTurn(Turn turn);
 
     private:
-        TileBag tb;
-        Player p1;
-        Player p2;
+        TileBag* tileBag;
+        Player player1;
+        Player player2;
         std::vector<Turn> turn_vector;
 
 };

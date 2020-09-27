@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <iostream>
+
 #define MAX_BOARD_COLS 12
 #define MAX_BOARD_ROWS 5
 //Forward declaration

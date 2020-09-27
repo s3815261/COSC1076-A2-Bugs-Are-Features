@@ -1,6 +1,7 @@
-#include "player.h"
+#include "Player.h"
 
 Player::Player() :
+    name("Unnamed"),
     score(0)
 {
 }
@@ -26,7 +27,25 @@ std::string Player::getName()
     return name;
 }
 
-void player::setName(std::string newname)
+void Player::setName(std::string newName)
 {
-    name = newname;
+    name = newName;
+}
+
+int Player::getScore()
+{
+    return score;
+}
+
+void Player::setScore(int score) 
+{
+    this->score = score;
+}
+
+void Player::addScore(int increment) 
+{
+    if (increment > 0)
+    {
+        score += increment;
+    }
 }

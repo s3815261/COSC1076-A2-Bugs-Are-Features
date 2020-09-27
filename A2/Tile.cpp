@@ -1,5 +1,5 @@
-#include "Tile.h"
 #include <iostream>
+#include "Tile.h"
 
 //Intilizes the tile and what type it is.
 Tile::Tile(Type type, char tile) :

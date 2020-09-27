@@ -1,33 +1,31 @@
 #include <iostream>
 #include <fstream>
-#include "azulGame.h"
-#include "player.h"
-#include "tileBag.h"
 
-void mainMenu(azulGame &ag);
+#include "AzulGame.h"
+#include "Player.h"
+#include "TileBag.h"
+
+#define NEWGAME         1
+#define LOADGAME        2
+#define CREDITS         3
+#define EXITPROGRAM     4
+
+void mainMenu(AzulGame &ag);
 void displayPrimaryMenu(bool primaryMenu);
 void newGame();
-void loadGame(azulGame &ag);
+void loadGame(AzulGame &ag);
 void credits();
 void eofQuit(bool eof);
 
-
-
-
 int main(void)
 {
-    azulGame ag;
+    AzulGame ag;
     mainMenu(ag);
 
     return EXIT_SUCCESS;
 }
 
-// #define NEWGAME 1
-// #define LOADGAME 2
-// #define CREDITS 3
-// #define EXIT 4
-
-void mainMenu(azulGame &ag)
+void mainMenu(AzulGame &ag)
 {
     std::cout << "Welcome to Azul!" << std::endl;
     std::cout << "-------------------" << std::endl;
@@ -63,19 +61,19 @@ void mainMenu(azulGame &ag)
         }
         if (validInput)
         {
-            if (option == 1)
+            if (option == NEWGAME)
             {
                 newGame();
             }
-            else if (option == 2)
+            else if (option == LOADGAME)
             {
                 loadGame(ag);
             }
-            else if (option == 3)
+            else if (option == CREDITS)
             {
                 credits();
             }
-            else if (option == 4)
+            else if (option == EXITPROGRAM)
             {
                 eofQuit(false);
             }
@@ -132,7 +130,7 @@ void newGame()
     std::cout << "Let's Play!" << std::endl;
 }
 
-void loadGame(azulGame &ag)
+void loadGame(AzulGame &ag)
 {
     std::cout << std::endl;
     std::cout << "Enter the filename from which to load a game" << std::endl;

@@ -2,40 +2,43 @@
 
 AzulGame::AzulGame()
 {
-    tb = new tileBag();
+    tileBag = new TileBag();
 }
 
 AzulGame::~AzulGame()
 {
+    delete tileBag;
 }
 
-std::string AzulGame::getP1Name()
+std::string AzulGame::getPlayer1Name()
 {
-    return p1.getName();
-}
-std::string AzulGame::getP2Name()
-{
-    return p2.getName();
-}
-tileBag *AzulGame::getTB()
-{
-    return tb;
+    return player1.getName();
 }
 
-void AzulGame::setP1Name(std::string p1name)
+std::string AzulGame::getPlayer2Name()
 {
-    p1.setName(p1name);
+    return player2.getName();
 }
 
-void AzulGame::setP2Name(std::string p2name)
+TileBag *AzulGame::getTileBag()
 {
-    p2.setName(p2name);
+    return tileBag;
 }
 
-void AzulGame::printNames()
+void AzulGame::setPlayer1Name(std::string player1Name)
 {
-    std::cout << "Player 1 name: " << p1.getName() << std::endl;
-    std::cout << "Player 2 name: " << p2.getName() << std::endl;
+    player1.setName(player1Name);
+}
+
+void AzulGame::setPlayer2Name(std::string player2Name)
+{
+    player2.setName(player2Name);
+}
+
+void AzulGame::printPlayerNames()
+{
+    std::cout << "Player 1 name: " << player1.getName() << std::endl;
+    std::cout << "Player 2 name: " << player2.getName() << std::endl;
 }
 
 void AzulGame::addTurn(Turn turn)

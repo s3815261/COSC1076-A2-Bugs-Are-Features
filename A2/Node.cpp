@@ -1,9 +1,9 @@
 #include "Node.h"
 
-Node::Node(char tile, Node* next) 
+Node::Node(char tile, Node* next) :
+    tile(tile),
+    next(next)
 {
-    this->tile = tile;
-    this->next = next;
 }
     
 Node::~Node() 

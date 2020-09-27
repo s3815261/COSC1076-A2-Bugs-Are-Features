@@ -2,7 +2,7 @@
 #define __PLAYER__
 
 #include <iostream>
-#include "playerboard.h"
+#include "PlayerBoard.h"
 
 class Player
 {
@@ -13,6 +13,9 @@ public:
     ~Player();
     std::string getName();
     void setName(std::string);
+    int getScore();
+    void setScore(int score);
+    void addScore(int increment);
 
 private:
     std::string name;
