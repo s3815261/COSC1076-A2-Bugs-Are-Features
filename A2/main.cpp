@@ -1,19 +1,22 @@
 #include <iostream>
 #include <fstream>
-#include "AzulGame.h"
-#include "Player.h"
-#include "TileBag.h"
+#include "azulGame.h"
+#include "player.h"
+#include "tileBag.h"
 
-void mainMenu(AzulGame &ag);
+void mainMenu(azulGame &ag);
 void displayPrimaryMenu(bool primaryMenu);
 void newGame();
-void loadGame(AzulGame &ag);
+void loadGame(azulGame &ag);
 void credits();
 void eofQuit(bool eof);
 
+
+
+
 int main(void)
 {
-    AzulGame ag;
+    azulGame ag;
     mainMenu(ag);
 
     return EXIT_SUCCESS;
@@ -24,7 +27,7 @@ int main(void)
 // #define CREDITS 3
 // #define EXIT 4
 
-void mainMenu(AzulGame &ag)
+void mainMenu(azulGame &ag)
 {
     std::cout << "Welcome to Azul!" << std::endl;
     std::cout << "-------------------" << std::endl;
@@ -129,7 +132,7 @@ void newGame()
     std::cout << "Let's Play!" << std::endl;
 }
 
-void loadGame(AzulGame &ag)
+void loadGame(azulGame &ag)
 {
     std::cout << std::endl;
     std::cout << "Enter the filename from which to load a game" << std::endl;
@@ -140,7 +143,8 @@ void loadGame(AzulGame &ag)
     std::ifstream input_file(filename);
     // check if the file has been successfully opened
     if (input_file)
-    {
+    {   
+        std::cout << "succesffuly opened file" << std::endl;
         int line_count = 0;
         while (!input_file.eof())
         {
@@ -152,20 +156,37 @@ void loadGame(AzulGame &ag)
                 int line_size = line.size();
                 for (int i = 0; i < line_size; ++i)
                 {
-                    ag.getTB().addBack(line[i]);
+                    ag.getTB()->addBack(line[i]);
                 }
+                ag.getTB()->printtileBag();
             }
             else if (line_count == 1)
             {
-                line = ag.getP1();
+                ag.setP1Name(line);
             }
             else if (line_count == 2)
             {
-                line = ag.getP2();
+                ag.setP2Name(line);
             }
+            // readingin turn information
             else if (line_count > 2)
             {
-                //make turns
+                int factory_number;
+                char tile_colour;
+                int row;
+                int line_size = line.size();
+
+                for (int i = 0; i < line_size; ++i) {
+                    if (i == 5) {
+                        factory_number = line[5];
+                    } else if (i == 7) {
+                        tile_colour = line[7];
+                    } else if (i == 9) {
+                        row = line[9];
+                    }
+                }
+                Turn turn = {factory_number, tile_colour, row};
+                ag.addTurn(turn);
             }
             ++line_count;
         }
