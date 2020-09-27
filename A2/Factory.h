@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <vector>
-#include "tile.h"
+#include "Tile.h"
 
 #define FACTORY_MAX_ARRAY_SIZE 5
 

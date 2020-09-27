@@ -1,7 +1,7 @@
 #ifndef __TILEBAG__
 #define __TILEBAG__
 
-#include "node.h"
+#include "Node.h"
 
 class TileBag
 {

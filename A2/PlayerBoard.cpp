@@ -1,5 +1,5 @@
-#include "playerboard.h"
-#include "tile.h"
+#include "PlayerBoard.h"
+#include "Tile.h"
 #include <iostream>
 
 

@@ -1,5 +1,5 @@
-#include "tileBag.h"
-#include "node.h"
+#include "TileBag.h"
+#include "Node.h"
 #include <iostream>
 #include <limits>
 

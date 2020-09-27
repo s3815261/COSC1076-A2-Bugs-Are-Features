@@ -1,8 +1,8 @@
 #include <iostream>
 #include <fstream>
-#include "azulGame.h"
-#include "player.h"
-#include "tileBag.h"
+#include "AzulGame.h"
+#include "Player.h"
+#include "TileBag.h"
 
 void mainMenu(AzulGame &ag);
 void displayPrimaryMenu(bool primaryMenu);

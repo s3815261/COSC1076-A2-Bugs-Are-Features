@@ -1,4 +1,4 @@
-#include "tile.h"
+#include "Tile.h"
 #include <iostream>
 
 //Intilizes the tile and what type it is.
