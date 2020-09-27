@@ -25,3 +25,8 @@ std::string Player::getName()
 {
     return name;
 }
+
+void player::setName(std::string newname)
+{
+    name = newname;
+}

@@ -12,6 +12,7 @@ public:
     Player(std::string name, int score);
     ~Player();
     std::string getName();
+    void setName(std::string);
 
 private:
     std::string name;
