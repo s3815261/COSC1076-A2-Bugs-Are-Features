@@ -1,8 +1,8 @@
 #ifndef __AZULGAME__
 #define __AZULGAME__
 
-#include "TileBag.h"
-#include "Player.h"
+#include "tileBag.h"
+#include "player.h"
 
 class AzulGame 
 {

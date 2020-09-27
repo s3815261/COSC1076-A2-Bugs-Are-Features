@@ -2,7 +2,7 @@
 #define __PLAYER__
 
 #include <iostream>
-#include "PlayerBoard.h"
+#include "playerboard.h"
 
 class Player
 {

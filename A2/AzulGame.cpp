@@ -1,4 +1,4 @@
-#include "AzulGame.h"
+#include "azulGame.h"
 
 AzulGame::AzulGame()
 {
