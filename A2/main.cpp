@@ -154,17 +154,17 @@ void loadGame(AzulGame &ag)
                 int line_size = line.size();
                 for (int i = 0; i < line_size; ++i)
                 {
-                    ag.getTB()->addBack(line[i]);
+                    ag.getTileBag()->addBack(line[i]);
                 }
-                ag.getTB()->printtileBag();
+                ag.getTileBag()->printTileBag();
             }
             else if (line_count == 1)
             {
-                ag.setP1Name(line);
+                ag.setPlayer1Name(line);
             }
             else if (line_count == 2)
             {
-                ag.setP2Name(line);
+                ag.setPlayer2Name(line);
             }
             // readingin turn information
             else if (line_count > 2)

@@ -12,7 +12,7 @@ public:
     void clear();
     Node popFront();
     void addBack(char tile);
-    void printtileBag();
+    void printTileBag();
 
 private:
     Node* head;

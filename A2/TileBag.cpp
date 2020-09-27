@@ -40,7 +40,7 @@ void TileBag::addBack(char tile)
     ++length;
 }
 
-void TileBag::printtileBag()
+void TileBag::printTileBag()
 {
     Node *current_node = head;
     while (current_node != nullptr)
