@@ -16,11 +16,12 @@ public:
     int getScore();
     void setScore(int score);
     void addScore(int increment);
+    PlayerBoard* getPlayerBoard();
 
 private:
     std::string name;
     int score;
-    PlayerBoard pB;
+    PlayerBoard* playerBoard;
 
 };
 #endif // __PLAYER__

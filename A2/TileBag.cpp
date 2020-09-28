@@ -1,7 +1,8 @@
-#include "TileBag.h"
-#include "Node.h"
 #include <iostream>
 #include <limits>
+
+#include "TileBag.h"
+#include "Node.h"
 
 TileBag::TileBag() :
     length(0)

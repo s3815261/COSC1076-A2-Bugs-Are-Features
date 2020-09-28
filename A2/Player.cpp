@@ -4,22 +4,26 @@ Player::Player() :
     name("Unnamed"),
     score(0)
 {
+    playerBoard = new PlayerBoard();
 }
 
 Player::Player(std::string name) :
     name(name),
     score(0)
 {    
+    playerBoard = new PlayerBoard();
 }
 
 Player::Player(std::string name, int score) :
     name(name),
     score(score)
 {
+    playerBoard = new PlayerBoard();
 }
 
 Player::~Player() 
 {
+    delete playerBoard;
 }
 
 std::string Player::getName() 
@@ -48,4 +52,9 @@ void Player::addScore(int increment)
     {
         score += increment;
     }
+}
+
+PlayerBoard* Player::getPlayerBoard()
+{
+    return playerBoard;
 }

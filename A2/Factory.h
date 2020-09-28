@@ -31,6 +31,12 @@ class Factory
         //removing an element from the vector
         void remove(int index);
 
+        Tile** popSameTile(Factory &factory, char tile);
+
+        void clearAll();
+
+        int sameTileLength;
+
     private:
         std::vector<Tile*> factory;
 
