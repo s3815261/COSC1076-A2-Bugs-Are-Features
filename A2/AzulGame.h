@@ -27,7 +27,8 @@ class AzulGame
         void addTurn(Turn turn);
         void populateFactories();
         void printPlayerNames();
-        void playGame(bool LoadGame);
+        void newGame();
+        void loadGame();
         void printBoard(bool player1Turn);
         void printFactories();
         void runCommand(std::string input, bool player1Turn);

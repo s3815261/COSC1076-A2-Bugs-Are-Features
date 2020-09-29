@@ -91,22 +91,15 @@ void AzulGame::printPlayerNames()
     std::cout << "Player 2 name: " << player2->getName() << std::endl;
 }
 
-void AzulGame::playGame(bool LoadGame)
+void AzulGame::newGame()
 {
     int maxTurns = 10;
     int turn = 0;
     bool player1Turn = true;
     std::cout << std::endl;
     std::cout << "=== Start Round ===" << std::endl;
-    if (LoadGame == false) {
-        tileBag->initalisedTileBag();
-    }
+    tileBag->initalisedTileBag();
     populateFactories();
-    // loop through the turns vector and play those turns
-    if (LoadGame == true) {
-        //loop through the vector of turns/strings and make moves       
-    }
-    // start from the last poistion that was read in (depending on if you read in moves of if its a new game)
     while (turn < maxTurns && !std::cin.eof())
     {
         std::string input = "";
@@ -128,14 +121,14 @@ void AzulGame::playGame(bool LoadGame)
         }
         if (!std::cin.eof())
         {
-            runCommand(input, player1Turn);            
+            runCommand(input, player1Turn);
         }
         ++turn;
         if (player1Turn == true)
         {
             player1Turn = false;
         }
-        else 
+        else
         {
             player1Turn = true;
         }
@@ -147,6 +140,11 @@ void AzulGame::playGame(bool LoadGame)
             std::cout << std::endl;
         }
     }
+}
+void AzulGame::loadGame()
+{
+    //loop through the vector of turns/strings and make moves
+    // start from the last poistion that was read in (depending on if you read in moves of if its a new game)
 }
 
 void AzulGame::printBoard(bool player1Turn) 

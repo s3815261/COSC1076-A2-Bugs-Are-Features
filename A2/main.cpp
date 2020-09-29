@@ -165,7 +165,7 @@ void newGame(AzulGame &ag)
 
     ag.setPlayer1Name(player1Name);
     ag.setPlayer2Name(player2Name);
-    ag.playGame(false);
+    ag.newGame();
 }
 
 // void mulitply(int a, int b);
@@ -241,6 +241,7 @@ void loadGame(AzulGame &ag)
             }
             ++line_count;
         }
+        ag.loadGame();
     }
 }
 
