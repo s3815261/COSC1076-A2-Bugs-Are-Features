@@ -10,9 +10,10 @@ public:
     ~TileBag();
     int size();
     void clear();
-    Node popFront();
-    void addBack(char tile);
+    Tile* popFront();
+    void addBack(Tile* tile);
     void printTileBag();
+    void initalisedTileBag();
 
 private:
     Node* head;

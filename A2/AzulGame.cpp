@@ -1,11 +1,11 @@
 #include <iostream>
 #include "AzulGame.h"
 
-AzulGame::AzulGame(std::string player1Name, std::string player2Name)
+AzulGame::AzulGame()
 {
     tileBag = new TileBag();
-    player1 = new Player(player1Name);
-    player2 = new Player(player2Name);
+    player1 = new Player();
+    player2 = new Player();
     factories = new Factory*[NUM_FACTORIES];
     for (int i = 0; i < NUM_FACTORIES; ++i)
     {
@@ -60,61 +60,29 @@ void AzulGame::addTurn(Turn turn)
     turn_vector.push_back(turn);
 }
 
+
+// initialise factories for new game
 void AzulGame::populateFactories() 
 {
-    Tile* tile1 = new Tile(FIRST_PLAYER, 'F');
+    Tile* First_Player_Token = new Tile('F');
 
-    Tile* tile2 = new Tile(RED, 'R');
-    Tile* tile3 = new Tile(RED, 'Y');
-    Tile* tile4 = new Tile(RED, 'Y');
-    Tile* tile5 = new Tile(RED, 'U');
-
-    Tile* tile6 = new Tile(RED, 'R');
-    Tile* tile7 = new Tile(RED, 'B');
-    Tile* tile8 = new Tile(RED, 'B');
-    Tile* tile9 = new Tile(RED, 'B');
-
-    Tile* tile10 = new Tile(RED, 'B');
-    Tile* tile11 = new Tile(RED, 'L');
-    Tile* tile12 = new Tile(RED, 'L');
-    Tile* tile13 = new Tile(RED, 'L');
-
-    Tile* tile14 = new Tile(RED, 'R');
-    Tile* tile15 = new Tile(RED, 'R');
-    Tile* tile16 = new Tile(RED, 'U');
-    Tile* tile17 = new Tile(RED, 'U');
-
-    Tile* tile18 = new Tile(RED, 'R');
-    Tile* tile19 = new Tile(RED, 'Y');
-    Tile* tile20 = new Tile(RED, 'B');
-    Tile* tile21 = new Tile(RED, 'L');
-
-    factories[0]->add(tile1);
-    
-    factories[1]->add(tile2);
-    factories[1]->add(tile3);
-    factories[1]->add(tile4);
-    factories[1]->add(tile5);
-
-    factories[2]->add(tile6);
-    factories[2]->add(tile7);
-    factories[2]->add(tile8);
-    factories[2]->add(tile9);
-
-    factories[3]->add(tile10);
-    factories[3]->add(tile11);
-    factories[3]->add(tile12);
-    factories[3]->add(tile13);
-
-    factories[4]->add(tile14);
-    factories[4]->add(tile15);
-    factories[4]->add(tile16);
-    factories[4]->add(tile17);
-
-    factories[5]->add(tile18);
-    factories[5]->add(tile19);
-    factories[5]->add(tile20);
-    factories[5]->add(tile21);
+    int tiles_placed = 0;
+    while(tiles_placed < 21){
+        if (tiles_placed == 0){
+            factories[0]->add(First_Player_Token);
+        } else if (tiles_placed > 0 && tiles_placed < 5) {
+            factories[1]->add(tileBag->popFront());
+        } else if (tiles_placed > 4 && tiles_placed < 9) {
+            factories[2]->add(tileBag->popFront());
+        } else if (tiles_placed > 8 && tiles_placed < 13) {
+            factories[3]->add(tileBag->popFront());
+        } else if (tiles_placed > 12 && tiles_placed < 17) {
+            factories[4]->add(tileBag->popFront());
+        } else if (tiles_placed > 16 && tiles_placed < 21) {
+            factories[5]->add(tileBag->popFront());
+        }
+        ++tiles_placed;
+    }
 }
 
 void AzulGame::printPlayerNames()
@@ -123,14 +91,22 @@ void AzulGame::printPlayerNames()
     std::cout << "Player 2 name: " << player2->getName() << std::endl;
 }
 
-void AzulGame::playGame()
+void AzulGame::playGame(bool LoadGame)
 {
-    int maxTurns = 2;
+    int maxTurns = 10;
     int turn = 0;
     bool player1Turn = true;
     std::cout << std::endl;
     std::cout << "=== Start Round ===" << std::endl;
+    if (LoadGame == false) {
+        tileBag->initalisedTileBag();
+    }
     populateFactories();
+    // loop through the turns vector and play those turns
+    if (LoadGame == true) {
+        //loop through the vector of turns/strings and make moves       
+    }
+    // start from the last poistion that was read in (depending on if you read in moves of if its a new game)
     while (turn < maxTurns && !std::cin.eof())
     {
         std::string input = "";

@@ -1,17 +1,15 @@
 #include <iostream>
 #include "Tile.h"
-
 //Intilizes the tile and what type it is.
-Tile::Tile(Type type, char tile) :
-    type(type),
+Tile::Tile(char tile) :
     tile(tile)
 {
 }
 
 //Copies the tile
-Tile::Tile(Tile& other) :
-    type(other.type)
+Tile::Tile(Tile& other) 
 {
+    tile = other.tile;
 }
 
 //Deletes the tile
@@ -19,13 +17,8 @@ Tile::~Tile()
 {
 }
 
-//Gets the type of tile
-Type Tile::getType()
-{
-    return type;
-}
-
 char Tile::getTile()
 {
     return tile;
 }
+

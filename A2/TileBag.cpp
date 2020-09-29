@@ -4,8 +4,7 @@
 #include "TileBag.h"
 #include "Node.h"
 
-TileBag::TileBag() :
-    length(0)
+TileBag::TileBag() : length(0)
 {
     head = nullptr;
 }
@@ -20,7 +19,7 @@ int TileBag::size()
     return length;
 }
 
-void TileBag::addBack(char tile)
+void TileBag::addBack(Tile *tile)
 {
     Node *toAdd = new Node(tile, nullptr);
 
@@ -46,7 +45,7 @@ void TileBag::printTileBag()
     Node *current_node = head;
     while (current_node != nullptr)
     {
-        std::cout << current_node->tile << std::endl;
+        std::cout << current_node->tile->getTile() << std::endl;
         current_node = current_node->next;
     }
 }
@@ -70,17 +69,29 @@ void TileBag::clear()
     head = nullptr;
 }
 
-Node TileBag::popFront()
+Tile *TileBag::popFront()
 {
     Node *original_first_node = nullptr;
     Node *new_node = nullptr;
-    if (head != nullptr) 
+    if (head != nullptr)
     {
-        original_first_node = head; 
+        original_first_node = head;
         new_node = original_first_node->next;
-        head = new_node; 
-        --length; 
-        original_first_node->next = nullptr; 
+        head = new_node;
+        --length;
+        original_first_node->next = nullptr;
     }
-    return *original_first_node;
+    return original_first_node->tile;
+}
+
+void TileBag::initalisedTileBag()
+{
+    char colours[5] = {'R','B','Y','L','U'};
+    for (int i = 0; i < 20; ++i) {
+        for (int j = 0; j < 5; ++j) {
+            Tile* new_tile = new Tile(colours[j]);
+            addBack(new_tile);
+        }
+    }
+    
 }

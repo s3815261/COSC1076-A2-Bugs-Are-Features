@@ -14,7 +14,7 @@
 class AzulGame 
 {
     public:
-        AzulGame(std::string player1Name, std::string player2Name);
+        AzulGame();
         ~AzulGame();
         std::string getPlayer1Name();
         std::string getPlayer2Name();
@@ -27,7 +27,7 @@ class AzulGame
         void addTurn(Turn turn);
         void populateFactories();
         void printPlayerNames();
-        void playGame();
+        void playGame(bool LoadGame);
         void printBoard(bool player1Turn);
         void printFactories();
         void runCommand(std::string input, bool player1Turn);

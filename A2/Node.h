@@ -7,10 +7,10 @@ class Node
 {
 
 public:
-    Node(char tile, Node *next);
+    Node(Tile* tile, Node *next);
     ~Node();
 
-    char tile;
+    Tile* tile;
     Node *next;
 };
 

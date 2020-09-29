@@ -1,39 +1,50 @@
 #include <iostream>
 #include <fstream>
-
+#include <sstream>
 #include "AzulGame.h"
 #include "Player.h"
 #include "TileBag.h"
 
-#define NEWGAME         1
-#define LOADGAME        2
-#define CREDITS         3
-#define EXITPROGRAM     4
-
-void game(int argc, char** argv);
+void game(int argc, char **argv);
 void mainMenu();
 void displayPrimaryMenu(bool primaryMenu);
-void newGame();
-void loadGame();
+void newGame(AzulGame &ag);
+void loadGame(AzulGame &ag);
 void credits();
 void eofQuit(bool eof);
+std::vector<std::string> split(const std::string &str, char delim = ' ')
+{
+    std::vector<std::string> tokens;
+    std::stringstream ss(str);
+    std::string token;
+    while (std::getline(ss, token, delim))
+    {
+        tokens.push_back(token);
+    }
+    return tokens;
+}
 
-int main(int argc, char** argv)
+#define NEWGAME 1
+#define LOADGAME 2
+#define CREDITS 3
+#define EXITPROGRAM 4
+
+int main(int argc, char **argv)
 {
     game(argc, argv);
 
     return EXIT_SUCCESS;
 }
 
-void game(int argc, char** argv)
+void game(int argc, char **argv)
 {
     if (argc == 1)
     {
         mainMenu();
-    } 
+    }
     else if (argc == 3)
     {
-
+        
     }
 }
 
@@ -44,7 +55,9 @@ void mainMenu()
     displayPrimaryMenu(true);
     int option = 0;
     std::string input = "";
-    
+
+    AzulGame ag;
+
     while (option != 4 && !std::cin.eof())
     {
         if (option != 0)
@@ -84,11 +97,11 @@ void mainMenu()
         {
             if (option == NEWGAME)
             {
-                newGame();
+                newGame(ag);
             }
             else if (option == LOADGAME)
             {
-                loadGame();
+                loadGame(ag);
             }
             else if (option == CREDITS)
             {
@@ -132,7 +145,7 @@ void displayPrimaryMenu(bool primaryMenu)
     }
 }
 
-void newGame()
+void newGame(AzulGame &ag)
 {
     std::cout << std::endl;
     std::cout << "Starting a New Game" << std::endl;
@@ -150,70 +163,85 @@ void newGame()
     std::cout << std::endl;
     std::cout << "Let's Play!" << std::endl;
 
-    AzulGame ag(player1Name, player2Name);
-    ag.playGame();
+    ag.setPlayer1Name(player1Name);
+    ag.setPlayer2Name(player2Name);
+    ag.playGame(false);
 }
 
-void loadGame()
+// void mulitply(int a, int b);
+
+// multiply(a,b);
+
+
+void loadGame(AzulGame &ag)
 {
-    // std::cout << std::endl;
-    // std::cout << "Enter the filename from which to load a game" << std::endl;
-    // std::cout << "> ";
-    // std::string filename;
-    // std::cin >> filename;
+    std::cout << std::endl;
+    std::cout << "Enter the filename from which to load a game" << std::endl;
+    std::cout << "> ";
+    std::string filename;
+    std::cin >> filename;
 
-    // std::ifstream input_file(filename);
-    // // check if the file has been successfully opened
-    // if (input_file)
-    // {   
-    //     std::cout << "succesffuly opened file" << std::endl;
-    //     int line_count = 0;
-    //     while (!input_file.eof())
-    //     {
-    //         std::string line;
-    //         getline(input_file, line);
-    //         //for each character, tileBag.addBack(char)
-    //         if (line_count == 0)
-    //         {
-    //             int line_size = line.size();
-    //             for (int i = 0; i < line_size; ++i)
-    //             {
-    //                 ag.getTileBag()->addBack(line[i]);
-    //             }
-    //             ag.getTileBag()->printTileBag();
-    //         }
-    //         else if (line_count == 1)
-    //         {
-    //             ag.setPlayer1Name(line);
-    //         }
-    //         else if (line_count == 2)
-    //         {
-    //             ag.setPlayer2Name(line);
-    //         }
-    //         // readingin turn information
-    //         else if (line_count > 2)
-    //         {
-    //             int factory_number;
-    //             char tile_colour;
-    //             int row;
-    //             int line_size = line.size();
-
-    //             for (int i = 0; i < line_size; ++i) {
-    //                 if (i == 5) {
-    //                     factory_number = line[5];
-    //                 } else if (i == 7) {
-    //                     tile_colour = line[7];
-    //                 } else if (i == 9) {
-    //                     row = line[9];
-    //                 }
-    //             }
-    //             Turn turn = { factory_number, tile_colour, row };
-    //             ag.addTurn(turn);
-    //         }
-    //         ++line_count;
-    //     }
-    // }
-    std::cout << "Test" << std::endl;
+    std::ifstream input_file(filename);
+    // check if the file has been successfully opened
+    if (input_file)
+    {
+        std::cout << "succesffuly opened file" << std::endl;
+        int line_count = 0;
+        while (!input_file.eof())
+        {
+            std::string line;
+            getline(input_file, line);
+            //for each character, tileBag.addBack(char)
+            if (line_count == 0)
+            {
+                int line_size = line.size();
+                for (int i = 0; i < line_size; ++i)
+                {
+                    Tile* new_tile = new Tile(line[i]);
+                    ag.getTileBag()->addBack(new_tile);
+                }
+                ag.getTileBag()->printTileBag();
+            }
+            else if (line_count == 1)
+            {
+                ag.setPlayer1Name(line);
+            }
+            else if (line_count == 2)
+            {
+                ag.setPlayer2Name(line);
+                ag.printPlayerNames();
+            }
+            // readingin turn information
+            else if (line_count > 2)
+            {
+                std::vector<std::string> string_split = split(line);
+                int factory_number = -1;
+                char tile_colour = 'A';
+                int row = -1;
+                int string_split_size = string_split.size();
+                for (int i = 1; i < string_split_size; ++i)
+                {
+                    if (i == 1)
+                    {
+                        factory_number = std::stoi(string_split[i]);
+                    }
+                    else if (i == 2)
+                    {
+                        tile_colour = string_split[i][0];
+                    }
+                    else if (i == 3)
+                    {
+                        row = std::stoi(string_split[i]);
+                    }
+                }
+                
+                Turn turn = {factory_number, tile_colour, row};
+                ag.addTurn(turn);
+             
+            }
+            ++line_count;
+        }
+    }
 }
 
 void credits()
@@ -242,4 +270,3 @@ void eofQuit(bool eof)
     }
     std::cout << "Goodbye" << std::endl;
 }
-
