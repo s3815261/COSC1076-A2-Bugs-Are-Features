@@ -24,11 +24,12 @@ class AzulGame
         void setPlayer1Name(std::string player1Name);
         void setPlayer2Name(std::string player2Name);
         
-        void addTurn(Turn turn);
+        void addTurn(std::string turn);
         void populateFactories();
         void printPlayerNames();
         void newGame();
         void loadGame();
+        void playGame();
         void printBoard(bool player1Turn);
         void printFactories();
         void runCommand(std::string input, bool player1Turn);
@@ -38,7 +39,8 @@ class AzulGame
         Player* player1;
         Player* player2;
         Factory** factories;
-        std::vector<Turn> turn_vector;
+        std::vector<std::string> turn_vector;
+        int turn_number;
 
 };
 

@@ -12,6 +12,7 @@ void newGame(AzulGame &ag);
 void loadGame(AzulGame &ag);
 void credits();
 void eofQuit(bool eof);
+bool tileCheck(char tile);
 std::vector<std::string> split(const std::string &str, char delim = ' ')
 {
     std::vector<std::string> tokens;
@@ -44,7 +45,6 @@ void game(int argc, char **argv)
     }
     else if (argc == 3)
     {
-        
     }
 }
 
@@ -119,6 +119,14 @@ void mainMenu()
     }
 }
 
+bool tileCheck(char tile){
+    bool return_val = false;
+    if(tile == 'R' || tile == 'Y' || tile == 'B' || tile == 'L' || tile == 'U'){
+        return_val = true;
+    }
+    return return_val;
+}
+
 void displayPrimaryMenu(bool primaryMenu)
 {
     if (primaryMenu)
@@ -165,13 +173,11 @@ void newGame(AzulGame &ag)
 
     ag.setPlayer1Name(player1Name);
     ag.setPlayer2Name(player2Name);
+    //initalises the game
     ag.newGame();
+    //plays the game with input
+    ag.playGame();
 }
-
-// void mulitply(int a, int b);
-
-// multiply(a,b);
-
 
 void loadGame(AzulGame &ag)
 {
@@ -197,9 +203,14 @@ void loadGame(AzulGame &ag)
                 int line_size = line.size();
                 for (int i = 0; i < line_size; ++i)
                 {
-                    Tile* new_tile = new Tile(line[i]);
-                    ag.getTileBag()->addBack(new_tile);
-                }
+                    if(tileCheck(line[i]) == true) {
+                        Tile* new_tile = new Tile(line[i]);
+                        ag.getTileBag()->addBack(new_tile);
+                    } else {
+                        std::cout << "Error with tile value read in, Enter appropriate load game file" << std::endl;
+                        exit(EXIT_FAILURE);
+                    }
+                    }
                 ag.getTileBag()->printTileBag();
             }
             else if (line_count == 1)
@@ -214,34 +225,14 @@ void loadGame(AzulGame &ag)
             // readingin turn information
             else if (line_count > 2)
             {
-                std::vector<std::string> string_split = split(line);
-                int factory_number = -1;
-                char tile_colour = 'A';
-                int row = -1;
-                int string_split_size = string_split.size();
-                for (int i = 1; i < string_split_size; ++i)
-                {
-                    if (i == 1)
-                    {
-                        factory_number = std::stoi(string_split[i]);
-                    }
-                    else if (i == 2)
-                    {
-                        tile_colour = string_split[i][0];
-                    }
-                    else if (i == 3)
-                    {
-                        row = std::stoi(string_split[i]);
-                    }
-                }
-                
-                Turn turn = {factory_number, tile_colour, row};
-                ag.addTurn(turn);
-             
+                ag.addTurn(line);
             }
             ++line_count;
         }
+        //loads in and plays the moves as read provided in the txt file 
         ag.loadGame();
+        //plays the game with input from there on
+        ag.playGame();
     }
 }
 

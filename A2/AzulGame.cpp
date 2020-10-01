@@ -6,7 +6,7 @@ AzulGame::AzulGame()
     tileBag = new TileBag();
     player1 = new Player();
     player2 = new Player();
-    factories = new Factory*[NUM_FACTORIES];
+    factories = new Factory *[NUM_FACTORIES];
     for (int i = 0; i < NUM_FACTORIES; ++i)
     {
         factories[i] = new Factory();
@@ -18,7 +18,7 @@ AzulGame::~AzulGame()
     delete tileBag;
     delete player1;
     delete player2;
-    for (int i = 0; i < NUM_FACTORIES; ++i) 
+    for (int i = 0; i < NUM_FACTORIES; ++i)
     {
         delete factories[i];
     }
@@ -40,7 +40,7 @@ TileBag *AzulGame::getTileBag()
     return tileBag;
 }
 
-Factory** AzulGame::getFactories()
+Factory **AzulGame::getFactories()
 {
     return factories;
 }
@@ -55,30 +55,41 @@ void AzulGame::setPlayer2Name(std::string player2Name)
     player2->setName(player2Name);
 }
 
-void AzulGame::addTurn(Turn turn)
+void AzulGame::addTurn(std::string turn)
 {
     turn_vector.push_back(turn);
 }
 
-
 // initialise factories for new game
-void AzulGame::populateFactories() 
+void AzulGame::populateFactories()
 {
     Tile* First_Player_Token = new Tile('F');
 
     int tiles_placed = 0;
-    while(tiles_placed < 21){
-        if (tiles_placed == 0){
+    while (tiles_placed < 21)
+    {
+        if (tiles_placed == 0)
+        {
             factories[0]->add(First_Player_Token);
-        } else if (tiles_placed > 0 && tiles_placed < 5) {
+        }
+        else if (tiles_placed > 0 && tiles_placed < 5)
+        {
             factories[1]->add(tileBag->popFront());
-        } else if (tiles_placed > 4 && tiles_placed < 9) {
+        }
+        else if (tiles_placed > 4 && tiles_placed < 9)
+        {
             factories[2]->add(tileBag->popFront());
-        } else if (tiles_placed > 8 && tiles_placed < 13) {
+        }
+        else if (tiles_placed > 8 && tiles_placed < 13)
+        {
             factories[3]->add(tileBag->popFront());
-        } else if (tiles_placed > 12 && tiles_placed < 17) {
+        }
+        else if (tiles_placed > 12 && tiles_placed < 17)
+        {
             factories[4]->add(tileBag->popFront());
-        } else if (tiles_placed > 16 && tiles_placed < 21) {
+        }
+        else if (tiles_placed > 16 && tiles_placed < 21)
+        {
             factories[5]->add(tileBag->popFront());
         }
         ++tiles_placed;
@@ -93,18 +104,23 @@ void AzulGame::printPlayerNames()
 
 void AzulGame::newGame()
 {
-    int maxTurns = 10;
-    int turn = 0;
-    bool player1Turn = true;
     std::cout << std::endl;
     std::cout << "=== Start Round ===" << std::endl;
     tileBag->initalisedTileBag();
     populateFactories();
-    while (turn < maxTurns && !std::cin.eof())
+    turn_number = 0;
+}
+
+void AzulGame::playGame()
+{
+    int maxTurns = 10;
+    int turn_number = 0;
+    bool player1Turn = true;
+    while (turn_number < maxTurns && !std::cin.eof())
     {
         std::string input = "";
         printBoard(player1Turn);
-        if (turn == 0)
+        if (turn_number == 0)
         {
             std::cout << std::endl;
             std::cout << "> ";
@@ -113,17 +129,17 @@ void AzulGame::newGame()
         {
             std::cout << "> ";
         }
-        getline(std::cin, input);
+        //getline(std::cin, input);
         while (input.length() != 10 && std::cin && !std::cin.eof())
         {
-            std::cout << "> ";
+            // std::cout << "> ";
             getline(std::cin, input);
         }
         if (!std::cin.eof())
         {
             runCommand(input, player1Turn);
         }
-        ++turn;
+        ++turn_number;
         if (player1Turn == true)
         {
             player1Turn = false;
@@ -132,7 +148,7 @@ void AzulGame::newGame()
         {
             player1Turn = true;
         }
-        if (turn % 2 == 0 && !std::cin.eof())
+        if (turn_number % 2 == 0 && !std::cin.eof())
         {
             std::cout << "=== END OF ROUND ===" << std::endl;
             std::cout << std::endl;
@@ -141,18 +157,40 @@ void AzulGame::newGame()
         }
     }
 }
+
+// assume tileBag has been loaded in?
 void AzulGame::loadGame()
 {
+
+    //{"turn 0 y 4", "turn 2 b 3"....}
     //loop through the vector of turns/strings and make moves
-    // start from the last poistion that was read in (depending on if you read in moves of if its a new game)
+    //start from the last poistion that was read in (depending on if you read in moves of if its a new game)
+    // int turn_index = turn_vector.size();
+    populateFactories();
+    int turn_vector_size = turn_vector.size();
+    bool player1Turn = true;
+    //
+    for (turn_number = 0; turn_number < turn_vector_size; ++turn_number)
+    {
+        //define the vector string, run command with string plus player number
+        if (turn_number % 2 == 0)
+        {
+            player1Turn = true;
+        }
+        else
+        {
+            player1Turn = false;
+        }
+        runCommand(turn_vector[turn_number], player1Turn);
+    }
 }
 
-void AzulGame::printBoard(bool player1Turn) 
+void AzulGame::printBoard(bool player1Turn)
 {
     std::cout << "TURN FOR PLAYER: ";
     if (player1Turn)
     {
-        
+
         std::cout << getPlayer1Name() << std::endl;
         printFactories();
         std::cout << std::endl;
@@ -160,7 +198,7 @@ void AzulGame::printBoard(bool player1Turn)
         player1->getPlayerBoard()->printPlayerBoard();
         std::cout << "broken: " << std::endl;
     }
-    else 
+    else
     {
         std::cout << getPlayer2Name() << std::endl;
         printFactories();
@@ -200,8 +238,8 @@ void AzulGame::runCommand(std::string input, bool player1Turn)
         if (player1Turn)
         {
             PlayerBoard *playerBoard = player1->getPlayerBoard();
-            Factory* factory = factories[factoryNumber];
-            Tile** commonTiles = factory->popSameTile(*factory, tile);
+            Factory *factory = factories[factoryNumber];
+            Tile **commonTiles = factory->popSameTile(*factory, tile);
             // std::cout << factory->sameTileLength << std::endl;
             for (int i = 0; i < factory->sameTileLength; ++i)
             {
@@ -217,17 +255,17 @@ void AzulGame::runCommand(std::string input, bool player1Turn)
             std::cout << std::endl;
             // for (int i = 0;  i < 20; ++i)
             // {
-            //     if (commonTiles[i] != nullptr) 
+            //     if (commonTiles[i] != nullptr)
             //     {
             //         std::cout << commonTiles[i]->getTile() << std::endl;
             //     }
             // }
         }
-        else 
+        else
         {
             PlayerBoard *playerBoard = player2->getPlayerBoard();
-            Factory* factory = factories[factoryNumber];
-            Tile** commonTiles = factory->popSameTile(*factory, tile);
+            Factory *factory = factories[factoryNumber];
+            Tile **commonTiles = factory->popSameTile(*factory, tile);
             // std::cout << factory->sameTileLength << std::endl;
             for (int i = 0; i < factory->sameTileLength; ++i)
             {
@@ -243,7 +281,7 @@ void AzulGame::runCommand(std::string input, bool player1Turn)
             std::cout << std::endl;
             // for (int i = 0;  i < 20; ++i)
             // {
-            //     if (commonTiles[i] != nullptr) 
+            //     if (commonTiles[i] != nullptr)
             //     {
             //         std::cout << commonTiles[i]->getTile() << std::endl;
             //     }
