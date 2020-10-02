@@ -10,6 +10,7 @@ void mainMenu();
 void displayPrimaryMenu(bool primaryMenu);
 void newGame(AzulGame &ag);
 void loadGame(AzulGame &ag);
+void saveGame(AzulGame &ag);
 void credits();
 void eofQuit(bool eof);
 bool tileCheck(char tile);
@@ -234,6 +235,47 @@ void loadGame(AzulGame &ag)
         //plays the game with input from there on
         ag.playGame();
     }
+}
+
+void saveGame(AzulGame &ag)
+{
+    //Get save file name
+    std::cout << std::endl;
+    std::cout << "Enter the name you wish to save the file as" << std::endl;
+    std::cout << "> ";
+    std::string filename;
+    std::cin >> filename;
+
+    //Create save file
+    std::ofstream saveFile(filename);
+    //Saving contents to the file
+    if(saveFile.is_open())
+    {
+        //Get the variables to save.....
+        std::string tileBag = ag.getTileBag()->saveTileBag();
+        std::string player1 = ag.getPlayer1Name();
+        std::string player2 = ag.getPlayer2Name();
+        std::vector<std::string> turn_vector = ag.getTurns();
+        //Save the tilebag
+        saveFile << tileBag << std::endl;
+        //Save the name of player one
+        saveFile << player1 << std::endl;
+        //Save the name of player two
+        saveFile << player2 << std::endl;
+        //Go through the turns and save each of them to the file.
+        for( std::vector<std::string>::iterator it = turn_vector.begin() ; it != turn_vector.end() ; ++it )
+        {
+            std::string turn = "";
+            turn = *it;
+            saveFile << turn << std::endl;
+
+        }
+
+        
+    }
+
+    //Close the file, should have the saved contents
+    saveFile.close();
 }
 
 void credits()

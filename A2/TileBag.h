@@ -14,6 +14,7 @@ public:
     void addBack(Tile* tile);
     void printTileBag();
     void initalisedTileBag();
+    std::string saveTileBag();
 
 private:
     Node* head;

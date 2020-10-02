@@ -23,6 +23,7 @@ class AzulGame
         Factory** getFactories();
         void setPlayer1Name(std::string player1Name);
         void setPlayer2Name(std::string player2Name);
+        std::vector<std::string> getTurns();
         
         void addTurn(std::string turn);
         void populateFactories();

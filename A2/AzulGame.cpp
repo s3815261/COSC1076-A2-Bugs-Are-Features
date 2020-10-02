@@ -60,6 +60,11 @@ void AzulGame::addTurn(std::string turn)
     turn_vector.push_back(turn);
 }
 
+std::vector<std::string> AzulGame::getTurns()
+{
+    return turn_vector;
+}
+
 // initialise factories for new game
 void AzulGame::populateFactories()
 {

@@ -95,3 +95,18 @@ void TileBag::initalisedTileBag()
     }
     
 }
+
+std::string TileBag::saveTileBag()
+{
+    Node *current_node = head;
+    std::string tileBag = "";
+    while (current_node != nullptr)
+    {
+        char tile = current_node->tile->getTile();
+        tileBag.push_back(tile);
+        current_node = current_node->next;
+    }
+
+    return tileBag;
+
+}
