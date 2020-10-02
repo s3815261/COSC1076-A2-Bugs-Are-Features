@@ -59,18 +59,10 @@ void Factory::add(Tile* tile)
 //removes a specifc tile from the factory at a certain index
 void Factory::remove(int index) 
 {
-    // if(index >= 0 && index < size())
-    // {
-    //     for(int i = index; i != size(); ++i) 
-    //     {
-    //         if(i < size() - 2)
-    //         {
-    //             factory[i] = factory[i+1];
-    //         }
-    //     }
-
-    //     factory.pop_back();
-    // }
+    if (factory[index] != nullptr)
+    {
+        delete factory[index];
+    }
     factory.erase(factory.begin() + index);
 }
 
@@ -97,11 +89,21 @@ Tile** Factory::popSameTile(Factory &factory, char tile)
             factory.remove(i);
         }
     }
-    factory.sameTileLength = length;
+    factory.setSameTileLength(length);
     return tiles;
 }
 
 void Factory::clearAll()
 {
     factory.clear();
+}
+
+int Factory::getSameTileLength()
+{
+    return sameTileLength;
+}
+
+void Factory::setSameTileLength(int value)
+{
+    sameTileLength = value;
 }

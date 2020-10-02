@@ -35,10 +35,13 @@ class Factory
 
         void clearAll();
 
-        int sameTileLength;
+        int getSameTileLength();
+
+        void setSameTileLength(int value);
 
     private:
         std::vector<Tile*> factory;
+        int sameTileLength;
 
 };
 

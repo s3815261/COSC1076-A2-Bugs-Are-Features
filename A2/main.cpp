@@ -67,34 +67,29 @@ void mainMenu()
         }
         option = -1;
 
-        std::cout << "> ";
-        getline(std::cin, input);
-        if (std::isdigit(input[0]))
-        {
-            option = std::stoi(input);
-        }
+        bool validInput = false;
 
-        bool validInput = true;
-        if (option > 4 || option < 1)
+        while (!validInput && !std::cin.eof())
         {
-            validInput = false;
-        }
-
-        while ((option > 4 || option < 1) && std::cin)
-        {
-            std::cout << "Invalid Input" << std::endl;
             std::cout << "> ";
             getline(std::cin, input);
-            if (std::isdigit(input[0]))
+            std::istringstream stringStream(input);
+            stringStream >> option;
+            if (stringStream.fail() && !std::cin.eof())
             {
-                option = std::stoi(input);
+                std::cout << "Invalid Input" << std::endl;
             }
-            if (option >= 1 && option <= 4)
+            else if (!(option >= 1 && option <= 4) && !std::cin.eof())
+            {
+                std::cout << "Invalid Input" << std::endl;
+            }
+            else 
             {
                 validInput = true;
             }
         }
-        if (validInput)
+
+        if (validInput && !std::cin.eof())
         {
             if (option == NEWGAME)
             {
@@ -156,6 +151,7 @@ void displayPrimaryMenu(bool primaryMenu)
 
 void newGame(AzulGame &ag)
 {
+    std::string playerNames[NUM_PLAYERS];
     std::cout << std::endl;
     std::cout << "Starting a New Game" << std::endl;
     std::cout << std::endl;
@@ -163,17 +159,16 @@ void newGame(AzulGame &ag)
     std::string player1Name;
     std::cout << "> ";
     // No ignore input error due to reading an integer first which gives a "\n" symbol at the end before reading a char or string
-    getline(std::cin, player1Name);
+    getline(std::cin, playerNames[PLAYER1_INDEX]);
     std::cout << std::endl;
     std::cout << "Enter a name for player 2" << std::endl;
     std::string player2Name;
     std::cout << "> ";
-    getline(std::cin, player2Name);
+    getline(std::cin, playerNames[PLAYER2_INDEX]);
     std::cout << std::endl;
     std::cout << "Let's Play!" << std::endl;
 
-    ag.setPlayer1Name(player1Name);
-    ag.setPlayer2Name(player2Name);
+    ag.setPlayerNames(playerNames);
     //initalises the game
     ag.newGame();
     //plays the game with input
@@ -192,6 +187,7 @@ void loadGame(AzulGame &ag)
     // check if the file has been successfully opened
     if (input_file)
     {
+        std::string playerNames[NUM_PLAYERS];
         std::cout << "succesffuly opened file" << std::endl;
         int line_count = 0;
         while (!input_file.eof())
@@ -216,14 +212,15 @@ void loadGame(AzulGame &ag)
             }
             else if (line_count == 1)
             {
-                ag.setPlayer1Name(line);
+                playerNames[PLAYER1_INDEX] = line;
             }
             else if (line_count == 2)
             {
-                ag.setPlayer2Name(line);
+                playerNames[PLAYER2_INDEX] = line;
+                ag.setPlayerNames(playerNames);
                 ag.printPlayerNames();
             }
-            // readingin turn information
+            // reading in turn information
             else if (line_count > 2)
             {
                 ag.addTurn(line);
@@ -253,8 +250,8 @@ void saveGame(AzulGame &ag)
     {
         //Get the variables to save.....
         std::string tileBag = ag.getTileBag()->saveTileBag();
-        std::string player1 = ag.getPlayer1Name();
-        std::string player2 = ag.getPlayer2Name();
+        std::string player1 = ag.getPlayers()[PLAYER1_INDEX]->getName();
+        std::string player2 = ag.getPlayers()[PLAYER2_INDEX]->getName();
         std::vector<std::string> turn_vector = ag.getTurns();
         //Save the tilebag
         saveFile << tileBag << std::endl;

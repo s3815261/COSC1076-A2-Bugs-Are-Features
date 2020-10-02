@@ -3,6 +3,8 @@
 
 #include "Node.h"
 
+#define MAX_TILES   20
+
 class TileBag
 {
 public:

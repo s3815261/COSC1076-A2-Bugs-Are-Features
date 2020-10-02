@@ -4,9 +4,12 @@
 AzulGame::AzulGame()
 {
     tileBag = new TileBag();
-    player1 = new Player();
-    player2 = new Player();
-    factories = new Factory *[NUM_FACTORIES];
+    players = new Player*[NUM_PLAYERS];
+    for (int i = 0; i < NUM_PLAYERS; ++i)
+    {
+        players[i] = new Player("Player " + std::to_string(i + 1));
+    }
+    factories = new Factory*[NUM_FACTORIES];
     for (int i = 0; i < NUM_FACTORIES; ++i)
     {
         factories[i] = new Factory();
@@ -16,43 +19,37 @@ AzulGame::AzulGame()
 AzulGame::~AzulGame()
 {
     delete tileBag;
-    delete player1;
-    delete player2;
+    for (int i = 0; i < NUM_PLAYERS; ++i)
+    {
+        if (players[i] != nullptr)
+        {
+            delete players[i];
+        }
+    }
+    delete[] players;
     for (int i = 0; i < NUM_FACTORIES; ++i)
     {
-        delete factories[i];
+        if (factories[i] != nullptr)
+        {
+            delete factories[i];
+        }
     }
     delete[] factories;
 }
 
-std::string AzulGame::getPlayer1Name()
-{
-    return player1->getName();
-}
-
-std::string AzulGame::getPlayer2Name()
-{
-    return player2->getName();
-}
-
-TileBag *AzulGame::getTileBag()
+TileBag* AzulGame::getTileBag()
 {
     return tileBag;
 }
 
-Factory **AzulGame::getFactories()
+Player** AzulGame::getPlayers()
+{
+    return players;
+}
+
+Factory** AzulGame::getFactories()
 {
     return factories;
-}
-
-void AzulGame::setPlayer1Name(std::string player1Name)
-{
-    player1->setName(player1Name);
-}
-
-void AzulGame::setPlayer2Name(std::string player2Name)
-{
-    player2->setName(player2Name);
 }
 
 void AzulGame::addTurn(std::string turn)
@@ -65,46 +62,43 @@ std::vector<std::string> AzulGame::getTurns()
     return turn_vector;
 }
 
+void AzulGame::setPlayerNames(std::string playerNameArray[])
+{
+    for (int i = 0; i < NUM_PLAYERS; ++i) 
+    {
+        players[i]->setName(playerNameArray[i]);
+    }
+}
+
 // initialise factories for new game
 void AzulGame::populateFactories()
 {
     Tile* First_Player_Token = new Tile('F');
-
-    int tiles_placed = 0;
-    while (tiles_placed < 21)
+    int numTiles = 0;
+    factories[0]->add(First_Player_Token);
+    ++numTiles;
+    
+    int factoryIndex = 1;
+    for (int tilesPlaced = numTiles; tilesPlaced < MAX_TILES + 1; ++tilesPlaced)
     {
-        if (tiles_placed == 0)
+        if (tilesPlaced % 4 != 0) 
         {
-            factories[0]->add(First_Player_Token);
+            factories[factoryIndex]->add(tileBag->popFront());
         }
-        else if (tiles_placed > 0 && tiles_placed < 5)
+        else 
         {
-            factories[1]->add(tileBag->popFront());
+            factories[factoryIndex]->add(tileBag->popFront());
+            ++factoryIndex;
         }
-        else if (tiles_placed > 4 && tiles_placed < 9)
-        {
-            factories[2]->add(tileBag->popFront());
-        }
-        else if (tiles_placed > 8 && tiles_placed < 13)
-        {
-            factories[3]->add(tileBag->popFront());
-        }
-        else if (tiles_placed > 12 && tiles_placed < 17)
-        {
-            factories[4]->add(tileBag->popFront());
-        }
-        else if (tiles_placed > 16 && tiles_placed < 21)
-        {
-            factories[5]->add(tileBag->popFront());
-        }
-        ++tiles_placed;
     }
 }
 
 void AzulGame::printPlayerNames()
 {
-    std::cout << "Player 1 name: " << player1->getName() << std::endl;
-    std::cout << "Player 2 name: " << player2->getName() << std::endl;
+    for (int i = 0; i < NUM_PLAYERS; ++i)
+    {
+        std::cout << "Player " << i + 1 << " name: " << players[i]->getName() << std::endl;
+    }
 }
 
 void AzulGame::newGame()
@@ -195,21 +189,20 @@ void AzulGame::printBoard(bool player1Turn)
     std::cout << "TURN FOR PLAYER: ";
     if (player1Turn)
     {
-
-        std::cout << getPlayer1Name() << std::endl;
+        std::cout << players[PLAYER1_INDEX]->getName() << std::endl;
         printFactories();
         std::cout << std::endl;
-        std::cout << "Mosaic for " << getPlayer1Name() << ":" << std::endl;
-        player1->getPlayerBoard()->printPlayerBoard();
+        std::cout << "Mosaic for " << players[PLAYER1_INDEX]->getName() << ":" << std::endl;
+        players[PLAYER1_INDEX]->getPlayerBoard()->printPlayerBoard();
         std::cout << "broken: " << std::endl;
     }
     else
     {
-        std::cout << getPlayer2Name() << std::endl;
+        std::cout << players[PLAYER2_INDEX]->getName() << std::endl;
         printFactories();
         std::cout << std::endl;
-        std::cout << "Mosaic for " << getPlayer2Name() << ":" << std::endl;
-        player2->getPlayerBoard()->printPlayerBoard();
+        std::cout << "Mosaic for " << players[PLAYER2_INDEX]->getName() << ":" << std::endl;
+        players[PLAYER2_INDEX]->getPlayerBoard()->printPlayerBoard();
         std::cout << "broken: " << std::endl;
     }
 }
@@ -231,8 +224,9 @@ void AzulGame::printFactories()
 void AzulGame::runCommand(std::string input, bool player1Turn)
 {
     std::string command = input.substr(0, 4);
-    if (command == "turn") // turn 2 R 3
+    if (command == "turn") 
     {
+        Player* player = nullptr;
         int factoryNumber = std::stoi(input.substr(5, 6));
         char tile = input[7];
         int storageRow = std::stoi(input.substr(9, 10));
@@ -242,37 +236,19 @@ void AzulGame::runCommand(std::string input, bool player1Turn)
         // std::cout << "Storage Row: " << storageRow << std::endl;
         if (player1Turn)
         {
-            PlayerBoard *playerBoard = player1->getPlayerBoard();
-            Factory *factory = factories[factoryNumber];
-            Tile **commonTiles = factory->popSameTile(*factory, tile);
-            // std::cout << factory->sameTileLength << std::endl;
-            for (int i = 0; i < factory->sameTileLength; ++i)
-            {
-                playerBoard->addTiletoRow(commonTiles[i], storageRow);
-                // std::cout << "Tile Added" << std::endl;
-            }
-            for (int i = 0; i < factory->size(); ++i)
-            {
-                factories[0]->add(factory->get(i));
-            }
-            factory->clearAll();
-            std::cout << "Turn successful." << std::endl;
-            std::cout << std::endl;
-            // for (int i = 0;  i < 20; ++i)
-            // {
-            //     if (commonTiles[i] != nullptr)
-            //     {
-            //         std::cout << commonTiles[i]->getTile() << std::endl;
-            //     }
-            // }
+            player = players[PLAYER1_INDEX];
         }
-        else
+        else 
         {
-            PlayerBoard *playerBoard = player2->getPlayerBoard();
+            player = players[PLAYER2_INDEX];
+        }
+        if (player != nullptr) 
+        {
+            PlayerBoard *playerBoard = player->getPlayerBoard();
             Factory *factory = factories[factoryNumber];
             Tile **commonTiles = factory->popSameTile(*factory, tile);
             // std::cout << factory->sameTileLength << std::endl;
-            for (int i = 0; i < factory->sameTileLength; ++i)
+            for (int i = 0; i < factory->getSameTileLength(); ++i)
             {
                 playerBoard->addTiletoRow(commonTiles[i], storageRow);
                 // std::cout << "Tile Added" << std::endl;

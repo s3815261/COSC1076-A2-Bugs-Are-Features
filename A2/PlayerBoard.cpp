@@ -1,7 +1,8 @@
-#include "PlayerBoard.h"
-#include "Tile.h"
+#include <vector>
 #include <iostream>
 
+#include "PlayerBoard.h"
+#include "Tile.h"
 
 PlayerBoard::PlayerBoard()
 {
@@ -53,80 +54,27 @@ void PlayerBoard::addTile(Tile* tile, int row, int col)
 
 void PlayerBoard::addTiletoRow(Tile* tile, int row)
 {
-    int start = 4;
+    // This variable is the index of where the end 
+    // of each of the storage rows are at.
+    // It is also where the loop starts at.
+    int start = INDEX_STORAGE_ROW_END;
+
+    // This variable is the index of where the empty spaces
+    // of each of the storage rows are at.
+    // It is also where the loop ends at.
+    int end = start - row;  
+    
     bool placedTile = false;
-    if (row == 1)
+    for (int i = start; i != end; --i)
     {
-        int end = 4;
-        for (int i = start; i != end - 1; --i)
+        if (!placedTile)
         {
-            if (!placedTile)
+            // As we view the rows as 1 to 5 inclusive, the (row - 1) is to get the index of the row
+            // in the array.
+            if (board[row - 1][i] == '.')
             {
-                if (board[row - 1][i] == '.')
-                {
-                    board[row - 1][i] = tile->getTile();
-                    placedTile = true;
-                }
-            }
-        }
-    }
-    else if (row == 2)
-    {
-        int end = 3;
-        for (int i = start; i != end - 1; --i)
-        {
-            if (!placedTile)
-            {
-                if (board[row - 1][i] == '.')
-                {
-                    board[row - 1][i] = tile->getTile();
-                    placedTile = true;
-                }
-            }
-        }
-    }
-    else if (row == 3)
-    {
-        int end = 2;
-        for (int i = start; i != end - 1; --i)
-        {
-            if (!placedTile)
-            {
-                if (board[row - 1][i] == '.')
-                {
-                    board[row - 1][i] = tile->getTile();
-                    placedTile = true;
-                }
-            }
-        }
-    }
-    else if (row == 4)
-    {
-        int end = 1;
-        for (int i = start; i != end - 1; --i)
-        {
-            if (!placedTile)
-            {
-                if (board[row - 1][i] == '.')
-                {
-                    board[row - 1][i] = tile->getTile();
-                    placedTile = true;
-                }
-            }
-        }
-    }
-    else if (row == 5)
-    {
-        int end = 0;
-        for (int i = start; i != end - 1; --i)
-        {
-            if (!placedTile)
-            {
-                if (board[row - 1][i] == '.')
-                {
-                    board[row - 1][i] = tile->getTile();
-                    placedTile = true;
-                }
+                board[row - 1][i] = tile->getTile();
+                placedTile = true;
             }
         }
     }

@@ -1,11 +1,10 @@
 #ifndef PLAYERBOARD_H
 #define PLAYERBOARD_H
 
-#include <vector>
-#include <iostream>
+#define MAX_BOARD_COLS          13
+#define MAX_BOARD_ROWS          5
+#define INDEX_STORAGE_ROW_END   4
 
-#define MAX_BOARD_COLS 13
-#define MAX_BOARD_ROWS 5
 //Forward declaration
 class Tile;
 

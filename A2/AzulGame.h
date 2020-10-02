@@ -9,21 +9,23 @@
 #include "Factory.h"
 #include "Tile.h"
 
+#define NUM_PLAYERS     2
 #define NUM_FACTORIES   6
+#define PLAYER1_INDEX   0
+#define PLAYER2_INDEX   1
 
 class AzulGame 
 {
     public:
         AzulGame();
         ~AzulGame();
-        std::string getPlayer1Name();
-        std::string getPlayer2Name();
         TileBag* getTileBag();
         PlayerBoard* getPlayerBoard();
+        Player** getPlayers();
         Factory** getFactories();
-        void setPlayer1Name(std::string player1Name);
-        void setPlayer2Name(std::string player2Name);
         std::vector<std::string> getTurns();
+
+        void setPlayerNames(std::string playerNameArray[]);
         
         void addTurn(std::string turn);
         void populateFactories();
@@ -37,8 +39,7 @@ class AzulGame
 
     private:
         TileBag* tileBag;
-        Player* player1;
-        Player* player2;
+        Player** players;
         Factory** factories;
         std::vector<std::string> turn_vector;
         int turn_number;
