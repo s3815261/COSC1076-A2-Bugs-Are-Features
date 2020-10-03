@@ -5,7 +5,8 @@
 #include <vector>
 #include "Tile.h"
 
-#define FACTORY_MAX_ARRAY_SIZE 5
+#define FACTORY_MAX_ARRAY_SIZE  5
+#define MAX_TILES               20
 
 class Factory
 {
@@ -30,6 +31,8 @@ class Factory
 
         //removing an element from the vector
         void remove(int index);
+
+        void printFactory();
 
         Tile** popSameTile(Factory &factory, char tile);
 

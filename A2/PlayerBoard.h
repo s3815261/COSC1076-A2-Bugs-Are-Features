@@ -1,8 +1,10 @@
 #ifndef PLAYERBOARD_H
 #define PLAYERBOARD_H
 
-#define MAX_BOARD_COLS          13
+#define MAX_BOARD_COLS          12
 #define MAX_BOARD_ROWS          5
+#define MAX_MOSAIC_COLS         5
+#define MAX_MOSAIC_ROWS         5
 #define INDEX_STORAGE_ROW_END   4
 
 //Forward declaration
@@ -19,7 +21,6 @@ class Tile;
 
 class PlayerBoard 
 {
-
     public:
         //2D array implementation
         PlayerBoard();
@@ -42,10 +43,19 @@ class PlayerBoard
         //Moving the tile on the board
         void moveTile(Tile* tile, int prevRow, int prevCol, int newRow, int newCol);
 
+        void addTiletoMosaic(Tile* tile, int row);
+
+        Tile* popTileFromBoard(int row, int col);
+
         void printPlayerBoard();
+
+        Tile* checkStorageRowTile(int row);
+
+        bool checkStorageRowIsFull(int row);
 
 private:
     char board[MAX_BOARD_ROWS][MAX_BOARD_COLS];
+    char mosaicWall[MAX_BOARD_ROWS][MAX_BOARD_COLS];
  
 };
 

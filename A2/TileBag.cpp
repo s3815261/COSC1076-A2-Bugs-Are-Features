@@ -84,7 +84,7 @@ Tile *TileBag::popFront()
     return original_first_node->tile;
 }
 
-void TileBag::initalisedTileBag()
+void TileBag::initaliseTileBag()
 {
     char colours[5] = {'R','B','Y','L','U'};
     for (int i = 0; i < 20; ++i) {
@@ -106,7 +106,5 @@ std::string TileBag::saveTileBag()
         tileBag.push_back(tile);
         current_node = current_node->next;
     }
-
     return tileBag;
-
 }

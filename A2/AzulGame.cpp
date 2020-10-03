@@ -1,7 +1,12 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
+
 #include "AzulGame.h"
 
-AzulGame::AzulGame()
+AzulGame::AzulGame() :
+    roundNumber(0),
+    turnNumber(0)
 {
     tileBag = new TileBag();
     players = new Player*[NUM_PLAYERS];
@@ -14,6 +19,7 @@ AzulGame::AzulGame()
     {
         factories[i] = new Factory();
     }
+    broken = new Factory();
 }
 
 AzulGame::~AzulGame()
@@ -35,6 +41,7 @@ AzulGame::~AzulGame()
         }
     }
     delete[] factories;
+    delete broken;
 }
 
 TileBag* AzulGame::getTileBag()
@@ -52,14 +59,19 @@ Factory** AzulGame::getFactories()
     return factories;
 }
 
+Factory* AzulGame::getBroken()
+{
+    return broken;
+}
+
 void AzulGame::addTurn(std::string turn)
 {
-    turn_vector.push_back(turn);
+    turnVector.push_back(turn);
 }
 
 std::vector<std::string> AzulGame::getTurns()
 {
-    return turn_vector;
+    return turnVector;
 }
 
 void AzulGame::setPlayerNames(std::string playerNameArray[])
@@ -93,6 +105,19 @@ void AzulGame::populateFactories()
     }
 }
 
+bool AzulGame::factoriesIsEmpty()
+{
+    bool isEmpty = true;
+    for (int i = 0; i < NUM_FACTORIES; ++i)
+    {
+        if (factories[i]->size() != 0)
+        {
+            isEmpty = false;
+        }
+    }
+    return isEmpty;
+}
+
 void AzulGame::printPlayerNames()
 {
     for (int i = 0; i < NUM_PLAYERS; ++i)
@@ -103,56 +128,63 @@ void AzulGame::printPlayerNames()
 
 void AzulGame::newGame()
 {
-    std::cout << std::endl;
-    std::cout << "=== Start Round ===" << std::endl;
-    tileBag->initalisedTileBag();
+    tileBag->initaliseTileBag();
     populateFactories();
-    turn_number = 0;
 }
 
 void AzulGame::playGame()
 {
-    int maxTurns = 10;
-    int turn_number = 0;
+    int maxRounds = 5;
     bool player1Turn = true;
-    while (turn_number < maxTurns && !std::cin.eof())
+    while (roundNumber != maxRounds && !std::cin.eof())
     {
-        std::string input = "";
-        printBoard(player1Turn);
-        if (turn_number == 0)
+        std::cout << std::endl;
+        std::cout << "=== Start Round ===" << std::endl;
+        if (roundNumber != 0)
         {
-            std::cout << std::endl;
-            std::cout << "> ";
+            populateFactories();
         }
-        else
+        while (!factoriesIsEmpty() && !std::cin.eof())
         {
-            std::cout << "> ";
-        }
-        //getline(std::cin, input);
-        while (input.length() != 10 && std::cin && !std::cin.eof())
-        {
-            // std::cout << "> ";
-            getline(std::cin, input);
+            std::string input = "";
+            printBoard(player1Turn);
+            if (turnNumber == 0)
+            {
+                takeFirstPlayerToken(player1Turn);
+                std::cout << std::endl;
+                std::cout << "> ";
+            }
+            else
+            {
+                std::cout << "> ";
+            }
+            //getline(std::cin, input);
+            while (input.length() != 10 && !std::cin.eof())
+            {
+                // std::cout << "> ";
+                getline(std::cin, input);
+            }
+            if (!std::cin.eof())
+            {
+                runCommand(input, player1Turn);
+            }
+            ++turnNumber;
+            if (player1Turn == true)
+            {
+                player1Turn = false;
+            }
+            else
+            {
+                player1Turn = true;
+            }
         }
         if (!std::cin.eof())
         {
-            runCommand(input, player1Turn);
-        }
-        ++turn_number;
-        if (player1Turn == true)
-        {
-            player1Turn = false;
-        }
-        else
-        {
-            player1Turn = true;
-        }
-        if (turn_number % 2 == 0 && !std::cin.eof())
-        {
             std::cout << "=== END OF ROUND ===" << std::endl;
             std::cout << std::endl;
-            std::cout << "=== Start Round ===" << std::endl;
-            std::cout << std::endl;
+            endOfRound();
+            turnNumber = 0;
+            ++roundNumber;
         }
     }
 }
@@ -166,13 +198,13 @@ void AzulGame::loadGame()
     //start from the last poistion that was read in (depending on if you read in moves of if its a new game)
     // int turn_index = turn_vector.size();
     populateFactories();
-    int turn_vector_size = turn_vector.size();
+    int turnVectorSize = turnVector.size();
     bool player1Turn = true;
     //
-    for (turn_number = 0; turn_number < turn_vector_size; ++turn_number)
+    for (int turn = 0; turn < turnVectorSize; ++turn)
     {
         //define the vector string, run command with string plus player number
-        if (turn_number % 2 == 0)
+        if (turn % 2 == 0)
         {
             player1Turn = true;
         }
@@ -180,7 +212,18 @@ void AzulGame::loadGame()
         {
             player1Turn = false;
         }
-        runCommand(turn_vector[turn_number], player1Turn);
+        if (turnNumber == 0) 
+        {
+            takeFirstPlayerToken(player1Turn);
+        }
+        runCommand(turnVector[turn], player1Turn);
+        ++turnNumber;
+        if (factoriesIsEmpty())
+        {
+            endOfRound();
+            turnNumber = 0;
+            ++roundNumber;
+        }
     }
 }
 
@@ -194,7 +237,9 @@ void AzulGame::printBoard(bool player1Turn)
         std::cout << std::endl;
         std::cout << "Mosaic for " << players[PLAYER1_INDEX]->getName() << ":" << std::endl;
         players[PLAYER1_INDEX]->getPlayerBoard()->printPlayerBoard();
-        std::cout << "broken: " << std::endl;
+        std::cout << "broken: ";
+        broken->printFactory();
+        std::cout << std::endl;
     }
     else
     {
@@ -203,7 +248,9 @@ void AzulGame::printBoard(bool player1Turn)
         std::cout << std::endl;
         std::cout << "Mosaic for " << players[PLAYER2_INDEX]->getName() << ":" << std::endl;
         players[PLAYER2_INDEX]->getPlayerBoard()->printPlayerBoard();
-        std::cout << "broken: " << std::endl;
+        std::cout << "broken: ";
+        broken->printFactory();
+        std::cout << std::endl;
     }
 }
 
@@ -213,12 +260,14 @@ void AzulGame::printFactories()
     for (int i = 0; i < NUM_FACTORIES; ++i)
     {
         std::cout << i << ": ";
-        for (int j = 0; j < factories[i]->size(); ++j)
-        {
-            std::cout << factories[i]->get(j)->getTile() << ' ';
-        }
+        factories[i]->printFactory();
         std::cout << std::endl;
     }
+}
+
+bool AzulGame::checkCommandIsValid(std::string input)
+{
+
 }
 
 void AzulGame::runCommand(std::string input, bool player1Turn)
@@ -244,9 +293,9 @@ void AzulGame::runCommand(std::string input, bool player1Turn)
         }
         if (player != nullptr) 
         {
-            PlayerBoard *playerBoard = player->getPlayerBoard();
-            Factory *factory = factories[factoryNumber];
-            Tile **commonTiles = factory->popSameTile(*factory, tile);
+            PlayerBoard* playerBoard = player->getPlayerBoard();
+            Factory* factory = factories[factoryNumber];
+            Tile** commonTiles = factory->popSameTile(*factory, tile);
             // std::cout << factory->sameTileLength << std::endl;
             for (int i = 0; i < factory->getSameTileLength(); ++i)
             {
@@ -255,7 +304,10 @@ void AzulGame::runCommand(std::string input, bool player1Turn)
             }
             for (int i = 0; i < factory->size(); ++i)
             {
-                factories[0]->add(factory->get(i));
+                if (factory->get(i) != nullptr)
+                {
+                    factories[0]->add(factory->get(i));
+                }
             }
             factory->clearAll();
             std::cout << "Turn successful." << std::endl;
@@ -269,4 +321,57 @@ void AzulGame::runCommand(std::string input, bool player1Turn)
             // }
         }
     }
+    else if (command == "save")
+    {
+        //Get save file name
+        std::cout << std::endl;
+        std::cout << "Enter the name you wish to save the file as" << std::endl;
+        std::cout << "> ";
+        std::string filename;
+        std::cin >> filename;
+
+        //Create save file
+        std::ofstream saveFile(filename);
+        //Saving contents to the file
+        if (!saveFile.fail())
+        {
+            if(saveFile.is_open())
+            {
+                //Get the variables to save.....
+                std::string tileBag = getTileBag()->saveTileBag();
+                std::string player1 = getPlayers()[PLAYER1_INDEX]->getName();
+                std::string player2 = getPlayers()[PLAYER2_INDEX]->getName();
+                std::vector<std::string> turn_vector = getTurns();
+                //Save the tilebag
+                saveFile << tileBag << std::endl;
+                //Save the name of player one
+                saveFile << player1 << std::endl;
+                //Save the name of player two
+                saveFile << player2 << std::endl;
+                //Go through the turns and save each of them to the file.
+                for( std::vector<std::string>::iterator it = turn_vector.begin() ; it != turn_vector.end() ; ++it )
+                {
+                    std::string turn = "";
+                    turn = *it;
+                    saveFile << turn << std::endl;
+
+                }  
+            }
+        }
+        //Close the file, should have the saved contents
+        if (saveFile.is_open())
+        {
+            saveFile.close();
+        }
+    }
+}
+
+void AzulGame::takeFirstPlayerToken(bool player1Turn)
+{
+    
+}
+
+void AzulGame::endOfRound() 
+{
+
 }

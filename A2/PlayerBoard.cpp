@@ -9,18 +9,39 @@ PlayerBoard::PlayerBoard()
     //Inital player board
     char initialBoard[MAX_BOARD_ROWS][MAX_BOARD_COLS] =
     {   
-        { ' ', ' ', ' ', ' ', '.', '|', '|', '.', '.', '.', '.', '.', '\0' },
-        { ' ', ' ', ' ', '.', '.', '|', '|', '.', '.', '.', '.', '.', '\0' },
-        { ' ', ' ', '.', '.', '.', '|', '|', '.', '.', '.', '.', '.', '\0' },
-        { ' ', '.', '.', '.', '.', '|', '|', '.', '.', '.', '.', '.', '\0' },
-        { '.', '.', '.', '.', '.', '|', '|', '.', '.', '.', '.', '.', '\0' }
+        { ' ', ' ', ' ', ' ', '.', '|', '|', '.', '.', '.', '.', '.' },
+        { ' ', ' ', ' ', '.', '.', '|', '|', '.', '.', '.', '.', '.' },
+        { ' ', ' ', '.', '.', '.', '|', '|', '.', '.', '.', '.', '.' },
+        { ' ', '.', '.', '.', '.', '|', '|', '.', '.', '.', '.', '.' },
+        { '.', '.', '.', '.', '.', '|', '|', '.', '.', '.', '.', '.' }
     };
 
+    // Tiles that will be placed in the mosaic wall
+    char mosaicTiles[MAX_MOSAIC_ROWS] = { 'B', 'Y', 'R', 'U', 'L' };
+
+    // Loop to copy initialBoard onto the board
     for (int rows = 0; rows < MAX_BOARD_ROWS; ++rows) 
     {
         for (int cols = 0; cols < MAX_BOARD_COLS; ++cols) 
         {
             board[rows][cols] = initialBoard[rows][cols];
+        }
+    }
+
+    // Loop to set up the mosaic wall
+    for (int rows = 0; rows < MAX_MOSAIC_ROWS; ++rows) 
+    {
+        // MAX_MOSAIC_ROWS is there to make sure that the next row tile
+        // is the previous row moved to the right.
+        int index = MAX_MOSAIC_ROWS - rows; 
+        for (int cols = 0; cols < MAX_MOSAIC_COLS; ++cols)
+        {
+            if (index == MAX_MOSAIC_ROWS && cols < MAX_MOSAIC_COLS) 
+            {
+                index = 0;
+            } 
+            mosaicWall[rows][cols] = mosaicTiles[index];
+            ++index;
         }
     }
 }
@@ -80,6 +101,8 @@ void PlayerBoard::addTiletoRow(Tile* tile, int row)
     }
 }
 
+
+
 //Removing a tile from the board
 void PlayerBoard::removeTile(int row, int col)
 {
@@ -105,6 +128,16 @@ void PlayerBoard::moveTile(Tile* tile, int prevRow, int prevCol, int newRow, int
     }
 }
 
+void PlayerBoard::addTiletoMosaic(Tile* tile, int row)
+{
+
+}
+
+Tile* PlayerBoard::popTileFromBoard(int row, int col)
+{
+
+}
+
 void PlayerBoard::printPlayerBoard()
 {
     for (int rows = 0; rows < MAX_BOARD_ROWS; ++rows)
@@ -116,4 +149,14 @@ void PlayerBoard::printPlayerBoard()
         }
         std::cout << std::endl;
     }
+}
+
+Tile* PlayerBoard::checkStorageRowTile(int row)
+{
+    
+}
+
+bool checkStorageRowIsFull(int row)
+{
+
 }

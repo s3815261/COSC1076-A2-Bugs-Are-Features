@@ -23,27 +23,33 @@ class AzulGame
         PlayerBoard* getPlayerBoard();
         Player** getPlayers();
         Factory** getFactories();
+        Factory* getBroken();
         std::vector<std::string> getTurns();
 
         void setPlayerNames(std::string playerNameArray[]);
         
         void addTurn(std::string turn);
         void populateFactories();
+        bool factoriesIsEmpty();
         void printPlayerNames();
         void newGame();
         void loadGame();
         void playGame();
         void printBoard(bool player1Turn);
         void printFactories();
+        bool checkCommandIsValid(std::string input);
         void runCommand(std::string input, bool player1Turn);
+        void takeFirstPlayerToken(bool player1Turn);
+        void endOfRound();
 
     private:
         TileBag* tileBag;
         Player** players;
         Factory** factories;
-        std::vector<std::string> turn_vector;
-        int turn_number;
-
+        Factory* broken;
+        std::vector<std::string> turnVector;
+        int roundNumber;
+        int turnNumber;
 };
 
 #endif

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+
 #include "AzulGame.h"
 #include "Player.h"
 #include "TileBag.h"
@@ -8,23 +9,11 @@
 void game(int argc, char **argv);
 void mainMenu();
 void displayPrimaryMenu(bool primaryMenu);
-void newGame(AzulGame &ag);
-void loadGame(AzulGame &ag);
-void saveGame(AzulGame &ag);
+void newGame();
+void loadGame();
 void credits();
 void eofQuit(bool eof);
 bool tileCheck(char tile);
-std::vector<std::string> split(const std::string &str, char delim = ' ')
-{
-    std::vector<std::string> tokens;
-    std::stringstream ss(str);
-    std::string token;
-    while (std::getline(ss, token, delim))
-    {
-        tokens.push_back(token);
-    }
-    return tokens;
-}
 
 #define NEWGAME 1
 #define LOADGAME 2
@@ -56,8 +45,6 @@ void mainMenu()
     displayPrimaryMenu(true);
     int option = 0;
     std::string input = "";
-
-    AzulGame ag;
 
     while (option != 4 && !std::cin.eof())
     {
@@ -93,11 +80,11 @@ void mainMenu()
         {
             if (option == NEWGAME)
             {
-                newGame(ag);
+                newGame();
             }
             else if (option == LOADGAME)
             {
-                loadGame(ag);
+                loadGame();
             }
             else if (option == CREDITS)
             {
@@ -149,7 +136,7 @@ void displayPrimaryMenu(bool primaryMenu)
     }
 }
 
-void newGame(AzulGame &ag)
+void newGame()
 {
     std::string playerNames[NUM_PLAYERS];
     std::cout << std::endl;
@@ -168,14 +155,18 @@ void newGame(AzulGame &ag)
     std::cout << std::endl;
     std::cout << "Let's Play!" << std::endl;
 
-    ag.setPlayerNames(playerNames);
+    AzulGame* ag = new AzulGame();
+
+    ag->setPlayerNames(playerNames);
     //initalises the game
-    ag.newGame();
+    ag->newGame();
     //plays the game with input
-    ag.playGame();
+    ag->playGame();
+
+    delete ag;
 }
 
-void loadGame(AzulGame &ag)
+void loadGame()
 {
     std::cout << std::endl;
     std::cout << "Enter the filename from which to load a game" << std::endl;
@@ -183,96 +174,60 @@ void loadGame(AzulGame &ag)
     std::string filename;
     std::cin >> filename;
 
-    std::ifstream input_file(filename);
+    std::ifstream inputFile(filename);
     // check if the file has been successfully opened
-    if (input_file)
+    if (!inputFile.fail())
     {
-        std::string playerNames[NUM_PLAYERS];
-        std::cout << "succesffuly opened file" << std::endl;
-        int line_count = 0;
-        while (!input_file.eof())
+        if (inputFile.is_open())
         {
-            std::string line;
-            getline(input_file, line);
-            //for each character, tileBag.addBack(char)
-            if (line_count == 0)
+            AzulGame* ag = new AzulGame();
+            std::string playerNames[NUM_PLAYERS];
+            std::cout << "succesffuly opened file" << std::endl;
+            int line_count = 0;
+            while (!inputFile.eof())
             {
-                int line_size = line.size();
-                for (int i = 0; i < line_size; ++i)
+                std::string line;
+                getline(inputFile, line);
+                //for each character, tileBag.addBack(char)
+                if (line_count == 0)
                 {
-                    if(tileCheck(line[i]) == true) {
-                        Tile* new_tile = new Tile(line[i]);
-                        ag.getTileBag()->addBack(new_tile);
-                    } else {
-                        std::cout << "Error with tile value read in, Enter appropriate load game file" << std::endl;
-                        exit(EXIT_FAILURE);
+                    int line_size = line.size();
+                    for (int i = 0; i < line_size; ++i)
+                    {
+                        if(tileCheck(line[i]) == true) {
+                            Tile* new_tile = new Tile(line[i]);
+                            ag->getTileBag()->addBack(new_tile);
+                        } else {
+                            std::cout << "Error with tile value read in, Enter appropriate load game file" << std::endl;
+                            exit(EXIT_FAILURE);
+                        }
                     }
-                    }
-                ag.getTileBag()->printTileBag();
+                    ag->getTileBag()->printTileBag();
+                }
+                else if (line_count == 1)
+                {
+                    playerNames[PLAYER1_INDEX] = line;
+                }
+                else if (line_count == 2)
+                {
+                    playerNames[PLAYER2_INDEX] = line;
+                    ag->setPlayerNames(playerNames);
+                    ag->printPlayerNames();
+                }
+                // reading in turn information
+                else if (line_count > 2)
+                {
+                    ag->addTurn(line);
+                }
+                ++line_count;
             }
-            else if (line_count == 1)
-            {
-                playerNames[PLAYER1_INDEX] = line;
-            }
-            else if (line_count == 2)
-            {
-                playerNames[PLAYER2_INDEX] = line;
-                ag.setPlayerNames(playerNames);
-                ag.printPlayerNames();
-            }
-            // reading in turn information
-            else if (line_count > 2)
-            {
-                ag.addTurn(line);
-            }
-            ++line_count;
+            //loads in and plays the moves as read provided in the txt file 
+            ag->loadGame();
+            //plays the game with input from there on
+            ag->playGame();
+            delete ag;
         }
-        //loads in and plays the moves as read provided in the txt file 
-        ag.loadGame();
-        //plays the game with input from there on
-        ag.playGame();
     }
-}
-
-void saveGame(AzulGame &ag)
-{
-    //Get save file name
-    std::cout << std::endl;
-    std::cout << "Enter the name you wish to save the file as" << std::endl;
-    std::cout << "> ";
-    std::string filename;
-    std::cin >> filename;
-
-    //Create save file
-    std::ofstream saveFile(filename);
-    //Saving contents to the file
-    if(saveFile.is_open())
-    {
-        //Get the variables to save.....
-        std::string tileBag = ag.getTileBag()->saveTileBag();
-        std::string player1 = ag.getPlayers()[PLAYER1_INDEX]->getName();
-        std::string player2 = ag.getPlayers()[PLAYER2_INDEX]->getName();
-        std::vector<std::string> turn_vector = ag.getTurns();
-        //Save the tilebag
-        saveFile << tileBag << std::endl;
-        //Save the name of player one
-        saveFile << player1 << std::endl;
-        //Save the name of player two
-        saveFile << player2 << std::endl;
-        //Go through the turns and save each of them to the file.
-        for( std::vector<std::string>::iterator it = turn_vector.begin() ; it != turn_vector.end() ; ++it )
-        {
-            std::string turn = "";
-            turn = *it;
-            saveFile << turn << std::endl;
-
-        }
-
-        
-    }
-
-    //Close the file, should have the saved contents
-    saveFile.close();
 }
 
 void credits()

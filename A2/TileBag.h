@@ -15,7 +15,7 @@ public:
     Tile* popFront();
     void addBack(Tile* tile);
     void printTileBag();
-    void initalisedTileBag();
+    void initaliseTileBag();
     std::string saveTileBag();
 
 private:
