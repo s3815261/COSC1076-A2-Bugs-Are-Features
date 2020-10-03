@@ -9,12 +9,12 @@ AzulGame::AzulGame() :
     turnNumber(0)
 {
     tileBag = new TileBag();
-    players = new Player*[NUM_PLAYERS];
+    players = new Player *[NUM_PLAYERS];
     for (int i = 0; i < NUM_PLAYERS; ++i)
     {
         players[i] = new Player("Player " + std::to_string(i + 1));
     }
-    factories = new Factory*[NUM_FACTORIES];
+    factories = new Factory *[NUM_FACTORIES];
     for (int i = 0; i < NUM_FACTORIES; ++i)
     {
         factories[i] = new Factory();
@@ -44,17 +44,17 @@ AzulGame::~AzulGame()
     delete broken;
 }
 
-TileBag* AzulGame::getTileBag()
+TileBag *AzulGame::getTileBag()
 {
     return tileBag;
 }
 
-Player** AzulGame::getPlayers()
+Player **AzulGame::getPlayers()
 {
     return players;
 }
 
-Factory** AzulGame::getFactories()
+Factory **AzulGame::getFactories()
 {
     return factories;
 }
@@ -76,7 +76,7 @@ std::vector<std::string> AzulGame::getTurns()
 
 void AzulGame::setPlayerNames(std::string playerNameArray[])
 {
-    for (int i = 0; i < NUM_PLAYERS; ++i) 
+    for (int i = 0; i < NUM_PLAYERS; ++i)
     {
         players[i]->setName(playerNameArray[i]);
     }
@@ -85,19 +85,19 @@ void AzulGame::setPlayerNames(std::string playerNameArray[])
 // initialise factories for new game
 void AzulGame::populateFactories()
 {
-    Tile* First_Player_Token = new Tile('F');
+    Tile *First_Player_Token = new Tile('F');
     int numTiles = 0;
     factories[0]->add(First_Player_Token);
     ++numTiles;
-    
+
     int factoryIndex = 1;
     for (int tilesPlaced = numTiles; tilesPlaced < MAX_TILES + 1; ++tilesPlaced)
     {
-        if (tilesPlaced % 4 != 0) 
+        if (tilesPlaced % 4 != 0)
         {
             factories[factoryIndex]->add(tileBag->popFront());
         }
-        else 
+        else
         {
             factories[factoryIndex]->add(tileBag->popFront());
             ++factoryIndex;
@@ -147,7 +147,7 @@ void AzulGame::playGame()
         while (!factoriesIsEmpty() && !std::cin.eof())
         {
             std::string input = "";
-            printBoard(player1Turn);
+            printPlayer1Board(player1Turn);
             if (turnNumber == 0)
             {
                 takeFirstPlayerToken(player1Turn);
@@ -227,7 +227,7 @@ void AzulGame::loadGame()
     }
 }
 
-void AzulGame::printBoard(bool player1Turn)
+void AzulGame::printPlayer1Board(bool player1Turn)
 {
     std::cout << "TURN FOR PLAYER: ";
     if (player1Turn)
@@ -267,15 +267,15 @@ void AzulGame::printFactories()
 
 bool AzulGame::checkCommandIsValid(std::string input)
 {
-
+    return false;
 }
 
 void AzulGame::runCommand(std::string input, bool player1Turn)
 {
     std::string command = input.substr(0, 4);
-    if (command == "turn") 
+    if (command == "turn")
     {
-        Player* player = nullptr;
+        Player *player = nullptr;
         int factoryNumber = std::stoi(input.substr(5, 6));
         char tile = input[7];
         int storageRow = std::stoi(input.substr(9, 10));
@@ -287,11 +287,11 @@ void AzulGame::runCommand(std::string input, bool player1Turn)
         {
             player = players[PLAYER1_INDEX];
         }
-        else 
+        else
         {
             player = players[PLAYER2_INDEX];
         }
-        if (player != nullptr) 
+        if (player != nullptr)
         {
             PlayerBoard* playerBoard = player->getPlayerBoard();
             Factory* factory = factories[factoryNumber];
@@ -374,4 +374,105 @@ void AzulGame::takeFirstPlayerToken(bool player1Turn)
 void AzulGame::endOfRound() 
 {
 
+}
+
+void AzulGame::calculateScore(bool player1Turn)
+{
+    // int score = 0;
+    // int player1Score = 0;
+    // int player2Score = 0;
+    // int adjacentTiles = 0;
+    // int floorline = 0;
+    // int floorlineIndex = 0;
+
+    // if (player1Turn == true)
+    // {
+    //     players[PLAYER1_INDEX]->getPlayerBoard();
+    //   if (//tile is not adjacent to anything)
+    //         {
+    //         ++adjacentTiles;
+    //         }
+    //         else if (//tile is adjacent)
+    //         {
+    //             if (//tile has one adjacent tile left, right, up or down)
+    //             {
+    //             adjacentTiles += 2;
+    //             }
+    //             else if (//tile has two adjacent tiles left, right, up or down)
+    //             {
+    //             adjacentTiles += 3;
+    //             }
+    //             ++player2Score + adjacentTiles;
+    //         }
+    //     if (//end of round)
+    //     {
+    //         //for each tile in floorlineIndex
+    //         //++floorlineIndex
+    //         while (int i = 0; i < floorlineIndex; ++i)
+    //             if (i < 2 && i > -1)
+    //             {
+    //                 ++floorline;
+    //                 ++i;
+    //             }
+    //             else if (i > 1 && i < 5)
+    //             {
+    //                 floorline += 2;
+    //                 ++i;
+    //             }
+    //             else if (i > 4 && i < 7)
+    //             {
+    //                 floorline += 3;
+    //                 ++i;
+    //             }
+    //         player1Score - floorline;
+    //     }
+    //     player1Score = score;
+    // }
+    // else if (player1Turn == false)
+    // {
+    //     {
+    //         players[PLAYER2_INDEX]->getPlayerBoard();
+    //         if (//tile is not adjacent to anything)
+    //         {
+    //             ++adjacentTiles;
+    //         }
+    //         else if (//tile is adjacent)
+    //         {
+    //             if (//tile has one adjacent tile left, right, up or down)
+    //             {
+    //                 adjacentTiles += 2;
+    //             }
+    //             else if (//tile has two adjacent tiles left, right, up or down)
+    //             {
+    //                 adjacentTiles += 3;
+    //             }
+    //             ++player2Score + adjacentTiles;
+    //         }
+    //         if (//end of round)
+    //         {
+    //             //for each tile in floorlineIndex
+    //             //++floorlineIndex
+    //             while (int i = 0; i < floorlineIndex; ++i)
+    //                 if (i < 2 && i > -1)
+    //                 {
+    //                     ++floorline;
+    //                     ++i;
+    //                 }
+    //                 else if (i > 1 && i < 5)
+    //                 {
+    //                     floorline += 2;
+    //                     ++i;
+    //                 }
+    //                 else if (i > 4 && i < 7)
+    //                 {
+    //                     floorline += 3;
+    //                     ++i;
+    //                 }
+    //             player2Score - floorline;
+    //         }
+    //         player2Score = score;
+    //     }
+
+    //     return score;
+    // }
 }

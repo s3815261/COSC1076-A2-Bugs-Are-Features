@@ -5,7 +5,6 @@
 
 #include "TileBag.h"
 #include "Player.h"
-#include "Util.h"
 #include "Factory.h"
 #include "Tile.h"
 
@@ -35,12 +34,13 @@ class AzulGame
         void newGame();
         void loadGame();
         void playGame();
-        void printBoard(bool player1Turn);
+        void printPlayer1Board(bool player1Turn);
         void printFactories();
         bool checkCommandIsValid(std::string input);
         void runCommand(std::string input, bool player1Turn);
         void takeFirstPlayerToken(bool player1Turn);
         void endOfRound();
+        void calculateScore(bool player1Turn);
 
     private:
         TileBag* tileBag;

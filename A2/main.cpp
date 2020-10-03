@@ -10,7 +10,7 @@ void game(int argc, char **argv);
 void mainMenu();
 void displayPrimaryMenu(bool primaryMenu);
 void newGame();
-void loadGame();
+void loadGame(std::string fileName, bool testingMode);
 void credits();
 void eofQuit(bool eof);
 bool tileCheck(char tile);
@@ -35,6 +35,8 @@ void game(int argc, char **argv)
     }
     else if (argc == 3)
     {
+        std::string fileName;
+        loadGame(fileName, true);
     }
 }
 
@@ -84,7 +86,12 @@ void mainMenu()
             }
             else if (option == LOADGAME)
             {
-                loadGame();
+                std::cout << std::endl;
+                std::cout << "Enter the filename from which to load a game" << std::endl;
+                std::cout << "> ";
+                std::string filename;
+                std::cin >> filename;
+                loadGame(filename, false);
             }
             else if (option == CREDITS)
             {
@@ -166,15 +173,9 @@ void newGame()
     delete ag;
 }
 
-void loadGame()
+void loadGame(std::string fileName, bool testingMode)
 {
-    std::cout << std::endl;
-    std::cout << "Enter the filename from which to load a game" << std::endl;
-    std::cout << "> ";
-    std::string filename;
-    std::cin >> filename;
-
-    std::ifstream inputFile(filename);
+    std::ifstream inputFile(fileName);
     // check if the file has been successfully opened
     if (!inputFile.fail())
     {
@@ -182,7 +183,7 @@ void loadGame()
         {
             AzulGame* ag = new AzulGame();
             std::string playerNames[NUM_PLAYERS];
-            std::cout << "succesffuly opened file" << std::endl;
+            std::cout << "Successfully opened file" << std::endl;
             int line_count = 0;
             while (!inputFile.eof())
             {
@@ -192,7 +193,7 @@ void loadGame()
                 if (line_count == 0)
                 {
                     int line_size = line.size();
-                    for (int i = 0; i < line_size; ++i)
+                    for (int i = 0; i < line_size - 1; ++i)
                     {
                         if(tileCheck(line[i]) == true) {
                             Tile* new_tile = new Tile(line[i]);
@@ -201,8 +202,7 @@ void loadGame()
                             std::cout << "Error with tile value read in, Enter appropriate load game file" << std::endl;
                             exit(EXIT_FAILURE);
                         }
-                    }
-                    ag->getTileBag()->printTileBag();
+                        }
                 }
                 else if (line_count == 1)
                 {
@@ -224,9 +224,18 @@ void loadGame()
             //loads in and plays the moves as read provided in the txt file 
             ag->loadGame();
             //plays the game with input from there on
-            ag->playGame();
+            if(testingMode)
+            {
+                ag->printPlayer1Board(true);
+                std::cout << " " << std::endl;
+                ag->printPlayer1Board(false);
+            }
+            else
+            {
+                ag->playGame();
+            }
             delete ag;
-        }
+        }  
     }
 }
 

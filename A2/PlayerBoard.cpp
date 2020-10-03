@@ -135,7 +135,7 @@ void PlayerBoard::addTiletoMosaic(Tile* tile, int row)
 
 Tile* PlayerBoard::popTileFromBoard(int row, int col)
 {
-
+    return nullptr;
 }
 
 void PlayerBoard::printPlayerBoard()
@@ -153,10 +153,10 @@ void PlayerBoard::printPlayerBoard()
 
 Tile* PlayerBoard::checkStorageRowTile(int row)
 {
-    
+    return nullptr;
 }
 
 bool checkStorageRowIsFull(int row)
 {
-
+    return false;
 }
