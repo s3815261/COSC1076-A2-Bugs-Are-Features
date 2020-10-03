@@ -284,7 +284,7 @@ void AzulGame::calculateScore(bool player1Turn)
         players[PLAYER1_INDEX]->getPlayerBoard();
       if (//tile is not adjacent to anything)
             {
-            ++adjacentTiles
+            ++adjacentTiles;
             }
             else if (//tile is adjacent)
             {
@@ -296,7 +296,7 @@ void AzulGame::calculateScore(bool player1Turn)
                 {
                 adjacentTiles += 3;
                 }
-                ++player2Score + adjacentTiles
+                ++player2Score + adjacentTiles;
             }
         if (//end of round)
         {
@@ -306,17 +306,17 @@ void AzulGame::calculateScore(bool player1Turn)
                 if (i < 2 && i > -1)
                 {
                     ++floorline;
-                    ++i
+                    ++i;
                 }
                 else if (i > 1 && i < 5)
                 {
                     floorline += 2;
-                    ++i
+                    ++i;
                 }
                 else if (i > 4 && i < 7)
                 {
                     floorline += 3;
-                    ++i
+                    ++i;
                 }
             player1Score - floorline;
         }
@@ -328,7 +328,7 @@ void AzulGame::calculateScore(bool player1Turn)
             players[PLAYER2_INDEX]->getPlayerBoard();
             if (//tile is not adjacent to anything)
             {
-                ++adjacentTiles
+                ++adjacentTiles;
             }
             else if (//tile is adjacent)
             {
@@ -340,7 +340,7 @@ void AzulGame::calculateScore(bool player1Turn)
                 {
                     adjacentTiles += 3;
                 }
-                ++player2Score + adjacentTiles
+                ++player2Score + adjacentTiles;
             }
             if (//end of round)
             {
@@ -350,21 +350,21 @@ void AzulGame::calculateScore(bool player1Turn)
                     if (i < 2 && i > -1)
                     {
                         ++floorline;
-                        ++i
+                        ++i;
                     }
                     else if (i > 1 && i < 5)
                     {
                         floorline += 2;
-                        ++i
+                        ++i;
                     }
                     else if (i > 4 && i < 7)
                     {
                         floorline += 3;
-                        ++i
+                        ++i;
                     }
                 player2Score - floorline;
             }
-            player2Score = score
+            player2Score = score;
         }
 
         return score;
