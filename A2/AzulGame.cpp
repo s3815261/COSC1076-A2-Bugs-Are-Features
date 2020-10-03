@@ -81,10 +81,11 @@ void AzulGame::setPlayerNames(std::string playerNameArray[])
 // initialise factories for new game
 void AzulGame::populateFactories()
 {
-    Tile *First_Player_Token = new Tile('F');
+    Tile *firstPlayerToken = new Tile('F');
     int numTiles = 0;
-    factories[0]->add(First_Player_Token);
+    factories[0]->add(firstPlayerToken);
     ++numTiles;
+    firstPlayerToken = nullptr;
 
     int factoryIndex = 1;
     for (int tilesPlaced = numTiles; tilesPlaced < MAX_TILES + 1; ++tilesPlaced)
@@ -337,6 +338,7 @@ bool AzulGame::isCommandValid(std::string input)
                 }
             }
             delete tile;
+            tile = nullptr;
             if (factories[factoryNumber]->size() == 0)
             {
                 isValid = false;
@@ -382,7 +384,7 @@ void AzulGame::runCommand(std::string input)
         Factory* broken = playerBoard->getBroken();
         for (int i = 0; i < factory->getSameTileLength(); ++i)
         {
-            if (!playerBoard->isStorageRowFull(storageRow)) 
+            if (!playerBoard->isStorageRowFull(storageRow)) // . . B, BB , B B B
             {
                 playerBoard->addTiletoRow(commonTiles[i], storageRow);
                 delete commonTiles[i];
@@ -405,6 +407,15 @@ void AzulGame::runCommand(std::string input)
             }
             factory->clearAll();
         }
+        for (int i = 0; i < factory->getSameTileLength(); ++i)
+        {
+            if (commonTiles[i] != nullptr)
+            {
+                delete commonTiles[i];
+                commonTiles[i] = nullptr;
+            }
+        }
+        delete[] commonTiles;
         std::cout << "Turn successful." << std::endl;
         std::cout << std::endl;
         addTurn(input);
@@ -458,20 +469,21 @@ void AzulGame::takeFirstPlayerToken()
     Factory* broken = currentPlayer->getPlayerBoard()->getBroken();
     Tile* firstPlayerTile = centralFactory->popFront();
     broken->add(firstPlayerTile);
+    firstPlayerTile = nullptr;
 }
 
 void AzulGame::endOfRound() 
 {
-    for (int i = 0; i < NUM_PLAYERS; ++i) // 0
+    for (int i = 0; i < NUM_PLAYERS; ++i) 
     {
-        for (int row = 0; row < MAX_BOARD_ROWS; ++row) // 0
+        for (int row = 0; row < MAX_BOARD_ROWS; ++row) 
         {
             PlayerBoard* playerBoard = players[i]->getPlayerBoard();
             if (playerBoard->isStorageRowFull(row)) 
             {
-                Tile* tile = playerBoard->popTileFromStorageRow(row); 
-                playerBoard->addTiletoMosaic(tile, row); 
-                delete tile;
+                Tile* tile = playerBoard->popTileFromStorageRow(row); // B B, B ., B
+                playerBoard->addTiletoMosaic(tile, row);  // B
+                delete tile; 
                 tile = nullptr;
                 playerBoard->clearStorageRow(row);
             }

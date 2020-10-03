@@ -21,6 +21,7 @@ public:
 private:
     Node* head;
     int length;
+    
 };
 
 #endif // __TILEBAG__
