@@ -2,7 +2,9 @@
 #define __PLAYER__
 
 #include <iostream>
+
 #include "PlayerBoard.h"
+#include "Factory.h"
 
 class Player
 {

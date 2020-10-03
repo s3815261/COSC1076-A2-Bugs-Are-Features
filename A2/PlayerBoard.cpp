@@ -3,6 +3,7 @@
 
 #include "PlayerBoard.h"
 #include "Tile.h"
+#include "Factory.h"
 
 PlayerBoard::PlayerBoard()
 {
@@ -31,8 +32,8 @@ PlayerBoard::PlayerBoard()
     // Loop to set up the mosaic wall
     for (int rows = 0; rows < MAX_MOSAIC_ROWS; ++rows) 
     {
-        // MAX_MOSAIC_ROWS is there to make sure that the next row tile
-        // is the previous row moved to the right.
+        // MAX_MOSAIC_ROWS is there to make sure that the next row 
+        // is the previous row shifted to the right.
         int index = MAX_MOSAIC_ROWS - rows; 
         for (int cols = 0; cols < MAX_MOSAIC_COLS; ++cols)
         {
@@ -44,6 +45,7 @@ PlayerBoard::PlayerBoard()
             ++index;
         }
     }
+    broken = new Factory();
 }
 
 //deep copy of the player board
@@ -54,6 +56,12 @@ PlayerBoard::PlayerBoard(PlayerBoard& other)
 //deletes the playerboard
 PlayerBoard::~PlayerBoard()
 {
+    delete broken;
+}
+
+Factory* PlayerBoard::getBroken() 
+{
+    return broken;
 }
 
 //Rules for adding the tile from factory to gameboard....
@@ -78,30 +86,51 @@ void PlayerBoard::addTiletoRow(Tile* tile, int row)
     // This variable is the index of where the end 
     // of each of the storage rows are at.
     // It is also where the loop starts at.
-    int start = INDEX_STORAGE_ROW_END;
+    int start = INDEX_STORAGE_ROW_END; 
 
     // This variable is the index of where the empty spaces
     // of each of the storage rows are at.
     // It is also where the loop ends at.
-    int end = start - row;  
+    int end = start - row; 
     
     bool placedTile = false;
-    for (int i = start; i != end; --i)
+    for (int cols = start; cols >= end; --cols)
     {
         if (!placedTile)
         {
             // As we view the rows as 1 to 5 inclusive, the (row - 1) is to get the index of the row
             // in the array.
-            if (board[row - 1][i] == '.')
+            if (board[row][cols] == '.')
             {
-                board[row - 1][i] = tile->getTile();
+                board[row][cols] = tile->getTile();
                 placedTile = true;
             }
         }
     }
 }
 
+void PlayerBoard::addTiletoMosaic(Tile* tile, int row)
+{
+    int start = INDEX_MOSAIC_WALL_START;
+    int mosaicIndex = 0;
+    for (int cols = start; cols < MAX_BOARD_COLS; ++cols)
+    {
+        if (tile->getTile() == mosaicWall[row][mosaicIndex])
+        {
+            board[row][cols] = tile->getTile();
+        }
+        ++mosaicIndex;
+    }
+}
 
+Tile* PlayerBoard::popTileFromStorageRow(int row)
+{
+    Tile* tile = nullptr;
+    int start = INDEX_STORAGE_ROW_END;
+    tile = new Tile(board[row][start]);
+    board[row][start] = '.';
+    return tile;
+}
 
 //Removing a tile from the board
 void PlayerBoard::removeTile(int row, int col)
@@ -128,35 +157,58 @@ void PlayerBoard::moveTile(Tile* tile, int prevRow, int prevCol, int newRow, int
     }
 }
 
-void PlayerBoard::addTiletoMosaic(Tile* tile, int row)
-{
-
-}
-
-Tile* PlayerBoard::popTileFromBoard(int row, int col)
-{
-    return nullptr;
-}
-
 void PlayerBoard::printPlayerBoard()
 {
     for (int rows = 0; rows < MAX_BOARD_ROWS; ++rows)
     {
-        std::cout << rows + 1 << ": ";
+        std::cout << rows + 1 << ":";
         for (int cols = 0; cols < MAX_BOARD_COLS; ++cols)
         {
-            std::cout << board[rows][cols] << ' ';
+            if (board[rows][cols - 1] == '|' && board[rows][cols] == '|')
+            {
+                std::cout << board[rows][cols];
+            }
+            else 
+            {
+                std::cout << ' ' << board[rows][cols];
+            }
         }
         std::cout << std::endl;
     }
 }
 
-Tile* PlayerBoard::checkStorageRowTile(int row)
+Tile* PlayerBoard::getStorageRowTile(int row)
 {
-    return nullptr;
+    Tile* tile = nullptr;
+    int start = INDEX_STORAGE_ROW_END;
+    if (board[row][start] != '.')
+    {
+        tile = new Tile(board[row][start]);
+    }
+    return tile;
 }
 
-bool checkStorageRowIsFull(int row)
+bool PlayerBoard::isStorageRowFull(int row)
 {
-    return false;
+    bool isFull = true;
+    int start = INDEX_STORAGE_ROW_END;  
+    int end = start - row; 
+    for (int cols = start; cols >= end; --cols) 
+    {
+        if (board[row][cols] == '.' || board[row][cols] == ' ')
+        {
+            isFull = false;
+        }
+    }
+    return isFull;
+}
+
+void PlayerBoard::clearStorageRow(int row)
+{
+    int start = INDEX_STORAGE_ROW_END;
+    int end = start - row;
+    for (int cols = start; cols >= end; --cols)
+    {
+        board[row][cols] = '.';
+    }
 }

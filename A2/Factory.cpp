@@ -39,7 +39,10 @@ Tile* Factory::get(int index)
     Tile* tile = nullptr;
     if (index >= 0 && index < size()) 
     {
-        tile = factory[index];
+        if (factory[index] != nullptr)
+        {
+            tile = factory[index];
+        }
     }
     return tile;
 }
@@ -73,7 +76,22 @@ void Factory::printFactory()
     } 
 }
 
-Tile** Factory::popSameTile(Factory &factory, char tile) 
+Tile* Factory::popFront()
+{
+    Tile* tile = nullptr;
+    if (size() > 0)
+    {
+        if (get(0) != nullptr)
+        {
+            int indexFront = 0;
+            tile = get(indexFront);
+            remove(indexFront);
+        }
+    }
+    return tile;
+}
+
+Tile** Factory::popSameTile(char tile) 
 {
     Tile** tiles = new Tile*[MAX_TILES];
     for (int i = 0; i < MAX_TILES; ++i)
@@ -81,25 +99,47 @@ Tile** Factory::popSameTile(Factory &factory, char tile)
         tiles[i] = nullptr;
     }
     int length = 0;
-    for (int i = 0; i < factory.size(); ++i) 
+    for (int i = 0; i < size(); ++i) 
     {
-        if (factory.get(i)->getTile() == tile) 
+        if (get(i)->getTile() == tile)  
         {
-            tiles[length] = factory.get(i);  
+            tiles[length] = get(i); // RUBL, R
             ++length;
         }
     }
-    for (int i = factory.size() - 1; i > 0; --i) 
+    std::vector<Tile*> tempVector;
+    // for (int i = size() - 1; i > 0; --i) 
+    // {
+    //     if (get(i) != nullptr) 
+    //     {
+    //         if (get(i)->getTile() == tile) 
+    //         {
+    //             factory[i] = nullptr; // nullptr UBL 
+    //             remove(i); 
+    //         }
+    //         else
+    //         {
+                
+    //         }
+    //     }
+    // } 
+    for (int i = 0; i < size(); ++i) // RUBL
     {
-        if (factory.get(i) != nullptr) 
+        if (get(i) != nullptr)
         {
-            if (factory.get(i)->getTile() == tile) 
+            if (get(i)->getTile() != tile)
             {
-                factory.remove(i); 
+                tempVector.push_back(get(i)); // UBL
             }
         }
     }
-    factory.setSameTileLength(length);
+    clearAll();
+    int tempVectorSize = tempVector.size();
+    for (int i = 0; i < tempVectorSize; ++i)
+    {
+        add(tempVector[i]);
+    }
+    setSameTileLength(length);
     return tiles;
 }
 

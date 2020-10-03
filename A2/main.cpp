@@ -109,12 +109,14 @@ void mainMenu()
     }
 }
 
-bool tileCheck(char tile){
-    bool return_val = false;
-    if(tile == 'R' || tile == 'Y' || tile == 'B' || tile == 'L' || tile == 'U'){
-        return_val = true;
+bool tileCheck(char tile) 
+{
+    bool returnValue = false;
+    if(tile == RED || tile == YELLOW || tile == DARK_BLUE || tile == LIGHT_BLUE || tile == BLACK)
+    {
+        returnValue = true;
     }
-    return return_val;
+    return returnValue;
 }
 
 void displayPrimaryMenu(bool primaryMenu)
@@ -226,9 +228,10 @@ void loadGame(std::string fileName, bool testingMode)
             //plays the game with input from there on
             if(testingMode)
             {
-                ag->printPlayer1Board(true);
+                ag->printPlayerGameBoard();
                 std::cout << " " << std::endl;
-                ag->printPlayer1Board(false);
+                ag->nextPlayerTurn();
+                ag->printPlayerGameBoard();
             }
             else
             {

@@ -8,10 +8,17 @@
 #include "Factory.h"
 #include "Tile.h"
 
-#define NUM_PLAYERS     2
-#define NUM_FACTORIES   6
-#define PLAYER1_INDEX   0
-#define PLAYER2_INDEX   1
+#define NUM_PLAYERS             2
+#define NUM_FACTORIES           6
+#define CENTRAL_FACTORY_INDEX   0
+#define PLAYER1_INDEX           0
+#define PLAYER2_INDEX           1
+
+#define RED                     'R'
+#define YELLOW                  'Y'
+#define DARK_BLUE               'B'
+#define LIGHT_BLUE              'L'
+#define BLACK                   'U'
 
 class AzulGame 
 {
@@ -22,7 +29,6 @@ class AzulGame
         PlayerBoard* getPlayerBoard();
         Player** getPlayers();
         Factory** getFactories();
-        Factory* getBroken();
         std::vector<std::string> getTurns();
 
         void setPlayerNames(std::string playerNameArray[]);
@@ -34,22 +40,26 @@ class AzulGame
         void newGame();
         void loadGame();
         void playGame();
-        void printPlayer1Board(bool player1Turn);
+        void nextPlayerTurn();
+        void printPlayerGameBoard();
         void printFactories();
-        bool checkCommandIsValid(std::string input);
-        void runCommand(std::string input, bool player1Turn);
-        void takeFirstPlayerToken(bool player1Turn);
+        bool isCommandValid(std::string input);
+        bool isValidTile(char tileChar);
+        void runCommand(std::string input);
+        void takeFirstPlayerToken();
         void endOfRound();
-        void calculateScore(bool player1Turn);
+        void calculateScore();
 
     private:
-        TileBag* tileBag;
-        Player** players;
-        Factory** factories;
-        Factory* broken;
-        std::vector<std::string> turnVector;
         int roundNumber;
         int turnNumber;
+        int currentPlayerIndex;
+        TileBag* tileBag;
+        Player** players;
+        Player* currentPlayer;
+        Factory** factories;
+        std::vector<std::string> turnVector;
+
 };
 
 #endif

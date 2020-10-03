@@ -34,7 +34,9 @@ class Factory
 
         void printFactory();
 
-        Tile** popSameTile(Factory &factory, char tile);
+        Tile* popFront();
+
+        Tile** popSameTile(char tile);
 
         void clearAll();
 
