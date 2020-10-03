@@ -10,6 +10,7 @@ void mainMenu();
 void displayPrimaryMenu(bool primaryMenu);
 void newGame(AzulGame &ag);
 void loadGame(AzulGame &ag);
+void loadGame(AzulGame &ag, std::string fileName, bool testingMode);
 void saveGame(AzulGame &ag);
 void credits();
 void eofQuit(bool eof);
@@ -97,7 +98,12 @@ void mainMenu()
             }
             else if (option == LOADGAME)
             {
-                loadGame(ag);
+                std::cout << std::endl;
+                std::cout << "Enter the filename from which to load a game" << std::endl;
+                std::cout << "> ";
+                std::string filename;
+                std::cin >> filename;
+                loadGame(ag, filename, false);
             }
             else if (option == CREDITS)
             {
@@ -175,20 +181,14 @@ void newGame(AzulGame &ag)
     ag.playGame();
 }
 
-void loadGame(AzulGame &ag)
+void loadGame(AzulGame &ag, std::string fileName, bool testingMode)
 {
-    std::cout << std::endl;
-    std::cout << "Enter the filename from which to load a game" << std::endl;
-    std::cout << "> ";
-    std::string filename;
-    std::cin >> filename;
-
-    std::ifstream input_file(filename);
+    std::ifstream input_file(fileName);
     // check if the file has been successfully opened
     if (input_file)
     {
         std::string playerNames[NUM_PLAYERS];
-        std::cout << "succesffuly opened file" << std::endl;
+        std::cout << "Successfully opened file" << std::endl;
         int line_count = 0;
         while (!input_file.eof())
         {
@@ -208,7 +208,7 @@ void loadGame(AzulGame &ag)
                         exit(EXIT_FAILURE);
                     }
                     }
-                ag.getTileBag()->printTileBag();
+                //ag.getTileBag()->printTileBag();
             }
             else if (line_count == 1)
             {
@@ -230,9 +230,18 @@ void loadGame(AzulGame &ag)
         //loads in and plays the moves as read provided in the txt file 
         ag.loadGame();
         //plays the game with input from there on
-        ag.playGame();
+        if(testingMode)
+        {
+            ag.printBoard(true);
+            std::cout << " " << std::endl;
+            ag.printBoard(false);
+        }else{
+            ag.playGame();
+        }
+        
     }
 }
+
 
 void saveGame(AzulGame &ag)
 {
