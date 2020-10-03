@@ -36,6 +36,7 @@ class AzulGame
         void printBoard(bool player1Turn);
         void printFactories();
         void runCommand(std::string input, bool player1Turn);
+        void calculateScore(bool player1Turn);
 
     private:
         TileBag* tileBag;
