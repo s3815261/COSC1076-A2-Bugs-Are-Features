@@ -4,3 +4,5 @@ test 3 - Checks that the tilebag functions with one tile and differing length.
 test 4 - Checks what happens if player ones name is empty.
 test 5 - Checks what happens if there are no turns entered.
 test 6 -  Checks what happens if there are only player names.
+test 7 - Checks what happens if there is an invalid tile in the tile bag.
+test 8 - Checks what happens when a turn is made for a factory that has already been used.
