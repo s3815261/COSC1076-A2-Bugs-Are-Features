@@ -198,7 +198,7 @@ void loadGame(AzulGame &ag, std::string fileName, bool testingMode)
             if (line_count == 0)
             {
                 int line_size = line.size();
-                for (int i = 0; i < line_size; ++i)
+                for (int i = 0; i < line_size - 1; ++i)
                 {
                     if(tileCheck(line[i]) == true) {
                         Tile* new_tile = new Tile(line[i]);
@@ -208,7 +208,6 @@ void loadGame(AzulGame &ag, std::string fileName, bool testingMode)
                         exit(EXIT_FAILURE);
                     }
                     }
-                //ag.getTileBag()->printTileBag();
             }
             else if (line_count == 1)
             {
