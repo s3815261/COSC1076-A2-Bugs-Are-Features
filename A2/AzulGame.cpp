@@ -277,21 +277,31 @@ void AzulGame::calculateScore(bool player1Turn)
     int player2Score = 0;
     int adjacentTiles = 0;
     int floorline = 0;
-    int floorlineIndex = 7;
+    int floorlineIndex = 0;
 
     if (player1Turn == true)
     {
         players[PLAYER1_INDEX]->getPlayerBoard();
-        if (tile is not adjacent to anything)
+      if (//tile is not adjacent to anything)
+            {
+            ++adjacentTiles
+            }
+            else if (//tile is adjacent)
+            {
+                if (//tile has one adjacent tile left, right, up or down)
+                {
+                adjacentTiles += 2;
+                }
+                else if (//tile has two adjacent tiles left, right, up or down)
+                {
+                adjacentTiles += 3;
+                }
+                ++player2Score + adjacentTiles
+            }
+        if (//end of round)
         {
-            ++player1Score
-        }
-        else if (tile is adjacent)
-        {
-            ++player1Score + adjacentTiles;
-        }
-        if (end of round)
-        {
+            //for each tile in floorlineIndex
+            //++floorlineIndex
             while (int i = 0; i < floorlineIndex; ++i)
                 if (i < 2 && i > -1)
                 {
@@ -334,6 +344,8 @@ void AzulGame::calculateScore(bool player1Turn)
             }
             if (//end of round)
             {
+                //for each tile in floorlineIndex
+                //++floorlineIndex
                 while (int i = 0; i < floorlineIndex; ++i)
                     if (i < 2 && i > -1)
                     {
