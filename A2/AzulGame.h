@@ -56,12 +56,12 @@ class AzulGame
         int roundNumber;
         int turnNumber;
         int currentPlayerIndex;
+        bool firstPlayerTokenTaken;
         TileBag* tileBag;
         Player** players;
         Player* currentPlayer;
         Factory** factories;
         std::vector<std::string> turnVector;
-        bool firstPlayerTokenTaken;
 
 };
 

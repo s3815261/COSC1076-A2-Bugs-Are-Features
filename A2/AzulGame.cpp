@@ -5,9 +5,11 @@
 #include "AzulGame.h"
 
 //Azul game constructor
-AzulGame::AzulGame() : roundNumber(0),
-                       turnNumber(0),
-                       currentPlayerIndex(PLAYER1_INDEX)
+AzulGame::AzulGame() : 
+    roundNumber(0),
+    turnNumber(0),
+    currentPlayerIndex(PLAYER1_INDEX),
+    firstPlayerTokenTaken(false)
 {
     //creates a new tile bag, player and factories
     tileBag = new TileBag();
@@ -470,6 +472,8 @@ void AzulGame::runCommand(std::string input)
                 commonTiles[i] = nullptr;
             }
         }
+        delete storageRowTile;
+        storageRowTile = nullptr;
         if (factoryNumber != 0)
         {
             for (int i = 0; i < factory->size(); ++i)

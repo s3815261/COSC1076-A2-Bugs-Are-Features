@@ -4,13 +4,15 @@
 #include "Factory.h"
 
  //initializes the factory
- Factory::Factory()
+ Factory::Factory() :
+    sameTileLength(0)
  {
  }
 
 //Creates a deep copy of the factory
 Factory::Factory(Factory& other):
-    factory(other.factory)
+    factory(other.factory),
+    sameTileLength(other.sameTileLength)
 {
 }
 
@@ -103,33 +105,18 @@ Tile** Factory::popSameTile(char tile)
     {
         if (get(i)->getTile() == tile)  
         {
-            tiles[length] = get(i); // RUBL, R
+            tiles[length] = get(i); 
             ++length;
         }
     }
     std::vector<Tile*> tempVector;
-    // for (int i = size() - 1; i > 0; --i) 
-    // {
-    //     if (get(i) != nullptr) 
-    //     {
-    //         if (get(i)->getTile() == tile) 
-    //         {
-    //             factory[i] = nullptr; // nullptr UBL 
-    //             remove(i); 
-    //         }
-    //         else
-    //         {
-                
-    //         }
-    //     }
-    // } 
-    for (int i = 0; i < size(); ++i) // RUBL
+    for (int i = 0; i < size(); ++i)
     {
         if (get(i) != nullptr)
         {
             if (get(i)->getTile() != tile)
             {
-                tempVector.push_back(get(i)); // UBL
+                tempVector.push_back(get(i)); 
             }
         }
     }

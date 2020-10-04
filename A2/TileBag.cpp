@@ -5,7 +5,8 @@
 #include "Node.h"
 
 //constructor
-TileBag::TileBag() : length(0)
+TileBag::TileBag() : 
+    length(0)
 {
     head = nullptr;
 }

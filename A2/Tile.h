@@ -17,6 +17,7 @@ public:
 private:
   //Stores what type the tile is
    char tile;
+   
 };
 
 

@@ -13,7 +13,7 @@ void newGame();
 void loadGame(std::string fileName, bool testingMode);
 void credits();
 void eofQuit(bool eof);
-bool tileCheck(char tile);
+bool isValidTile(char tileChar);
 
 #define NEWGAME 1
 #define LOADGAME 2
@@ -109,10 +109,12 @@ void mainMenu()
     }
 }
 
-bool tileCheck(char tile)
+//checks if the tile is valid
+bool isValidTile(char tileChar)
 {
+    //makes sure a tile is only red, yellow, blue, light blue or black
     bool returnValue = false;
-    if (tile == RED || tile == YELLOW || tile == DARK_BLUE || tile == LIGHT_BLUE || tile == BLACK)
+    if (tileChar == RED || tileChar == YELLOW || tileChar == DARK_BLUE || tileChar == LIGHT_BLUE || tileChar == BLACK)
     {
         returnValue = true;
     }
@@ -196,7 +198,7 @@ void loadGame(std::string fileName, bool testingMode)
                     int line_size = line.size();
                     for (int i = 0; i < line_size; ++i)
                     {
-                        if (tileCheck(line[i]) == true)
+                        if (isValidTile(line[i]) == true)
                         {
                             Tile *new_tile = new Tile(line[i]);
                             ag->getTileBag()->addBack(new_tile);

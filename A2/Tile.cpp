@@ -7,9 +7,9 @@ Tile::Tile(char tile) :
 }
 
 //Copies the tile
-Tile::Tile(Tile& other) 
+Tile::Tile(Tile& other) :
+    tile(other.tile)
 {
-    tile = other.tile;
 }
 
 //Deletes the tile
