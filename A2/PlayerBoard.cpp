@@ -191,11 +191,11 @@ Tile* PlayerBoard::getStorageRowTile(int row)
 bool PlayerBoard::isStorageRowFull(int row)
 {
     bool isFull = true;
-    int start = INDEX_STORAGE_ROW_END;  
+    int start = INDEX_STORAGE_ROW_END;  // 3
     int end = start - row; 
     for (int cols = start; cols >= end; --cols) 
     {
-        if (board[row][cols] == '.' || board[row][cols] == ' ')
+        if (board[row][cols] == '.')
         {
             isFull = false;
         }
@@ -211,4 +211,14 @@ void PlayerBoard::clearStorageRow(int row)
     {
         board[row][cols] = '.';
     }
+}
+
+int PlayerBoard::countAdjacentTilesVertical(int row, int col)
+{
+
+}
+
+int PlayerBoard::countAdjacentTilesHorizontal(int row, int col)
+{
+
 }
