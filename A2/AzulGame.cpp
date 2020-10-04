@@ -236,7 +236,7 @@ void AzulGame::loadGame()
     {
         //checks if turn is valid, else stop loading
         bool isValid = isCommandValid(turnVector[turn]);
-        if (isValid)
+        if (isValid == true)
         {
             //makes the turn if it is valid
             runCommand(turnVector[turn]);
