@@ -27,29 +27,30 @@ class AzulGame
         AzulGame();
         ~AzulGame();
         TileBag* getTileBag();
-        PlayerBoard* getPlayerBoard();
         Player** getPlayers();
         Factory** getFactories();
         std::vector<std::string> getTurns();
 
         void setPlayerNames(std::string playerNameArray[]);
-        
-        void addTurn(std::string turn);
-        void populateFactories();
-        bool factoriesIsEmpty();
-        void printPlayerNames();
         void newGame();
         void loadGame();
         void playGame();
-        void nextPlayerTurn();
-        void printPlayerGameBoard();
-        void printFactories();
+        void populateFactories();
+        
         bool isCommandValid(std::string input);
         bool isValidTile(char tileChar);
-        void runCommand(std::string input);
+        void runCommand(std::string input, bool loadingGame);
+        void addTurn(std::string turn);
         void takeFirstPlayerToken();
+        void nextPlayerTurn();
+        bool factoriesIsEmpty();
+
         void endOfRound();
-        void calculatePlayerScoreChanged(Player* player, int row, int col);
+        void calculatePlayerScoreChange(Player* player, int row, int col);
+
+        void printFactories();
+        void printPlayerGameBoard();
+        void printPlayerNames();
         void printPlayerScores();
 
     private:

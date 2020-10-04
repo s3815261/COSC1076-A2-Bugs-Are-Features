@@ -13,7 +13,6 @@ void newGame();
 void loadGame(std::string fileName, bool testingMode);
 void credits();
 void eofQuit(bool eof);
-bool isValidTile(char tileChar);
 
 #define NEWGAME 1
 #define LOADGAME 2
@@ -35,8 +34,16 @@ void game(int argc, char **argv)
     }
     else if (argc == 3)
     {
-        std::string fileName;
-        loadGame(fileName, true);
+        std::string command(argv[1]);
+        if (command == "-t")
+        {
+            std::string fileName(argv[2]);
+            loadGame(fileName, true);
+        }
+        else
+        {
+            std::cout << "Invalid Command" << std::endl;   
+        }
     }
 }
 
@@ -109,18 +116,6 @@ void mainMenu()
     }
 }
 
-//checks if the tile is valid
-bool isValidTile(char tileChar)
-{
-    //makes sure a tile is only red, yellow, blue, light blue or black
-    bool returnValue = false;
-    if (tileChar == RED || tileChar == YELLOW || tileChar == DARK_BLUE || tileChar == LIGHT_BLUE || tileChar == BLACK)
-    {
-        returnValue = true;
-    }
-    return returnValue;
-}
-
 void displayPrimaryMenu(bool primaryMenu)
 {
     if (primaryMenu)
@@ -172,12 +167,14 @@ void newGame()
     {
         std::cout << "Name was empty, try again" << std::endl;
         newGame();
-    } else {
-    std::cout << "Let's Play!" << std::endl;
-    ag->newGame();
-    //plays the game with input
-    ag->playGame();
-
+    } 
+    else 
+    {
+        std::cout << "Let's Play!" << std::endl;
+        ag->newGame();
+        //plays the game with input
+        ag->playGame();
+    }
     delete ag;
 }
 
@@ -202,7 +199,7 @@ void loadGame(std::string fileName, bool testingMode)
                     int line_size = line.size();
                     for (int i = 0; i < line_size; ++i)
                     {
-                        if (isValidTile(line[i]) == true)
+                        if (ag->isValidTile(line[i]))
                         {
                             Tile *new_tile = new Tile(line[i]);
                             ag->getTileBag()->addBack(new_tile);
@@ -252,10 +249,19 @@ void loadGame(std::string fileName, bool testingMode)
             //plays the game with input from there on
             if (testingMode)
             {
-                ag->printPlayerGameBoard();
-                std::cout << " " << std::endl;
-                ag->nextPlayerTurn();
-                ag->printPlayerGameBoard();
+                // ag->printPlayerGameBoard();
+                // std::cout << " " << std::endl;
+                // ag->nextPlayerTurn();
+                // ag->printPlayerGameBoard();
+                ag->printFactories();
+                Player **players = ag->getPlayers();
+                for (int i = 0; i < NUM_PLAYERS; ++i)
+                {
+                    std::string name = players[i]->getName();
+                    int score = players[i]->getScore();
+                    std::cout << "Score for Player " << name << ": " << score << std::endl;
+                    players[i]->printBoard();
+                }
             }
             else
             {

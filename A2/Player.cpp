@@ -42,3 +42,11 @@ PlayerBoard* Player::getPlayerBoard()
 {
     return playerBoard;
 }
+
+void Player::printBoard()
+{
+    std::cout << std::endl;
+    std::cout << "Mosaic for " << name << ":" << std::endl;
+    playerBoard->printPlayerBoard();
+    std::cout << std::endl;
+}

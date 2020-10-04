@@ -26,13 +26,12 @@ class Factory
         //add a tile to the end of the factory
         void add(Tile* tile);
 
-        //add a tile to a certain index
-        void add(Tile* tile, int index);
-
         //removing an element from the vector
         void remove(int index);
 
-        void printFactory();
+        int getSameTileLength();
+
+        void setSameTileLength(int value);
 
         Tile* popFront();
 
@@ -40,9 +39,7 @@ class Factory
 
         void clearAll();
 
-        int getSameTileLength();
-
-        void setSameTileLength(int value);
+        void printFactory();
 
     private:
         std::vector<Tile*> factory;

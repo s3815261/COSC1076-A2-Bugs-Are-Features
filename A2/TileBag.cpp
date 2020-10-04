@@ -23,39 +23,6 @@ int TileBag::size()
     return length;
 }
 
-//adds tiles to the back of the tilebag
-void TileBag::addBack(Tile *tile)
-{
-    Node *toAdd = new Node(tile, nullptr);
-
-    if (head == nullptr)
-    {
-        head = toAdd;
-    }
-    else
-    {
-        Node *current = head;
-        while (current->next != nullptr)
-        {
-            current = current->next;
-        }
-
-        current->next = toAdd;
-    }
-    ++length;
-}
-
-//prints the contents of the tile bag
-void TileBag::printTileBag()
-{
-    Node *current_node = head;
-    while (current_node != nullptr)
-    {
-        std::cout << current_node->tile->getTile() << std::endl;
-        current_node = current_node->next;
-    }
-}
-
 //clears the content of the tile bag
 void TileBag::clear()
 {
@@ -92,6 +59,28 @@ Tile *TileBag::popFront()
     return original_first_node->tile;
 }
 
+//adds tiles to the back of the tilebag
+void TileBag::addBack(Tile *tile)
+{
+    Node *toAdd = new Node(tile, nullptr);
+
+    if (head == nullptr)
+    {
+        head = toAdd;
+    }
+    else
+    {
+        Node *current = head;
+        while (current->next != nullptr)
+        {
+            current = current->next;
+        }
+
+        current->next = toAdd;
+    }
+    ++length;
+}
+
 //intialises the tile bag with 100 tiles of different colours
 void TileBag::initaliseTileBag()
 {
@@ -117,4 +106,15 @@ std::string TileBag::saveTileBag()
         current_node = current_node->next;
     }
     return tileBag;
+}
+
+//prints the contents of the tile bag
+void TileBag::printTileBag()
+{
+    Node *current_node = head;
+    while (current_node != nullptr)
+    {
+        std::cout << current_node->tile->getTile() << std::endl;
+        current_node = current_node->next;
+    }
 }

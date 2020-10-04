@@ -49,15 +49,6 @@ Tile* Factory::get(int index)
     return tile;
 }
 
-//Adds tile at a specific index of the factory
-void Factory::add(Tile* tile, int index)
-{
-    if(index >= 0 && index < size())
-    {
-        factory.insert(factory.begin() + index, tile);
-    }
-}
-
 //Adds tile to the end of the factory
 void Factory::add(Tile* tile)
 {
@@ -70,12 +61,14 @@ void Factory::remove(int index)
     factory.erase(factory.begin() + index);
 }
 
-void Factory::printFactory()
+int Factory::getSameTileLength()
 {
-    for (int i = 0; i < size(); ++i)
-    {
-        std::cout << get(i)->getTile() << ' ';
-    } 
+    return sameTileLength;
+}
+
+void Factory::setSameTileLength(int value)
+{
+    sameTileLength = value;
 }
 
 Tile* Factory::popFront()
@@ -135,12 +128,10 @@ void Factory::clearAll()
     factory.clear();
 }
 
-int Factory::getSameTileLength()
+void Factory::printFactory()
 {
-    return sameTileLength;
-}
-
-void Factory::setSameTileLength(int value)
-{
-    sameTileLength = value;
+    for (int i = 0; i < size(); ++i)
+    {
+        std::cout << get(i)->getTile() << ' ';
+    } 
 }

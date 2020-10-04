@@ -64,24 +64,7 @@ Factory* PlayerBoard::getBroken()
     return broken;
 }
 
-//Rules for adding the tile from factory to gameboard....
-void PlayerBoard::addTile(Tile* tile, int row, int col)
-{
-    //validation to check input is within bounds
-    if(row < MAX_BOARD_ROWS && row >= 0 && col < MAX_BOARD_ROWS && col >= 0)
-    {
-        //make sure that the tile being added is not null...
-        if(tile != nullptr)
-        {
-            //if all validation is meet add the tile to the board
-            //Will be R, Y, B, L, U, F
-            char tileLetter = tile->getTile();
-            board[row][col] = tileLetter;
-        }
-    }
-}
-
-void PlayerBoard::addTiletoRow(Tile* tile, int row)
+void PlayerBoard::addTileToRow(Tile* tile, int row)
 {
     // This variable is the index of where the end 
     // of each of the storage rows are at.
@@ -109,7 +92,7 @@ void PlayerBoard::addTiletoRow(Tile* tile, int row)
     }
 }
 
-void PlayerBoard::addTiletoMosaic(Tile* tile, int row)
+void PlayerBoard::addTileToMosaic(Tile* tile, int row)
 {
     int start = INDEX_MOSAIC_WALL_START;
     int mosaicIndex = 0;
@@ -121,15 +104,6 @@ void PlayerBoard::addTiletoMosaic(Tile* tile, int row)
         }
         ++mosaicIndex;
     }
-}
-
-Tile* PlayerBoard::popTileFromStorageRow(int row)
-{
-    Tile* tile = nullptr;
-    int start = INDEX_STORAGE_ROW_END;
-    tile = new Tile(board[row][start]);
-    board[row][start] = '.';
-    return tile;
 }
 
 //Removing a tile from the board
@@ -145,36 +119,13 @@ void PlayerBoard::removeTile(int row, int col)
     }
 }
 
-//Moving the tile on the board
-void PlayerBoard::moveTile(Tile* tile, int prevRow, int prevCol, int newRow, int newCol)
-{   
-    char tileLetter = tile->getTile();
-    //Checking if the row and col is within bounds
-    if(newRow < MAX_BOARD_ROWS && newRow >=0  && newCol < MAX_BOARD_ROWS && newCol >= 0)
-    {
-        board[newRow][newCol] = tileLetter;
-        removeTile(prevRow, prevCol);
-    }
-}
-
-void PlayerBoard::printPlayerBoard()
+Tile* PlayerBoard::popTileFromStorageRow(int row)
 {
-    for (int rows = 0; rows < MAX_BOARD_ROWS; ++rows)
-    {
-        std::cout << rows + 1 << ":";
-        for (int cols = 0; cols < MAX_BOARD_COLS; ++cols)
-        {
-            if (board[rows][cols - 1] == '|' && board[rows][cols] == '|')
-            {
-                std::cout << board[rows][cols];
-            }
-            else 
-            {
-                std::cout << ' ' << board[rows][cols];
-            }
-        }
-        std::cout << std::endl;
-    }
+    Tile* tile = nullptr;
+    int start = INDEX_STORAGE_ROW_END;
+    tile = new Tile(board[row][start]);
+    board[row][start] = '.';
+    return tile;
 }
 
 Tile* PlayerBoard::getStorageRowTile(int row)
@@ -201,28 +152,6 @@ bool PlayerBoard::isStorageRowFull(int row)
         }
     }
     return isFull;
-}
-
-void PlayerBoard::clearStorageRow(int row)
-{
-    int start = INDEX_STORAGE_ROW_END;
-    int end = start - row;
-    for (int cols = start; cols >= end; --cols)
-    {
-        board[row][cols] = '.';
-    }
-}
-
-void PlayerBoard::clearBroken()
-{
-    for (int i = 0; i < getBroken()->size(); ++i)
-    {
-        if (getBroken()->get(i) != nullptr)
-        {
-            delete getBroken()->get(i);
-        }
-    }
-    getBroken()->clearAll();
 }
 
 int PlayerBoard::countAdjacentTilesVertical(int row, int col)
@@ -301,7 +230,7 @@ int PlayerBoard::countAdjacentTilesHorizontal(int row, int col)
     return count;
 }
 
-int PlayerBoard::getTileColumn(char tileChar, int row)
+int PlayerBoard::getTileColumnOnMosaic(char tileChar, int row)
 {
     bool found = false;
     int colIndex = 0;
@@ -317,4 +246,48 @@ int PlayerBoard::getTileColumn(char tileChar, int row)
         }
     }
     return colIndex;
+}
+
+void PlayerBoard::clearStorageRow(int row)
+{
+    int start = INDEX_STORAGE_ROW_END;
+    int end = start - row;
+    for (int cols = start; cols >= end; --cols)
+    {
+        board[row][cols] = '.';
+    }
+}
+
+void PlayerBoard::clearBroken()
+{
+    for (int i = 0; i < getBroken()->size(); ++i)
+    {
+        if (getBroken()->get(i) != nullptr)
+        {
+            delete getBroken()->get(i);
+        }
+    }
+    getBroken()->clearAll();
+}
+
+void PlayerBoard::printPlayerBoard()
+{
+    for (int rows = 0; rows < MAX_BOARD_ROWS; ++rows)
+    {
+        std::cout << rows + 1 << ":";
+        for (int cols = 0; cols < MAX_BOARD_COLS; ++cols)
+        {
+            if (board[rows][cols - 1] == '|' && board[rows][cols] == '|')
+            {
+                std::cout << board[rows][cols];
+            }
+            else 
+            {
+                std::cout << ' ' << board[rows][cols];
+            }
+        }
+        std::cout << std::endl;
+    }
+    std::cout << "broken: ";
+    broken->printFactory();
 }

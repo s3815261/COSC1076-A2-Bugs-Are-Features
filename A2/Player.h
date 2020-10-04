@@ -11,11 +11,14 @@ class Player
 public:
     Player(std::string name);
     ~Player();
+
     std::string getName();
     void setName(std::string);
     int getScore();
     void setScore(int score);
+    
     PlayerBoard* getPlayerBoard();
+    void printBoard();
 
 private:
     std::string name;

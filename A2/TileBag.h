@@ -14,9 +14,9 @@ public:
     void clear();
     Tile* popFront();
     void addBack(Tile* tile);
-    void printTileBag();
     void initaliseTileBag();
     std::string saveTileBag();
+    void printTileBag();
 
 private:
     Node* head;
