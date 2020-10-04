@@ -212,6 +212,21 @@ void AzulGame::playGame()
             ++roundNumber;
         }
     }
+
+    std::cout << "=== GAME OVER ===" << std::endl;
+    std::cout << std::endl;
+    std::cout << "Final Score:" << std::endl;
+    int winningPlayerIndex = 0;
+    int highestScore = 0;
+    for (int i = 0; i < NUM_PLAYERS; ++i)
+    {
+        if (players[i]->getScore() > highestScore)
+        {
+            highestScore = players[i]->getScore();
+            winningPlayerIndex = i;
+        }
+    }
+    std::cout << "Player " << players[winningPlayerIndex]->getName() << " wins!" << std::endl;
 }
 //moves to the next players turn
 void AzulGame::nextPlayerTurn()
