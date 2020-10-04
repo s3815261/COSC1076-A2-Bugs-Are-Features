@@ -226,6 +226,7 @@ void AzulGame::playGame()
             winningPlayerIndex = i;
         }
     }
+    printPlayerScores();
     std::cout << "Player " << players[winningPlayerIndex]->getName() << " wins!" << std::endl;
 }
 //moves to the next players turn
@@ -569,7 +570,8 @@ void AzulGame::endOfRound()
             }
         }
     }
-    printPlayerScore(players[i]);
+    std::cout << "Current Scores:" << std::endl;
+    printPlayerScores();
 }
 
 void AzulGame::calculatePlayerScoreChanged(Player* player, int row, int col)
@@ -599,9 +601,9 @@ void AzulGame::calculatePlayerScoreChanged(Player* player, int row, int col)
     }
 }
 
-void AzulGame::printPlayerScore(Player *player)
+void AzulGame::printPlayerScores()
 {
     for (int i = 0; i < NUM_PLAYERS; ++i) {
-        std::cout<< "Player " << players[i]->getName() << " Score: " << players[i]->getScore() << std::endl;
+        std::cout<< "Player " << players[i]->getName() << ": " << players[i]->getScore() << std::endl;
     }
 }
