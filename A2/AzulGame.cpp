@@ -164,473 +164,479 @@ void AzulGame::playGame()
             bool inputValid = false;
             std::string input = "";
             printPlayerGameBoard();
-            if (turnNumber == 0) {
+            if (turnNumber == 0)
+            {
                 std::cout << std::endl;
                 std::cout << "> ";
             }
-                else
+            else
+            {
+                std::cout << "> ";
+            }
+            while (!inputValid && !std::cin.eof())
+            {
+                //reads in input
+                getline(std::cin, input);
+                if (!std::cin.eof() && input.length() != 0)
                 {
-                    std::cout << "> ";
-                }
-                while (!inputValid && !std::cin.eof())
-                {
-                    //reads in input
-                    getline(std::cin, input);
-                    if (!std::cin.eof())
+                    //checks if input is valid
+                    inputValid = isCommandValid(input);
+                    if (!inputValid)
                     {
-                        //checks if input is valid
-                        inputValid = isCommandValid(input);
-                        if (!inputValid)
-                        {
-                            std::cout << "Invalid Input" << std::endl;
-                            std::cout << "> ";
-                        }
+                        std::cout << "Invalid Input" << std::endl;
+                        std::cout << "> ";
                     }
-                }
-                if (!std::cin.eof())
-                {
-                    //runs a turn if it is valid
-                    runCommand(input);
-                }
-                if (input.substr(0, 4) != "save")
-                {
-                    //goes to next players turn
-                    ++turnNumber;
-                    nextPlayerTurn();
                 }
             }
             if (!std::cin.eof())
             {
-                //end of round
-                std::cout << "=== END OF ROUND ===" << std::endl;
-                std::cout << std::endl;
+                //runs a turn if it is valid
+                runCommand(input);
+            }
+            if (input.length() != 0) {
+                if (input.substr(0,4) != "save") {
+                   //goes to next players turn
+                ++turnNumber;
+                nextPlayerTurn(); 
+                }
+            }
+        }
+        if (!std::cin.eof())
+        {
+            //end of round
+            std::cout << "=== END OF ROUND ===" << std::endl;
+            std::cout << std::endl;
+            endOfRound();
+            firstPlayerTokenTaken = false;
+            turnNumber = 0;
+            ++roundNumber;
+        }
+    }
+}
+//moves to the next players turn
+void AzulGame::nextPlayerTurn()
+{
+    ++currentPlayerIndex;
+    if (currentPlayerIndex == NUM_PLAYERS)
+    {
+        currentPlayerIndex = 0;
+    }
+    currentPlayer = players[currentPlayerIndex];
+}
+
+//loads in the turns, tilebag and factory loaded in main function of load game
+void AzulGame::loadGame()
+{
+
+    //loop through the vector of turns/strings and make moves
+    populateFactories();
+    int turnVectorSize = turnVector.size();
+
+    for (int turn = 0; turn < turnVectorSize; ++turn)
+    {
+        //checks if turn is valid, else stop loading
+        bool isValid = isCommandValid(turnVector[turn]);
+        if (isValid)
+        {
+            //makes the turn if it is valid
+            runCommand(turnVector[turn]);
+            ++turnNumber;
+            nextPlayerTurn();
+            if (factoriesIsEmpty())
+            {
                 endOfRound();
                 firstPlayerTokenTaken = false;
                 turnNumber = 0;
                 ++roundNumber;
             }
         }
-    }
-
-    void AzulGame::nextPlayerTurn()
-    {
-        ++currentPlayerIndex;
-        if (currentPlayerIndex == NUM_PLAYERS)
-        {
-            currentPlayerIndex = 0;
-        }
-        currentPlayer = players[currentPlayerIndex];
-    }
-
-    //loads in the turns, tilebag and factory loaded in main function of load game
-    void AzulGame::loadGame()
-    {
-
-        //loop through the vector of turns/strings and make moves
-        populateFactories();
-        int turnVectorSize = turnVector.size();
-
-        for (int turn = 0; turn < turnVectorSize; ++turn)
-        {
-            //checks if turn is valid, else stop loading
-            bool isValid = isCommandValid(turnVector[turn]);
-            if (isValid)
-            {
-                //makes the turn if it is valid
-                runCommand(turnVector[turn]);
-                ++turnNumber;
-                nextPlayerTurn();
-                if (factoriesIsEmpty())
-                {
-                    endOfRound();
-                    firstPlayerTokenTaken = false;
-                    turnNumber = 0;
-                    ++roundNumber;
-                }
-            }
-            //errors and asks for an appropriate load game file if a turn is invalid
-            else
-            {
-                std::cout << "Error with turn read in, Enter appropriate load game file" << std::endl;
-                exit(EXIT_FAILURE);
-            }
-        }
-    }
-
-    //prints the playerboard so people can see what moves to make
-    void AzulGame::printPlayerGameBoard()
-    {
-        std::cout << "TURN FOR PLAYER: ";
-        std::cout << currentPlayer->getName() << std::endl;
-        printFactories();
-        std::cout << std::endl;
-        std::cout << "Mosaic for " << currentPlayer->getName() << ":" << std::endl;
-        currentPlayer->getPlayerBoard()->printPlayerBoard();
-        std::cout << "broken: ";
-        currentPlayer->getPlayerBoard()->getBroken()->printFactory();
-        std::cout << std::endl;
-    }
-
-    //prints the factories for each turn
-    void AzulGame::printFactories()
-    {
-        std::cout << "Factories:" << std::endl;
-        for (int i = 0; i < NUM_FACTORIES; ++i)
-        {
-            std::cout << i << ": ";
-            factories[i]->printFactory();
-            std::cout << std::endl;
-        }
-    }
-
-    //checks if a command/turn is valid
-    bool AzulGame::isCommandValid(std::string input)
-    {
-        bool isValid = true;
-        std::string command = input.substr(0, 4);
-        if (command == "turn" && input.length() == 10)
-        {
-            //checks the value of each part of the turn using sub strings
-            int factoryNumber;
-            char tileChar;
-            int storageRow;
-            std::string factoryNumberString = input.substr(5, 6);
-            std::string tileString = input.substr(7, 7);
-            std::string storageRowString = input.substr(9, 10);
-            std::istringstream fns(factoryNumberString);
-            fns >> factoryNumber;
-            std::istringstream ts(tileString);
-            ts >> tileChar;
-            std::istringstream srs(storageRowString);
-            srs >> storageRow;
-            //if any of them fail isValid is false
-            if (fns.fail() || ts.fail() || srs.fail())
-            {
-                isValid = false;
-            }
-            //if factory number is out of bounds it is not a valid turn
-            else if (!fns.fail())
-            {
-                if (factoryNumber < 0 || factoryNumber > 5)
-                {
-                    isValid = false;
-                }
-            }
-            else if (!ts.fail())
-            {
-                if (!isValidTile(tileChar))
-                {
-                    isValid = false;
-                }
-            }
-            //if storage row is out of bounds it is not a valid turn
-            else if (!srs.fail())
-            {
-                if (storageRow < 1 || storageRow > 5)
-                {
-                    isValid = false;
-                }
-            }
-            if (isValid)
-            {
-                PlayerBoard *playerBoard = currentPlayer->getPlayerBoard();
-                Tile *tile = playerBoard->getStorageRowTile(storageRow - 1);
-                if (!playerBoard->isStorageRowFull(storageRow - 1))
-                {
-                    if (tile != nullptr)
-                    {
-                        if (tile->getTile() != tileChar)
-                        {
-                            isValid = false;
-                        }
-                    }
-                }
-                delete tile;
-                tile = nullptr;
-                if (factories[factoryNumber]->size() == 0)
-                {
-                    isValid = false;
-                }
-            }
-        }
-        else if (command == "save" && input.length() > 4)
-        {
-            std::string fileName = input.substr(5, input.length());
-            if (fileName.at(fileName.length() - 1) == ' ')
-            {
-                isValid = false;
-            }
-        }
+        //errors and asks for an appropriate load game file if a turn is invalid
         else
+        {
+            std::cout << "Error with turn read in, Enter appropriate load game file" << std::endl;
+            exit(EXIT_FAILURE);
+        }
+    }
+}
+
+//prints the playerboard so people can see what moves to make
+void AzulGame::printPlayerGameBoard()
+{
+    std::cout << "TURN FOR PLAYER: ";
+    std::cout << currentPlayer->getName() << std::endl;
+    printFactories();
+    std::cout << std::endl;
+    std::cout << "Mosaic for " << currentPlayer->getName() << ":" << std::endl;
+    currentPlayer->getPlayerBoard()->printPlayerBoard();
+    std::cout << "broken: ";
+    currentPlayer->getPlayerBoard()->getBroken()->printFactory();
+    std::cout << std::endl;
+}
+
+//prints the factories for each turn
+void AzulGame::printFactories()
+{
+    std::cout << "Factories:" << std::endl;
+    for (int i = 0; i < NUM_FACTORIES; ++i)
+    {
+        std::cout << i << ": ";
+        factories[i]->printFactory();
+        std::cout << std::endl;
+    }
+}
+
+//checks if a command/turn is valid
+bool AzulGame::isCommandValid(std::string input)
+{
+    bool isValid = true;
+    std::string command = input.substr(0, 4);
+    if (command == "turn" && input.length() == 10)
+    {
+        //checks the value of each part of the turn using sub strings
+        int factoryNumber;
+        char tileChar;
+        int storageRow;
+        std::string factoryNumberString = input.substr(5, 6);
+        std::string tileString = input.substr(7, 7);
+        std::string storageRowString = input.substr(9, 10);
+        std::istringstream fns(factoryNumberString);
+        fns >> factoryNumber;
+        std::istringstream ts(tileString);
+        ts >> tileChar;
+        std::istringstream srs(storageRowString);
+        srs >> storageRow;
+        //if any of them fail isValid is false
+        if (fns.fail() || ts.fail() || srs.fail())
         {
             isValid = false;
         }
-        return isValid;
-    }
-
-    //checks if the tile is valid
-    bool AzulGame::isValidTile(char tileChar)
-    {
-        //makes sure a tile is only red, yellow, blue, light blue or black
-        bool returnValue = false;
-        if (tileChar == RED || tileChar == YELLOW || tileChar == DARK_BLUE || tileChar == LIGHT_BLUE || tileChar == BLACK)
+        //if factory number is out of bounds it is not a valid turn
+        else if (!fns.fail())
         {
-            returnValue = true;
-        }
-        return returnValue;
-    }
-
-    //runs/makes the turn/command to select tiles from factories and move them to the playerboard
-    void AzulGame::runCommand(std::string input)
-    {
-        std::string command = input.substr(0, 4);
-        if (command == "turn")
-        {
-            int factoryNumber = std::stoi(input.substr(5, 6));
-            char tile = input[7];
-            int storageRow = std::stoi(input.substr(9, 10)) - 1;
-            PlayerBoard *playerBoard = currentPlayer->getPlayerBoard();
-            Factory *factory = factories[factoryNumber];
-            Tile **commonTiles = factory->popSameTile(tile);
-            Factory *broken = playerBoard->getBroken();
-            Tile *storageRowTile = playerBoard->getStorageRowTile(storageRow);
-            if (factoryNumber == 0)
+            if (factoryNumber < 0 || factoryNumber > 5)
             {
-                if (firstPlayerTokenTaken == false)
+                isValid = false;
+            }
+        }
+        else if (!ts.fail())
+        {
+            if (!isValidTile(tileChar))
+            {
+                isValid = false;
+            }
+        }
+        //if storage row is out of bounds it is not a valid turn
+        else if (!srs.fail())
+        {
+            if (storageRow < 1 || storageRow > 5)
+            {
+                isValid = false;
+            }
+        }
+        if (isValid)
+        {
+            PlayerBoard *playerBoard = currentPlayer->getPlayerBoard();
+            Tile *tile = playerBoard->getStorageRowTile(storageRow - 1);
+            if (!playerBoard->isStorageRowFull(storageRow - 1))
+            {
+                if (tile != nullptr)
                 {
-                    takeFirstPlayerToken();
-                    firstPlayerTokenTaken = true;
+                    if (tile->getTile() != tileChar)
+                    {
+                        isValid = false;
+                    }
                 }
             }
-            for (int i = 0; i < factory->getSameTileLength(); ++i)
+            delete tile;
+            tile = nullptr;
+            if (factories[factoryNumber]->size() == 0)
             {
-                if (!playerBoard->isStorageRowFull(storageRow))
+                isValid = false;
+            }
+        }
+    }
+    else if (input.length() == 0)
+            {
+                isValid = true;
+            }
+    else if (command == "save" && input.length() > 4)
+    {
+        std::string fileName = input.substr(5, input.length());
+        if (fileName.at(fileName.length() - 1) == ' ')
+        {
+            isValid = false;
+        }
+    }
+    else
+    {
+        isValid = false;
+    }
+    return isValid;
+}
+
+//checks if the tile is valid
+bool AzulGame::isValidTile(char tileChar)
+{
+    //makes sure a tile is only red, yellow, blue, light blue or black
+    bool returnValue = false;
+    if (tileChar == RED || tileChar == YELLOW || tileChar == DARK_BLUE || tileChar == LIGHT_BLUE || tileChar == BLACK)
+    {
+        returnValue = true;
+    }
+    return returnValue;
+}
+
+//runs/makes the turn/command to select tiles from factories and move them to the playerboard
+void AzulGame::runCommand(std::string input)
+{
+    std::string command = input.substr(0, 4);
+    if (command == "turn")
+    {
+        int factoryNumber = std::stoi(input.substr(5, 6));
+        char tile = input[7];
+        int storageRow = std::stoi(input.substr(9, 10)) - 1;
+        PlayerBoard *playerBoard = currentPlayer->getPlayerBoard();
+        Factory *factory = factories[factoryNumber];
+        Tile **commonTiles = factory->popSameTile(tile);
+        Factory *broken = playerBoard->getBroken();
+        Tile *storageRowTile = playerBoard->getStorageRowTile(storageRow);
+        if (factoryNumber == 0)
+        {
+            if (firstPlayerTokenTaken == false)
+            {
+                takeFirstPlayerToken();
+                firstPlayerTokenTaken = true;
+            }
+        }
+        for (int i = 0; i < factory->getSameTileLength(); ++i)
+        {
+            if (!playerBoard->isStorageRowFull(storageRow))
+            {
+                if (storageRowTile != nullptr)
                 {
-                    if (storageRowTile != nullptr)
-                    {
-                        if (storageRowTile->getTile() == tile)
-                        {
-                            playerBoard->addTiletoRow(commonTiles[i], storageRow);
-                            delete commonTiles[i];
-                            commonTiles[i] = nullptr;
-                        }
-                        else
-                        {
-                            broken->add(commonTiles[i]);
-                            commonTiles[i] = nullptr;
-                        }
-                    }
-                    else
+                    if (storageRowTile->getTile() == tile)
                     {
                         playerBoard->addTiletoRow(commonTiles[i], storageRow);
                         delete commonTiles[i];
                         commonTiles[i] = nullptr;
                     }
+                    else
+                    {
+                        broken->add(commonTiles[i]);
+                        commonTiles[i] = nullptr;
+                    }
                 }
                 else
                 {
-                    broken->add(commonTiles[i]);
-                    commonTiles[i] = nullptr;
-                }
-            }
-            if (factoryNumber != 0)
-            {
-                for (int i = 0; i < factory->size(); ++i)
-                {
-                    if (factory->get(i) != nullptr)
-                    {
-                        factories[0]->add(factory->get(i));
-                    }
-                }
-                factory->clearAll();
-            }
-            for (int i = 0; i < factory->getSameTileLength(); ++i)
-            {
-                if (commonTiles[i] != nullptr)
-                {
+                    playerBoard->addTiletoRow(commonTiles[i], storageRow);
                     delete commonTiles[i];
                     commonTiles[i] = nullptr;
                 }
             }
-            delete[] commonTiles;
-            std::cout << "Turn successful." << std::endl;
-            std::cout << std::endl;
-            addTurn(input);
-        }
-        else if (command == "save")
-        {
-            //Get save file name
-            std::string fileName = input.substr(5, input.length());
-
-            //Create save file
-            std::ofstream saveFile(fileName);
-            //Saving contents to the file
-            if (!saveFile.fail())
+            else
             {
-                if (saveFile.is_open())
+                broken->add(commonTiles[i]);
+                commonTiles[i] = nullptr;
+            }
+        }
+        if (factoryNumber != 0)
+        {
+            for (int i = 0; i < factory->size(); ++i)
+            {
+                if (factory->get(i) != nullptr)
                 {
-                    //Get the variables to save.....
-                    std::string tileBag = getTileBag()->saveTileBag();
-                    std::string player1 = getPlayers()[PLAYER1_INDEX]->getName();
-                    std::string player2 = getPlayers()[PLAYER2_INDEX]->getName();
-                    std::vector<std::string> turn_vector = getTurns();
-                    //Save the tilebag
-                    saveFile << tileBag << std::endl;
-                    //Save the name of player one
-                    saveFile << player1 << std::endl;
-                    //Save the name of player two
-                    saveFile << player2 << std::endl;
-                    //Go through the turns and save each of them to the file.
-                    for (std::vector<std::string>::iterator it = turn_vector.begin(); it != turn_vector.end(); ++it)
-                    {
-                        std::string turn = "";
-                        turn = *it;
-                        saveFile << turn << std::endl;
-                    }
+                    factories[0]->add(factory->get(i));
                 }
             }
-            //Close the file, should have the saved contents
+            factory->clearAll();
+        }
+        for (int i = 0; i < factory->getSameTileLength(); ++i)
+        {
+            if (commonTiles[i] != nullptr)
+            {
+                delete commonTiles[i];
+                commonTiles[i] = nullptr;
+            }
+        }
+        delete[] commonTiles;
+        std::cout << "Turn successful." << std::endl;
+        std::cout << std::endl;
+        addTurn(input);
+    }
+    else if (command == "save")
+    {
+        //Get save file name
+        std::string fileName = input.substr(5, input.length());
+
+        //Create save file
+        std::ofstream saveFile(fileName);
+        //Saving contents to the file
+        if (!saveFile.fail())
+        {
             if (saveFile.is_open())
             {
-                std::cout << std::endl;
-                std::cout << "Game Successfully saved to '" << fileName << "'" << std::endl;
-                std::cout << std::endl;
-                saveFile.close();
-            }
-        }
-    }
-
-    //keeps track of who has the first player token
-    void AzulGame::takeFirstPlayerToken()
-    {
-        Factory *centralFactory = factories[CENTRAL_FACTORY_INDEX];
-        Factory *broken = currentPlayer->getPlayerBoard()->getBroken();
-        Tile *firstPlayerTile = centralFactory->popFront();
-        broken->add(firstPlayerTile);
-        firstPlayerTile = nullptr;
-    }
-
-    //runs all commands for end of round including adding tiles to mosaic, clearing the rows.
-    void AzulGame::endOfRound()
-    {
-        for (int i = 0; i < NUM_PLAYERS; ++i)
-        {
-            for (int row = 0; row < MAX_BOARD_ROWS; ++row)
-            {
-                PlayerBoard *playerBoard = players[i]->getPlayerBoard();
-                if (playerBoard->isStorageRowFull(row))
+                //Get the variables to save.....
+                std::string tileBag = getTileBag()->saveTileBag();
+                std::string player1 = getPlayers()[PLAYER1_INDEX]->getName();
+                std::string player2 = getPlayers()[PLAYER2_INDEX]->getName();
+                std::vector<std::string> turn_vector = getTurns();
+                //Save the tilebag
+                saveFile << tileBag << std::endl;
+                //Save the name of player one
+                saveFile << player1 << std::endl;
+                //Save the name of player two
+                saveFile << player2 << std::endl;
+                //Go through the turns and save each of them to the file.
+                for (std::vector<std::string>::iterator it = turn_vector.begin(); it != turn_vector.end(); ++it)
                 {
-                    Tile *tile = playerBoard->popTileFromStorageRow(row);
-                    playerBoard->addTiletoMosaic(tile, row);
-                    int row = 0;
-                    //int col = 0;
-
-                    delete tile;
-                    tile = nullptr;
-                    playerBoard->clearStorageRow(row);
+                    std::string turn = "";
+                    turn = *it;
+                    saveFile << turn << std::endl;
                 }
             }
         }
+        //Close the file, should have the saved contents
+        if (saveFile.is_open())
+        {
+            std::cout << std::endl;
+            std::cout << "Game Successfully saved to '" << fileName << "'" << std::endl;
+            std::cout << std::endl;
+            saveFile.close();
+        }
     }
+}
 
-    //calculates the score for both players
-    void AzulGame::calculateScore()
+//keeps track of who has the first player token
+void AzulGame::takeFirstPlayerToken()
+{
+    Factory *centralFactory = factories[CENTRAL_FACTORY_INDEX];
+    Factory *broken = currentPlayer->getPlayerBoard()->getBroken();
+    Tile *firstPlayerTile = centralFactory->popFront();
+    broken->add(firstPlayerTile);
+    firstPlayerTile = nullptr;
+}
+
+//runs all commands for end of round including adding tiles to mosaic, clearing the rows.
+void AzulGame::endOfRound()
+{
+    for (int i = 0; i < NUM_PLAYERS; ++i)
     {
-        // int score = 0;
-        // int player1Score = 0;
-        // int player2Score = 0;
-        // int adjacentTiles = 0;
-        // int floorline = 0;
-        // int floorlineIndex = 0;
+        for (int row = 0; row < MAX_BOARD_ROWS; ++row)
+        {
+            PlayerBoard *playerBoard = players[i]->getPlayerBoard();
+            if (playerBoard->isStorageRowFull(row))
+            {
+                Tile *tile = playerBoard->popTileFromStorageRow(row);
+                playerBoard->addTiletoMosaic(tile, row);
+                int row = 0;
+                //int col = 0;
 
-        // if (player1Turn == true)
-        // {
-        //     players[PLAYER1_INDEX]->getPlayerBoard();
-        //   if (//tile is not adjacent to anything)
-        //         {
-        //         ++adjacentTiles;
-        //         }
-        //         else if (//tile is adjacent)
-        //         {
-        //             if (//tile has one adjacent tile left, right, up or down)
-        //             {
-        //             adjacentTiles += 2;
-        //             }
-        //             else if (//tile has two adjacent tiles left, right, up or down)
-        //             {
-        //             adjacentTiles += 3;
-        //             }
-        //             ++player2Score + adjacentTiles;
-        //         }
-        //     if (//end of round)
-        //     {
-        //         //for each tile in floorlineIndex
-        //         //++floorlineIndex
-        //         while (int i = 0; i < floorlineIndex; ++i)
-        //             if (i < 2 && i > -1)
-        //             {
-        //                 ++floorline;
-        //                 ++i;
-        //             }
-        //             else if (i > 1 && i < 5)
-        //             {
-        //                 floorline += 2;
-        //                 ++i;
-        //             }
-        //             else if (i > 4 && i < 7)
-        //             {
-        //                 floorline += 3;
-        //                 ++i;
-        //             }
-        //         player1Score - floorline;
-        //     }
-        //     player1Score = score;
-        // }
-        // else if (player1Turn == false)
-        // {
-        //     {
-        //         players[PLAYER2_INDEX]->getPlayerBoard();
-        //         if (//tile is not adjacent to anything)
-        //         {
-        //             ++adjacentTiles;
-        //         }
-        //         else if (//tile is adjacent)
-        //         {
-        //             if (//tile has one adjacent tile left, right, up or down)
-        //             {
-        //                 adjacentTiles += 2;
-        //             }
-        //             else if (//tile has two adjacent tiles left, right, up or down)
-        //             {
-        //                 adjacentTiles += 3;
-        //             }
-        //             ++player2Score + adjacentTiles;
-        //         }
-        //         if (//end of round)
-        //         {
-        //             //for each tile in floorlineIndex
-        //             //++floorlineIndex
-        //             while (int i = 0; i < floorlineIndex; ++i)
-        //                 if (i < 2 && i > -1)
-        //                 {
-        //                     ++floorline;
-        //                     ++i;
-        //                 }
-        //                 else if (i > 1 && i < 5)
-        //                 {
-        //                     floorline += 2;
-        //                     ++i;
-        //                 }
-        //                 else if (i > 4 && i < 7)
-        //                 {
-        //                     floorline += 3;
-        //                     ++i;
-        //                 }
-        //             player2Score - floorline;
-        //         }
-        //         player2Score = score;
-        //     }
-
-        //     return score;
-        // }
+                delete tile;
+                tile = nullptr;
+                playerBoard->clearStorageRow(row);
+            }
+        }
     }
+}
+
+//calculates the score for both players
+void AzulGame::calculateScore()
+{
+    // int score = 0;
+    // int player1Score = 0;
+    // int player2Score = 0;
+    // int adjacentTiles = 0;
+    // int floorline = 0;
+    // int floorlineIndex = 0;
+
+    // if (player1Turn == true)
+    // {
+    //     players[PLAYER1_INDEX]->getPlayerBoard();
+    //   if (//tile is not adjacent to anything)
+    //         {
+    //         ++adjacentTiles;
+    //         }
+    //         else if (//tile is adjacent)
+    //         {
+    //             if (//tile has one adjacent tile left, right, up or down)
+    //             {
+    //             adjacentTiles += 2;
+    //             }
+    //             else if (//tile has two adjacent tiles left, right, up or down)
+    //             {
+    //             adjacentTiles += 3;
+    //             }
+    //             ++player2Score + adjacentTiles;
+    //         }
+    //     if (//end of round)
+    //     {
+    //         //for each tile in floorlineIndex
+    //         //++floorlineIndex
+    //         while (int i = 0; i < floorlineIndex; ++i)
+    //             if (i < 2 && i > -1)
+    //             {
+    //                 ++floorline;
+    //                 ++i;
+    //             }
+    //             else if (i > 1 && i < 5)
+    //             {
+    //                 floorline += 2;
+    //                 ++i;
+    //             }
+    //             else if (i > 4 && i < 7)
+    //             {
+    //                 floorline += 3;
+    //                 ++i;
+    //             }
+    //         player1Score - floorline;
+    //     }
+    //     player1Score = score;
+    // }
+    // else if (player1Turn == false)
+    // {
+    //     {
+    //         players[PLAYER2_INDEX]->getPlayerBoard();
+    //         if (//tile is not adjacent to anything)
+    //         {
+    //             ++adjacentTiles;
+    //         }
+    //         else if (//tile is adjacent)
+    //         {
+    //             if (//tile has one adjacent tile left, right, up or down)
+    //             {
+    //                 adjacentTiles += 2;
+    //             }
+    //             else if (//tile has two adjacent tiles left, right, up or down)
+    //             {
+    //                 adjacentTiles += 3;
+    //             }
+    //             ++player2Score + adjacentTiles;
+    //         }
+    //         if (//end of round)
+    //         {
+    //             //for each tile in floorlineIndex
+    //             //++floorlineIndex
+    //             while (int i = 0; i < floorlineIndex; ++i)
+    //                 if (i < 2 && i > -1)
+    //                 {
+    //                     ++floorline;
+    //                     ++i;
+    //                 }
+    //                 else if (i > 1 && i < 5)
+    //                 {
+    //                     floorline += 2;
+    //                     ++i;
+    //                 }
+    //                 else if (i > 4 && i < 7)
+    //                 {
+    //                     floorline += 3;
+    //                     ++i;
+    //                 }
+    //             player2Score - floorline;
+    //         }
+    //         player2Score = score;
+    //     }
+
+    //     return score;
+    // }
+}
