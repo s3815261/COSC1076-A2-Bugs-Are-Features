@@ -27,7 +27,6 @@ class PlayerBoard
 {
     public:
         PlayerBoard();
-        PlayerBoard(PlayerBoard& other);
         ~PlayerBoard();
 
         Factory* getBroken();

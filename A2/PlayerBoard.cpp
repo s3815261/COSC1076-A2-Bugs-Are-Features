@@ -48,11 +48,6 @@ PlayerBoard::PlayerBoard()
     broken = new Factory();
 }
 
-//Deep copy of the player board
-PlayerBoard::PlayerBoard(PlayerBoard& other)
-{
-}
-
 //Deletes the playerboard
 PlayerBoard::~PlayerBoard()
 {

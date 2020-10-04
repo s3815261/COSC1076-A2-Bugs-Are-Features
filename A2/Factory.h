@@ -15,8 +15,6 @@ class Factory
 
         ~Factory();
 
-        Factory(Factory& other);
-
         int size();
 
         Tile* get(int index);

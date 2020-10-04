@@ -9,13 +9,6 @@
  {
  }
 
-//Creates a deep copy of the factory
-Factory::Factory(Factory& other):
-    factory(other.factory),
-    sameTileLength(other.sameTileLength)
-{
-}
-
 //Deletes the factory
 Factory::~Factory()
 {

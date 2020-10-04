@@ -6,12 +6,6 @@ Tile::Tile(char tile) :
 {
 }
 
-//Makes a copy of the tile
-Tile::Tile(Tile& other) :
-    tile(other.tile)
-{
-}
-
 //Deconstructor allows the tile to be deleted
 Tile::~Tile()
 {
