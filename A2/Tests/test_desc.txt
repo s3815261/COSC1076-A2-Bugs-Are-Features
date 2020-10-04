@@ -11,4 +11,5 @@ test 10 - Checks what happens when factory number is out of bounds.
 test 11 - Checks what happens when row number is out of bounds.
 test 12 - Checks what happens if the word turn does not appear before turns are made.
 test 13 - Checks what happens when an invalid tile value is selected.
+test 14 - Checks what happens when only one name is entered.
 

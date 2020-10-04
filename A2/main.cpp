@@ -195,7 +195,7 @@ void loadGame(std::string fileName, bool testingMode)
                 if (line_count == 0)
                 {
                     int line_size = line.size();
-                    for (int i = 0; i < line_size - 1; ++i)
+                    for (int i = 0; i < line_size; ++i)
                     {
                         if(tileCheck(line[i]) == true) {
                             Tile* new_tile = new Tile(line[i]);

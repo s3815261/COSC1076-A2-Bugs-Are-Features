@@ -4,21 +4,25 @@
 #include "TileBag.h"
 #include "Node.h"
 
+//constructor
 TileBag::TileBag() : length(0)
 {
     head = nullptr;
 }
 
+//constructor
 TileBag::~TileBag()
 {
     clear();
 }
 
+//size of tile bag
 int TileBag::size()
 {
     return length;
 }
 
+//adds tiles to the back of the tilebag
 void TileBag::addBack(Tile *tile)
 {
     Node *toAdd = new Node(tile, nullptr);
@@ -40,6 +44,7 @@ void TileBag::addBack(Tile *tile)
     ++length;
 }
 
+//prints the contents of the tile bag
 void TileBag::printTileBag()
 {
     Node *current_node = head;
@@ -50,6 +55,7 @@ void TileBag::printTileBag()
     }
 }
 
+//clears the content of the tile bag
 void TileBag::clear()
 {
     if (head != nullptr)
@@ -69,6 +75,7 @@ void TileBag::clear()
     head = nullptr;
 }
 
+//takes off the tile at the front of the tile bag
 Tile *TileBag::popFront()
 {
     Node *original_first_node = nullptr;
@@ -84,6 +91,7 @@ Tile *TileBag::popFront()
     return original_first_node->tile;
 }
 
+//intialises the tile bag with 100 tiles of different colours
 void TileBag::initaliseTileBag()
 {
     char colours[5] = {'R','B','Y','L','U'};
@@ -96,6 +104,7 @@ void TileBag::initaliseTileBag()
     
 }
 
+//saves the tile bag
 std::string TileBag::saveTileBag()
 {
     Node *current_node = head;

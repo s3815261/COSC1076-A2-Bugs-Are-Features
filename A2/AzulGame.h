@@ -8,6 +8,7 @@
 #include "Factory.h"
 #include "Tile.h"
 
+//defines key aspects of the game including player numbers, factories and tile colours.
 #define NUM_PLAYERS             2
 #define NUM_FACTORIES           6
 #define CENTRAL_FACTORY_INDEX   0
