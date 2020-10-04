@@ -167,7 +167,7 @@ void AzulGame::playGame()
                     }
                 }
             }
-            if (!std::cin.eof())
+            if (inputValid && !std::cin.eof())
             {
                 //Runs a turn if it is valid
                 runCommand(input, false);
@@ -260,7 +260,7 @@ bool AzulGame::isCommandValid(std::string input)
             isValid = false;
         }
         //If factory number is out of bounds it is not a valid turn
-        else if (!fns.fail())
+        if (!fns.fail())
         {
             if (factoryNumber < 0 || factoryNumber > 5)
             {
@@ -268,7 +268,7 @@ bool AzulGame::isCommandValid(std::string input)
             }
         }
         //If the tile is not a valid tile
-        else if (!ts.fail())
+        if (!ts.fail())
         {
             if (!isValidTile(tileChar))
             {
@@ -276,7 +276,7 @@ bool AzulGame::isCommandValid(std::string input)
             }
         }
         //If storage row is out of bounds it is not a valid turn
-        else if (!srs.fail())
+        if (!srs.fail())
         {
             if (storageRow < 1 || storageRow > 5)
             {
@@ -364,9 +364,9 @@ void AzulGame::runCommand(std::string input, bool loadingGame)
         {
             if (!playerBoard->isStorageRowFull(storageRow))
             {
-                if (storageRowTile != nullptr)
+                if (storageRowTile != nullptr) 
                 {
-                    if (storageRowTile->getTile() == tile)
+                    if (storageRowTile->getTile() == tile) 
                     {
                         playerBoard->addTileToStorageRow(commonTiles[i], storageRow);
                         delete commonTiles[i];
@@ -378,14 +378,14 @@ void AzulGame::runCommand(std::string input, bool loadingGame)
                         commonTiles[i] = nullptr;
                     }
                 }
-                else
+                else 
                 {
                     playerBoard->addTileToStorageRow(commonTiles[i], storageRow);
                     delete commonTiles[i];
                     commonTiles[i] = nullptr;
                 }
             }
-            else
+            else 
             {
                 broken->add(commonTiles[i]);
                 commonTiles[i] = nullptr;
