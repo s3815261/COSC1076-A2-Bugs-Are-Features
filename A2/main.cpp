@@ -164,12 +164,16 @@ void newGame()
     std::cout << "> ";
     getline(std::cin, playerNames[PLAYER2_INDEX]);
     std::cout << std::endl;
-    std::cout << "Let's Play!" << std::endl;
-
     AzulGame *ag = new AzulGame();
     
     ag->setPlayerNames(playerNames);
     //initalises the game
+    if(playerNames[PLAYER1_INDEX].length() == 0 || playerNames[PLAYER2_INDEX].length() == 0) 
+    {
+        std::cout << "Name was empty, try again" << std::endl;
+        newGame();
+    } else {
+    std::cout << "Let's Play!" << std::endl;
     ag->newGame();
     //plays the game with input
     ag->playGame();
@@ -205,6 +209,8 @@ void loadGame(std::string fileName, bool testingMode)
                         }
                         else
                         {
+                            std::cout << "Error with tile read in, Enter appropriate load game file" << std::endl;
+                            exit(EXIT_FAILURE);
                         }
                     }
                 }

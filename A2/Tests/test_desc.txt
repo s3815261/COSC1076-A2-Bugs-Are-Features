@@ -1,4 +1,4 @@
-test 1 - Checks the overall state of the game..
+test 1 - Checks the overall state of the game.
 test 2 - Checks that the name can be different.
 test 3 - Checks that the tilebag functions with one tile and differing length.
 test 4 - Checks what happens if player ones name is empty.
