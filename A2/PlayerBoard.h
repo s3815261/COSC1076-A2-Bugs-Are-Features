@@ -59,6 +59,10 @@ class PlayerBoard
 
         void clearStorageRow(int row);
 
+        int countAdjacentTilesVertical(int row, int col);
+
+        int countAdjacentTilesHorizontal(int row, int col);
+
 private:
     char board[MAX_BOARD_ROWS][MAX_BOARD_COLS];
     char mosaicWall[MAX_BOARD_ROWS][MAX_BOARD_COLS];

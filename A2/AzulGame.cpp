@@ -330,13 +330,6 @@ bool AzulGame::isCommandValid(std::string input)
                     }
                 }
             }
-            if (tile != nullptr) 
-            {
-                if (tile->getTile() != tileChar)
-                {
-                    isValid = false;
-                }
-            }
             delete tile;
             tile = nullptr;
             if (factories[factoryNumber]->size() == 0)
@@ -382,13 +375,31 @@ void AzulGame::runCommand(std::string input)
         Factory* factory = factories[factoryNumber];
         Tile** commonTiles = factory->popSameTile(tile);
         Factory* broken = playerBoard->getBroken();
+        Tile* storageRowTile = playerBoard->getStorageRowTile(storageRow);
         for (int i = 0; i < factory->getSameTileLength(); ++i)
         {
-            if (!playerBoard->isStorageRowFull(storageRow)) // . . B, BB , B B B
+            if (!playerBoard->isStorageRowFull(storageRow)) 
             {
-                playerBoard->addTiletoRow(commonTiles[i], storageRow);
-                delete commonTiles[i];
-                commonTiles[i] = nullptr;
+                if (storageRowTile != nullptr) 
+                {
+                    if (storageRowTile->getTile() == tile) 
+                    {
+                        playerBoard->addTiletoRow(commonTiles[i], storageRow);
+                        delete commonTiles[i];
+                        commonTiles[i] = nullptr;
+                    }
+                    else 
+                    {
+                        broken->add(commonTiles[i]);
+                        commonTiles[i] = nullptr;
+                    }
+                }
+                else 
+                {
+                    playerBoard->addTiletoRow(commonTiles[i], storageRow);
+                    delete commonTiles[i];
+                    commonTiles[i] = nullptr;
+                }
             }
             else 
             {
@@ -481,8 +492,14 @@ void AzulGame::endOfRound()
             PlayerBoard* playerBoard = players[i]->getPlayerBoard();
             if (playerBoard->isStorageRowFull(row)) 
             {
-                Tile* tile = playerBoard->popTileFromStorageRow(row); // B B, B ., B
-                playerBoard->addTiletoMosaic(tile, row);  // B
+                Tile* tile = playerBoard->popTileFromStorageRow(row); 
+                playerBoard->addTiletoMosaic(tile, row);
+                int row = 0;
+                int col = 0;
+
+
+
+
                 delete tile; 
                 tile = nullptr;
                 playerBoard->clearStorageRow(row);
