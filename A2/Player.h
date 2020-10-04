@@ -15,7 +15,6 @@ public:
     void setName(std::string);
     int getScore();
     void setScore(int score);
-    void addScore(int increment);
     PlayerBoard* getPlayerBoard();
 
 private:

@@ -191,7 +191,7 @@ Tile* PlayerBoard::getStorageRowTile(int row)
 bool PlayerBoard::isStorageRowFull(int row)
 {
     bool isFull = true;
-    int start = INDEX_STORAGE_ROW_END;  // 3
+    int start = INDEX_STORAGE_ROW_END;  
     int end = start - row; 
     for (int cols = start; cols >= end; --cols) 
     {
@@ -213,12 +213,108 @@ void PlayerBoard::clearStorageRow(int row)
     }
 }
 
+void PlayerBoard::clearBroken()
+{
+    for (int i = 0; i < getBroken()->size(); ++i)
+    {
+        if (getBroken()->get(i) != nullptr)
+        {
+            delete getBroken()->get(i);
+        }
+    }
+    getBroken()->clearAll();
+}
+
 int PlayerBoard::countAdjacentTilesVertical(int row, int col)
 {
-
+    bool isUpEmpty = false;
+    bool isDownEmpty = false;
+    int count = 0;
+    int start = INDEX_FIRST_ROW;
+    int end = INDEX_LAST_ROW;
+    for (int upIndex = row - 1; upIndex >= start; --upIndex) 
+    {
+        if (!isUpEmpty)
+        {
+            if (board[upIndex][col] != '.')
+            {
+                ++count;
+            }
+            else
+            {
+                isUpEmpty = true;
+            }
+        }
+    }
+    for (int downIndex = row + 1; downIndex <= end; ++downIndex) 
+    {
+        if (!isDownEmpty)
+        {
+            if (board[downIndex][col] != '.')
+            {
+                ++count;
+            }
+            else
+            {
+                isDownEmpty = true;
+            }
+        }
+    }
+    return count;
 }
 
 int PlayerBoard::countAdjacentTilesHorizontal(int row, int col)
 {
+    bool isLeftEmpty = false;
+    bool isRightEmpty = false;
+    int count = 0;
+    int start = INDEX_MOSAIC_WALL_START;
+    int end = MAX_BOARD_COLS;
+    for (int leftIndex = col - 1; leftIndex >= start; --leftIndex)
+    {
+        if (!isLeftEmpty)
+        {
+            if (board[row][leftIndex] != '.')
+            {
+                ++count;
+            }
+            else
+            {
+                isLeftEmpty = true;   
+            }
+        }
+    }
+    for (int rightIndex = col + 1; rightIndex < end; ++rightIndex)
+    {
+        if (!isRightEmpty)
+        {
+            if (board[row][rightIndex] != '.')
+            {
+                ++count;
+            }
+            else
+            {
+                isRightEmpty = true;   
+            }
+        }
+    }
+    return count;
+}
 
+int PlayerBoard::getTileColumn(char tileChar, int row)
+{
+    bool found = false;
+    int colIndex = 0;
+    for (int col = INDEX_MOSAIC_WALL_START; col < MAX_BOARD_COLS; ++col)
+    {
+        if (!found)
+        {
+            if (board[row][col] == tileChar)
+            {
+                colIndex = col;
+                found = true;
+            }
+        }
+    }
+    return colIndex;
 }

@@ -494,117 +494,41 @@ void AzulGame::endOfRound()
             {
                 Tile* tile = playerBoard->popTileFromStorageRow(row); 
                 playerBoard->addTiletoMosaic(tile, row);
-                int row = 0;
-                int col = 0;
-
-
-
-
+                char tileChar = tile->getTile();
+                int col = playerBoard->getTileColumn(tileChar, row);
                 delete tile; 
                 tile = nullptr;
+                calculatePlayerScoreChanged(players[i], row, col);
                 playerBoard->clearStorageRow(row);
+                playerBoard->clearBroken();
             }
         }
     }
 }
 
-void AzulGame::calculateScore()
+void AzulGame::calculatePlayerScoreChanged(Player* player, int row, int col)
 {
-    // int score = 0;
-    // int player1Score = 0;
-    // int player2Score = 0;
-    // int adjacentTiles = 0;
-    // int floorline = 0;
-    // int floorlineIndex = 0;
-
-    // if (player1Turn == true)
-    // {
-    //     players[PLAYER1_INDEX]->getPlayerBoard();
-    //   if (//tile is not adjacent to anything)
-    //         {
-    //         ++adjacentTiles;
-    //         }
-    //         else if (//tile is adjacent)
-    //         {
-    //             if (//tile has one adjacent tile left, right, up or down)
-    //             {
-    //             adjacentTiles += 2;
-    //             }
-    //             else if (//tile has two adjacent tiles left, right, up or down)
-    //             {
-    //             adjacentTiles += 3;
-    //             }
-    //             ++player2Score + adjacentTiles;
-    //         }
-    //     if (//end of round)
-    //     {
-    //         //for each tile in floorlineIndex
-    //         //++floorlineIndex
-    //         while (int i = 0; i < floorlineIndex; ++i)
-    //             if (i < 2 && i > -1)
-    //             {
-    //                 ++floorline;
-    //                 ++i;
-    //             }
-    //             else if (i > 1 && i < 5)
-    //             {
-    //                 floorline += 2;
-    //                 ++i;
-    //             }
-    //             else if (i > 4 && i < 7)
-    //             {
-    //                 floorline += 3;
-    //                 ++i;
-    //             }
-    //         player1Score - floorline;
-    //     }
-    //     player1Score = score;
-    // }
-    // else if (player1Turn == false)
-    // {
-    //     {
-    //         players[PLAYER2_INDEX]->getPlayerBoard();
-    //         if (//tile is not adjacent to anything)
-    //         {
-    //             ++adjacentTiles;
-    //         }
-    //         else if (//tile is adjacent)
-    //         {
-    //             if (//tile has one adjacent tile left, right, up or down)
-    //             {
-    //                 adjacentTiles += 2;
-    //             }
-    //             else if (//tile has two adjacent tiles left, right, up or down)
-    //             {
-    //                 adjacentTiles += 3;
-    //             }
-    //             ++player2Score + adjacentTiles;
-    //         }
-    //         if (//end of round)
-    //         {
-    //             //for each tile in floorlineIndex
-    //             //++floorlineIndex
-    //             while (int i = 0; i < floorlineIndex; ++i)
-    //                 if (i < 2 && i > -1)
-    //                 {
-    //                     ++floorline;
-    //                     ++i;
-    //                 }
-    //                 else if (i > 1 && i < 5)
-    //                 {
-    //                     floorline += 2;
-    //                     ++i;
-    //                 }
-    //                 else if (i > 4 && i < 7)
-    //                 {
-    //                     floorline += 3;
-    //                     ++i;
-    //                 }
-    //             player2Score - floorline;
-    //         }
-    //         player2Score = score;
-    //     }
-
-    //     return score;
-    // }
+    int negativePoint[MAX_BROKEN] = { 1, 1, 2, 2, 2, 3, 3 };
+    int additionToScore = 0;
+    int subtractionToScore = 0;
+    additionToScore += player->getPlayerBoard()->countAdjacentTilesVertical(row, col) + 1;
+    additionToScore += player->getPlayerBoard()->countAdjacentTilesHorizontal(row, col) + 1;
+    Factory* broken = player->getPlayerBoard()->getBroken();
+    for (int i = 0; i < MAX_BROKEN && i < broken->size(); ++i) 
+    {
+        if (broken->get(i) != nullptr)
+        {
+            subtractionToScore += negativePoint[i]; 
+        }
+    }
+    int playerScore = player->getScore(); 
+    if (playerScore + additionToScore - subtractionToScore >= 0) 
+    {
+        int newPlayerScore = playerScore + additionToScore - subtractionToScore;
+        player->setScore(newPlayerScore);
+    }
+    else 
+    {
+        player->setScore(0);
+    }
 }

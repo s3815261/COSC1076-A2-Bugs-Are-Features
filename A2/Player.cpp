@@ -32,14 +32,6 @@ void Player::setScore(int score)
     this->score = score;
 }
 
-void Player::addScore(int increment) 
-{
-    if (increment > 0)
-    {
-        score += increment;
-    }
-}
-
 PlayerBoard* Player::getPlayerBoard()
 {
     return playerBoard;

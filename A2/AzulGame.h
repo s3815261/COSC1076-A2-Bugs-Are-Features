@@ -13,6 +13,7 @@
 #define CENTRAL_FACTORY_INDEX   0
 #define PLAYER1_INDEX           0
 #define PLAYER2_INDEX           1
+#define MAX_BROKEN              7
 
 #define RED                     'R'
 #define YELLOW                  'Y'
@@ -48,7 +49,7 @@ class AzulGame
         void runCommand(std::string input);
         void takeFirstPlayerToken();
         void endOfRound();
-        void calculateScore();
+        void calculatePlayerScoreChanged(Player* player, int row, int col);
 
     private:
         int roundNumber;

@@ -7,6 +7,8 @@
 #define MAX_MOSAIC_ROWS             5
 #define INDEX_STORAGE_ROW_END       4
 #define INDEX_MOSAIC_WALL_START     7
+#define INDEX_FIRST_ROW             0
+#define INDEX_LAST_ROW              4
 
 //Forward declaration
 class Tile;
@@ -58,10 +60,14 @@ class PlayerBoard
         bool isStorageRowFull(int row);
 
         void clearStorageRow(int row);
+        
+        void clearBroken();
 
         int countAdjacentTilesVertical(int row, int col);
 
         int countAdjacentTilesHorizontal(int row, int col);
+
+        int getTileColumn(char tileChar, int row);
 
 private:
     char board[MAX_BOARD_ROWS][MAX_BOARD_COLS];
