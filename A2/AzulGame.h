@@ -50,6 +50,7 @@ class AzulGame
         void takeFirstPlayerToken();
         void endOfRound();
         void calculatePlayerScoreChanged(Player* player, int row, int col);
+        void printPlayerScore(Player* playerScore);
 
     private:
         int roundNumber;
