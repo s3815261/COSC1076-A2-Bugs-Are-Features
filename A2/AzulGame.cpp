@@ -368,7 +368,7 @@ void AzulGame::runCommand(std::string input, bool loadingGame)
                 {
                     if (storageRowTile->getTile() == tile)
                     {
-                        playerBoard->addTileToRow(commonTiles[i], storageRow);
+                        playerBoard->addTileToStorageRow(commonTiles[i], storageRow);
                         delete commonTiles[i];
                         commonTiles[i] = nullptr;
                     }
@@ -380,7 +380,7 @@ void AzulGame::runCommand(std::string input, bool loadingGame)
                 }
                 else
                 {
-                    playerBoard->addTileToRow(commonTiles[i], storageRow);
+                    playerBoard->addTileToStorageRow(commonTiles[i], storageRow);
                     delete commonTiles[i];
                     commonTiles[i] = nullptr;
                 }
