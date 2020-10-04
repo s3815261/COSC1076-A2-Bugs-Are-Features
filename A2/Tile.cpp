@@ -17,6 +17,7 @@ Tile::~Tile()
 {
 }
 
+//gets a tile
 char Tile::getTile()
 {
     return tile;

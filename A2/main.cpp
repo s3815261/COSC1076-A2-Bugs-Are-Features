@@ -72,7 +72,7 @@ void mainMenu()
             {
                 std::cout << "Invalid Input" << std::endl;
             }
-            else 
+            else
             {
                 validInput = true;
             }
@@ -109,10 +109,10 @@ void mainMenu()
     }
 }
 
-bool tileCheck(char tile) 
+bool tileCheck(char tile)
 {
     bool returnValue = false;
-    if(tile == RED || tile == YELLOW || tile == DARK_BLUE || tile == LIGHT_BLUE || tile == BLACK)
+    if (tile == RED || tile == YELLOW || tile == DARK_BLUE || tile == LIGHT_BLUE || tile == BLACK)
     {
         returnValue = true;
     }
@@ -164,8 +164,8 @@ void newGame()
     std::cout << std::endl;
     std::cout << "Let's Play!" << std::endl;
 
-    AzulGame* ag = new AzulGame();
-
+    AzulGame *ag = new AzulGame();
+    
     ag->setPlayerNames(playerNames);
     //initalises the game
     ag->newGame();
@@ -183,9 +183,8 @@ void loadGame(std::string fileName, bool testingMode)
     {
         if (inputFile.is_open())
         {
-            AzulGame* ag = new AzulGame();
+            AzulGame *ag = new AzulGame();
             std::string playerNames[NUM_PLAYERS];
-            std::cout << "Successfully opened file" << std::endl;
             int line_count = 0;
             while (!inputFile.eof())
             {
@@ -195,24 +194,41 @@ void loadGame(std::string fileName, bool testingMode)
                 if (line_count == 0)
                 {
                     int line_size = line.size();
-                    for (int i = 0; i < line_size - 1; ++i)
+                    for (int i = 0; i < line_size; ++i)
                     {
-                        if(tileCheck(line[i]) == true) {
-                            Tile* new_tile = new Tile(line[i]);
+                        if (tileCheck(line[i]) == true)
+                        {
+                            Tile *new_tile = new Tile(line[i]);
                             ag->getTileBag()->addBack(new_tile);
-                        } else {
-                            std::cout << "Error with tile value read in, Enter appropriate load game file" << std::endl;
-                            exit(EXIT_FAILURE);
                         }
+                        else
+                        {
                         }
+                    }
                 }
                 else if (line_count == 1)
                 {
-                    playerNames[PLAYER1_INDEX] = line;
+                    if (line.length() == 0)
+                    {
+                        std::cout << "Error with name read in, Enter appropriate load game file" << std::endl;
+                        exit(EXIT_FAILURE);
+                    }
+                    else
+                    {
+                        playerNames[PLAYER1_INDEX] = line;
+                    }
                 }
                 else if (line_count == 2)
                 {
-                    playerNames[PLAYER2_INDEX] = line;
+                    if (line.length() == 0)
+                    {
+                        std::cout << "Error with name read in, Enter appropriate load game file" << std::endl;
+                        exit(EXIT_FAILURE);
+                    }
+                    else
+                    {
+                        playerNames[PLAYER2_INDEX] = line;
+                    }
                     ag->setPlayerNames(playerNames);
                     ag->printPlayerNames();
                 }
@@ -223,10 +239,10 @@ void loadGame(std::string fileName, bool testingMode)
                 }
                 ++line_count;
             }
-            //loads in and plays the moves as read provided in the txt file 
+            //loads in and plays the moves as read provided in the txt file
             ag->loadGame();
             //plays the game with input from there on
-            if(testingMode)
+            if (testingMode)
             {
                 ag->printPlayerGameBoard();
                 std::cout << " " << std::endl;
@@ -238,7 +254,7 @@ void loadGame(std::string fileName, bool testingMode)
                 ag->playGame();
             }
             delete ag;
-        }  
+        }
     }
 }
 

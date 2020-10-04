@@ -60,6 +60,7 @@ class AzulGame
         Player* currentPlayer;
         Factory** factories;
         std::vector<std::string> turnVector;
+        bool firstPlayerTokenTaken;
 
 };
 
