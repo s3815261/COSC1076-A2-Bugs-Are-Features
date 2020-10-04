@@ -256,12 +256,14 @@ void loadGame(std::string fileName, bool testingMode)
             //Plays the game with input from there on if it is not testing mode
             if (testingMode)
             {
+                std::cout << std::endl;
                 ag->printFactories();
                 Player **players = ag->getPlayers();
                 for (int i = 0; i < NUM_PLAYERS; ++i)
                 {
                     std::string name = players[i]->getName();
                     int score = players[i]->getScore();
+                    std::cout << std::endl;
                     std::cout << "Score for Player " << name << ": " << score << std::endl;
                     players[i]->printBoard();
                 }

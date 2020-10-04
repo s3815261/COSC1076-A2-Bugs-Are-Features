@@ -585,6 +585,7 @@ void AzulGame::printPlayerGameBoard()
     std::cout << "TURN FOR PLAYER: ";
     std::cout << currentPlayer->getName() << std::endl;
     printFactories();
+    std::cout << std::endl;
     currentPlayer->printBoard();
 }
 
