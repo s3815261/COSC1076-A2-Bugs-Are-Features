@@ -4,20 +4,20 @@
 #include "TileBag.h"
 #include "Node.h"
 
-//constructor
+//Constructor, sets the length of the tilebag to be none and the head points to null.
 TileBag::TileBag() : 
     length(0)
 {
     head = nullptr;
 }
 
-//constructor
+//Deconstructor, clears the tilebag of all tiles.
 TileBag::~TileBag()
 {
     clear();
 }
 
-//size of tile bag
+//Function that returns the length of the tile bag which is how many tiles are in the tile bag.
 int TileBag::size()
 {
     return length;
@@ -43,13 +43,16 @@ void TileBag::clear()
     head = nullptr;
 }
 
-//takes off the tile at the front of the tile bag
+//Takes off the tile at the front of the tile bag
 Tile *TileBag::popFront()
 {
+    //Defines the original first node in the chain and the new node
     Node *original_first_node = nullptr;
     Node *new_node = nullptr;
+    //Only possible if there is a tile to be removed.
     if (head != nullptr)
     {
+        //Makes the head now point to new node and removes returns the tile at the original first node.
         original_first_node = head;
         new_node = original_first_node->next;
         head = new_node;
@@ -59,31 +62,37 @@ Tile *TileBag::popFront()
     return original_first_node->tile;
 }
 
-//adds tiles to the back of the tilebag
+//Adds tiles to the back of the tilebag
 void TileBag::addBack(Tile *tile)
 {
+    //Creates a new node
     Node *toAdd = new Node(tile, nullptr);
 
+    //If head is null then the new tile will also be the front tile
     if (head == nullptr)
     {
         head = toAdd;
     }
     else
     {
+        //Loop through and find the back of the list
         Node *current = head;
         while (current->next != nullptr)
         {
             current = current->next;
         }
-
+        //Place the new tile at the back of the linked list
         current->next = toAdd;
     }
+    //Increment Length
     ++length;
 }
 
-//intialises the tile bag with 100 tiles of different colours
+//Intialises the tile bag
 void TileBag::initaliseTileBag()
 {
+    //Creates a tile bag of 100 tiles with 20 of each colour.
+    //Two for loops that loop through each colour and adds 20 of each to the back of the tile bag.
     char colours[5] = {'R','B','Y','L','U'};
     for (int i = 0; i < 20; ++i) {
         for (int j = 0; j < 5; ++j) {
@@ -94,7 +103,7 @@ void TileBag::initaliseTileBag()
     
 }
 
-//saves the tile bag
+//Saves the tile bag
 std::string TileBag::saveTileBag()
 {
     Node *current_node = head;
@@ -108,9 +117,10 @@ std::string TileBag::saveTileBag()
     return tileBag;
 }
 
-//prints the contents of the tile bag
+//Prints the contents of the tile bag
 void TileBag::printTileBag()
 {
+    //For every node that is not a null pointer, prints out the tile at that node.
     Node *current_node = head;
     while (current_node != nullptr)
     {
