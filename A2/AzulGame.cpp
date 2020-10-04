@@ -251,7 +251,7 @@ void AzulGame::loadGame()
     {
         //checks if turn is valid, else stop loading
         bool isValid = isCommandValid(turnVector[turn]);
-        if (isValid)
+        if (isValid == true)
         {
             //makes the turn if it is valid
             runCommand(turnVector[turn]);
@@ -549,6 +549,7 @@ void AzulGame::takeFirstPlayerToken()
 //runs all commands for end of round including adding tiles to mosaic, clearing the rows.
 void AzulGame::endOfRound()
 {
+    int i = NUM_PLAYERS;
     for (int i = 0; i < NUM_PLAYERS; ++i)
     {
         for (int row = 0; row < MAX_BOARD_ROWS; ++row)
@@ -568,6 +569,7 @@ void AzulGame::endOfRound()
             }
         }
     }
+    printPlayerScore(players[i]);
 }
 
 void AzulGame::calculatePlayerScoreChanged(Player* player, int row, int col)
@@ -594,5 +596,12 @@ void AzulGame::calculatePlayerScoreChanged(Player* player, int row, int col)
     else 
     {
         player->setScore(0);
+    }
+}
+
+void AzulGame::printPlayerScore(Player *player)
+{
+    for (int i = 0; i < NUM_PLAYERS; ++i) {
+        std::cout<< "Player " << players[i]->getName() << " Score: " << players[i]->getScore() << std::endl;
     }
 }
