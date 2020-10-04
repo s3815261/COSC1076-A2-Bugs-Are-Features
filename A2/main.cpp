@@ -19,6 +19,7 @@ void eofQuit(bool eof);
 #define CREDITS 3
 #define EXITPROGRAM 4
 
+//Main method
 int main(int argc, char **argv)
 {
     game(argc, argv);
@@ -26,6 +27,7 @@ int main(int argc, char **argv)
     return EXIT_SUCCESS;
 }
 
+//Game method to handle the main menu or testing mode
 void game(int argc, char **argv)
 {
     if (argc == 1)
@@ -47,6 +49,7 @@ void game(int argc, char **argv)
     }
 }
 
+//Main menu
 void mainMenu()
 {
     std::cout << "Welcome to Azul!" << std::endl;
@@ -54,7 +57,7 @@ void mainMenu()
     displayPrimaryMenu(true);
     int option = 0;
     std::string input = "";
-
+    // Loops continuously until it receives an eof command or a quit command option
     while (option != 4 && !std::cin.eof())
     {
         if (option != 0)
@@ -87,6 +90,7 @@ void mainMenu()
 
         if (validInput && !std::cin.eof())
         {
+            // Handles the selection of the menu options
             if (option == NEWGAME)
             {
                 newGame();
@@ -116,6 +120,7 @@ void mainMenu()
     }
 }
 
+//Either displays the primary menu or the secondary menu
 void displayPrimaryMenu(bool primaryMenu)
 {
     if (primaryMenu)
@@ -142,6 +147,7 @@ void displayPrimaryMenu(bool primaryMenu)
     }
 }
 
+//Handles creating a new game and playing it
 void newGame()
 {
     std::string playerNames[NUM_PLAYERS];
@@ -178,10 +184,11 @@ void newGame()
     delete ag;
 }
 
+//Handles loading a new game from save file. It also handles the printing for the testing mode
 void loadGame(std::string fileName, bool testingMode)
 {
     std::ifstream inputFile(fileName);
-    // check if the file has been successfully opened
+    //Check if the file has been successfully opened
     if (!inputFile.fail())
     {
         if (inputFile.is_open())
@@ -193,7 +200,7 @@ void loadGame(std::string fileName, bool testingMode)
             {
                 std::string line;
                 getline(inputFile, line);
-                //for each character, tileBag.addBack(char)
+                //For each character, tileBag.addBack(char)
                 if (line_count == 0)
                 {
                     int line_size = line.size();
@@ -237,22 +244,18 @@ void loadGame(std::string fileName, bool testingMode)
                     ag->setPlayerNames(playerNames);
                     ag->printPlayerNames();
                 }
-                // reading in turn information
+                //Reading in turn information
                 else if (line_count > 2)
                 {
                     ag->addTurn(line);
                 }
                 ++line_count;
             }
-            //loads in and plays the moves as read provided in the txt file
+            //Loads in and plays the moves as read provided in the txt file
             ag->loadGame();
-            //plays the game with input from there on
+            //Plays the game with input from there on if it is not testing mode
             if (testingMode)
             {
-                // ag->printPlayerGameBoard();
-                // std::cout << " " << std::endl;
-                // ag->nextPlayerTurn();
-                // ag->printPlayerGameBoard();
                 ag->printFactories();
                 Player **players = ag->getPlayers();
                 for (int i = 0; i < NUM_PLAYERS; ++i)
@@ -272,6 +275,7 @@ void loadGame(std::string fileName, bool testingMode)
     }
 }
 
+//Handles the printing of the credits
 void credits()
 {
     std::cout << std::endl;
@@ -290,6 +294,7 @@ void credits()
     std::cout << "----------------------------------" << std::endl;
 }
 
+//Handles the printing of the quitting message
 void eofQuit(bool eof)
 {
     if (eof)

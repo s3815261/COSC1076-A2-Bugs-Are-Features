@@ -1,6 +1,6 @@
 #include "Player.h"
 
-//constructor
+//Constructor
 Player::Player(std::string name) :
     name(name),
     score(0)
@@ -8,41 +8,43 @@ Player::Player(std::string name) :
     playerBoard = new PlayerBoard();
 }
 
-//deconstructor
+//Destructor
 Player::~Player() 
 {
     delete playerBoard;
 }
 
-//gets a players name
+//Gets the player name
 std::string Player::getName() 
 {
     return name;
 }
 
-//sets a players name
+//Sets the player name
 void Player::setName(std::string newName)
 {
     name = newName;
 }
 
-//gets a players score
+//Gets the player score
 int Player::getScore()
 {
     return score;
 }
 
-//sets a players score
+//Sets the player score
 void Player::setScore(int score) 
 {
     this->score = score;
 }
 
+//Gets the playerboard pointer
 PlayerBoard* Player::getPlayerBoard()
 {
     return playerBoard;
 }
 
+//Prints the storagerow, mosaic wall and broken
 void Player::printBoard()
 {
     std::cout << std::endl;

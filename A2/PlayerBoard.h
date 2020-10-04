@@ -26,23 +26,16 @@ class Factory;
 class PlayerBoard 
 {
     public:
-        //2D array implementation
         PlayerBoard();
-
-        //Deep copy of the board
         PlayerBoard(PlayerBoard& other);
-
-        //Deletes the board
         ~PlayerBoard();
 
         Factory* getBroken();
 
-        //Adding tile to the board starting from the back based on the row selection
-        void addTileToRow(Tile* tile, int row);
+        void addTileToStorageRow(Tile* tile, int row);
 
         void addTileToMosaic(Tile* tile, int row);
 
-        //Removing a tile from the board
         void removeTile(int row, int col);
 
         Tile* popTileFromStorageRow(int row);

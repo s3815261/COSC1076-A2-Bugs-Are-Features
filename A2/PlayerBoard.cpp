@@ -5,6 +5,7 @@
 #include "Tile.h"
 #include "Factory.h"
 
+//2D array implementation
 PlayerBoard::PlayerBoard()
 {
     //Inital player board
@@ -17,10 +18,10 @@ PlayerBoard::PlayerBoard()
         { '.', '.', '.', '.', '.', '|', '|', '.', '.', '.', '.', '.' }
     };
 
-    // Tiles that will be placed in the mosaic wall
+    //Tiles that will be placed in the mosaic wall
     char mosaicTiles[MAX_MOSAIC_ROWS] = { 'B', 'Y', 'R', 'U', 'L' };
 
-    // Loop to copy initialBoard onto the board
+    //Loop to copy initialBoard onto the board
     for (int rows = 0; rows < MAX_BOARD_ROWS; ++rows) 
     {
         for (int cols = 0; cols < MAX_BOARD_COLS; ++cols) 
@@ -29,11 +30,10 @@ PlayerBoard::PlayerBoard()
         }
     }
 
-    // Loop to set up the mosaic wall
+    //Loop to set up the mosaic wall
     for (int rows = 0; rows < MAX_MOSAIC_ROWS; ++rows) 
     {
-        // MAX_MOSAIC_ROWS is there to make sure that the next row 
-        // is the previous row shifted to the right.
+        // MAX_MOSAIC_ROWS is there to make sure that the next row is the previous row shifted to the right.
         int index = MAX_MOSAIC_ROWS - rows; 
         for (int cols = 0; cols < MAX_MOSAIC_COLS; ++cols)
         {
@@ -48,23 +48,25 @@ PlayerBoard::PlayerBoard()
     broken = new Factory();
 }
 
-//deep copy of the player board
+//Deep copy of the player board
 PlayerBoard::PlayerBoard(PlayerBoard& other)
 {
 }
 
-//deletes the playerboard
+//Deletes the playerboard
 PlayerBoard::~PlayerBoard()
 {
     delete broken;
 }
 
+//Get the broken part of the playerboard
 Factory* PlayerBoard::getBroken() 
 {
     return broken;
 }
 
-void PlayerBoard::addTileToRow(Tile* tile, int row)
+//Handles adding the tile to the storage row
+void PlayerBoard::addTileToStorageRow(Tile* tile, int row)
 {
     // This variable is the index of where the end 
     // of each of the storage rows are at.
@@ -81,8 +83,6 @@ void PlayerBoard::addTileToRow(Tile* tile, int row)
     {
         if (!placedTile)
         {
-            // As we view the rows as 1 to 5 inclusive, the (row - 1) is to get the index of the row
-            // in the array.
             if (board[row][cols] == '.')
             {
                 board[row][cols] = tile->getTile();
@@ -92,6 +92,7 @@ void PlayerBoard::addTileToRow(Tile* tile, int row)
     }
 }
 
+//Handles adding the tile to the mosaic wall
 void PlayerBoard::addTileToMosaic(Tile* tile, int row)
 {
     int start = INDEX_MOSAIC_WALL_START;
@@ -109,25 +110,25 @@ void PlayerBoard::addTileToMosaic(Tile* tile, int row)
 //Removing a tile from the board
 void PlayerBoard::removeTile(int row, int col)
 {
-    //checking that it is within bounds
+    //Checking that it is within bounds
     if(row < MAX_BOARD_ROWS && row >=0  && col < MAX_BOARD_ROWS && col >= 0)
     {
-        //removing the tile and putting the board in the default state.
+        //Removing the tile and putting the board in the default state.
         board[row][col] = '.';
-        //Not sure if we need to add some kind of discard pile method here... might implement later...
-
     }
 }
 
+//Pop the right most tile from the storage row
 Tile* PlayerBoard::popTileFromStorageRow(int row)
 {
     Tile* tile = nullptr;
     int start = INDEX_STORAGE_ROW_END;
     tile = new Tile(board[row][start]);
-    board[row][start] = '.';
+    removeTile(row, start);
     return tile;
 }
 
+//Get the type of tile already in the storage row
 Tile* PlayerBoard::getStorageRowTile(int row)
 {
     Tile* tile = nullptr;
@@ -139,6 +140,7 @@ Tile* PlayerBoard::getStorageRowTile(int row)
     return tile;
 }
 
+//Checks if the storage row is full
 bool PlayerBoard::isStorageRowFull(int row)
 {
     bool isFull = true;
@@ -154,6 +156,7 @@ bool PlayerBoard::isStorageRowFull(int row)
     return isFull;
 }
 
+//Counts the number of tiles that are vectically adjacent to a tile
 int PlayerBoard::countAdjacentTilesVertical(int row, int col)
 {
     bool isUpEmpty = false;
@@ -161,6 +164,7 @@ int PlayerBoard::countAdjacentTilesVertical(int row, int col)
     int count = 0;
     int start = INDEX_FIRST_ROW;
     int end = INDEX_LAST_ROW;
+    //Checks to the top of the tile
     for (int upIndex = row - 1; upIndex >= start; --upIndex) 
     {
         if (!isUpEmpty)
@@ -175,6 +179,7 @@ int PlayerBoard::countAdjacentTilesVertical(int row, int col)
             }
         }
     }
+    //Checks to the bottom of the tile
     for (int downIndex = row + 1; downIndex <= end; ++downIndex) 
     {
         if (!isDownEmpty)
@@ -192,6 +197,7 @@ int PlayerBoard::countAdjacentTilesVertical(int row, int col)
     return count;
 }
 
+//Counts the number of tiles that are horizontally adjacent to a tile
 int PlayerBoard::countAdjacentTilesHorizontal(int row, int col)
 {
     bool isLeftEmpty = false;
@@ -199,6 +205,7 @@ int PlayerBoard::countAdjacentTilesHorizontal(int row, int col)
     int count = 0;
     int start = INDEX_MOSAIC_WALL_START;
     int end = MAX_BOARD_COLS;
+    //Checks to the left of the tile
     for (int leftIndex = col - 1; leftIndex >= start; --leftIndex)
     {
         if (!isLeftEmpty)
@@ -213,6 +220,7 @@ int PlayerBoard::countAdjacentTilesHorizontal(int row, int col)
             }
         }
     }
+    //Checks to the right of the tile
     for (int rightIndex = col + 1; rightIndex < end; ++rightIndex)
     {
         if (!isRightEmpty)
@@ -230,6 +238,7 @@ int PlayerBoard::countAdjacentTilesHorizontal(int row, int col)
     return count;
 }
 
+//Gets the column index of the tile char
 int PlayerBoard::getTileColumnOnMosaic(char tileChar, int row)
 {
     bool found = false;
@@ -248,16 +257,18 @@ int PlayerBoard::getTileColumnOnMosaic(char tileChar, int row)
     return colIndex;
 }
 
+//Clears the storage row
 void PlayerBoard::clearStorageRow(int row)
 {
     int start = INDEX_STORAGE_ROW_END;
     int end = start - row;
     for (int cols = start; cols >= end; --cols)
     {
-        board[row][cols] = '.';
+        removeTile(row, cols);
     }
 }
 
+//Clears the broken part of the playerboard
 void PlayerBoard::clearBroken()
 {
     for (int i = 0; i < getBroken()->size(); ++i)
@@ -270,6 +281,7 @@ void PlayerBoard::clearBroken()
     getBroken()->clearAll();
 }
 
+//Handles printing of the storage row, mosaic wall and broken
 void PlayerBoard::printPlayerBoard()
 {
     for (int rows = 0; rows < MAX_BOARD_ROWS; ++rows)

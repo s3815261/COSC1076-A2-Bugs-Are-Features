@@ -3,7 +3,7 @@
 
 #include "Factory.h"
 
- //initializes the factory
+ //Initialises the factory
  Factory::Factory() :
     sameTileLength(0)
  {
@@ -16,7 +16,7 @@ Factory::Factory(Factory& other):
 {
 }
 
-//deletes the factory
+//Deletes the factory
 Factory::~Factory()
 {
     for (int i = 0; i < size(); ++i) 
@@ -29,7 +29,7 @@ Factory::~Factory()
     clearAll();
 }
 
-//returns the size of the factory
+//Returns the size of the factory
 int Factory::size()
 {
     return factory.size();
@@ -55,22 +55,25 @@ void Factory::add(Tile* tile)
     factory.push_back(tile);
 }
 
-//removes a specifc tile from the factory at a certain index
+//Removes a specifc tile from the factory at a certain index
 void Factory::remove(int index) 
 {
     factory.erase(factory.begin() + index);
 }
 
+//Gets the length of the same tile array when it pops the tiles
 int Factory::getSameTileLength()
 {
     return sameTileLength;
 }
 
+//Sets the length of the same tile array
 void Factory::setSameTileLength(int value)
 {
     sameTileLength = value;
 }
 
+//Pops the 0th element
 Tile* Factory::popFront()
 {
     Tile* tile = nullptr;
@@ -86,6 +89,7 @@ Tile* Factory::popFront()
     return tile;
 }
 
+//Pops the tiles that have the same char as the parameter tile
 Tile** Factory::popSameTile(char tile) 
 {
     Tile** tiles = new Tile*[MAX_TILES];
@@ -94,6 +98,7 @@ Tile** Factory::popSameTile(char tile)
         tiles[i] = nullptr;
     }
     int length = 0;
+    //Adds the tiles which contain the same char as the parameter tile
     for (int i = 0; i < size(); ++i) 
     {
         if (get(i)->getTile() == tile)  
@@ -102,6 +107,7 @@ Tile** Factory::popSameTile(char tile)
             ++length;
         }
     }
+    //Adds the tiles which do not contain the same char as the parameter tile to a temp vector 
     std::vector<Tile*> tempVector;
     for (int i = 0; i < size(); ++i)
     {
@@ -114,6 +120,7 @@ Tile** Factory::popSameTile(char tile)
         }
     }
     clearAll();
+    // Adds the tiles in the tempvector back to the factory vectory
     int tempVectorSize = tempVector.size();
     for (int i = 0; i < tempVectorSize; ++i)
     {
@@ -123,11 +130,13 @@ Tile** Factory::popSameTile(char tile)
     return tiles;
 }
 
+//Clears the factory vector
 void Factory::clearAll()
 {
     factory.clear();
 }
 
+//Prints the tiles in the factory
 void Factory::printFactory()
 {
     for (int i = 0; i < size(); ++i)
