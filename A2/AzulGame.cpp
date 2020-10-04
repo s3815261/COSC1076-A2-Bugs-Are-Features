@@ -334,7 +334,7 @@ bool AzulGame::isCommandValid(std::string input)
             }
         }
         if (isValid)
-        {
+        { // Factory has nothing
             PlayerBoard *playerBoard = currentPlayer->getPlayerBoard();
             Tile *tile = playerBoard->getStorageRowTile(storageRow - 1);
             if (!playerBoard->isStorageRowFull(storageRow - 1))
@@ -353,6 +353,21 @@ bool AzulGame::isCommandValid(std::string input)
             {
                 isValid = false;
             }
+            bool tileFound = false;
+            for (int i = 0; i < factories[factoryNumber]->size(); ++i) 
+            {
+                if (!tileFound)
+                {
+                    if (factories[factoryNumber]->get(i) != nullptr)
+                    {
+                        if (factories[factoryNumber]->get(i)->getTile() == tileChar) 
+                        {
+                            tileFound = true; 
+                        }
+                    }
+                }
+            }
+            isValid = tileFound;
         }
     }
     else if (input.length() == 0)
